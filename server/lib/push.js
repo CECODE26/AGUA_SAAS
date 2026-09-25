@@ -2,6 +2,7 @@
 // El servidor manda a exp.host; Expo entrega por FCM (Android) y APNs (iOS).
 // Todas las funciones son "fire and forget": nunca lanzan, solo registran errores.
 const prisma = require('./prisma')
+const { nombreMarca } = require('./marca')
 
 const EXPO_PUSH_URL = 'https://exp.host/--/api/v2/push/send'
 const LOTE          = 100   // máximo de mensajes por petición a Expo
@@ -121,7 +122,7 @@ const msg = {
   },
   pedidoProgramado: (p, fecha, chofer = null) => {
     const cuando = fechaCorta(fecha)
-    const camion = chofer ? `el camión de ${chofer}` : 'el camión de Agua Manú'
+    const camion = chofer ? `el camión de ${chofer}` : `el camión de ${nombreMarca()}`
     return cuando === 'hoy' || !cuando
       ? { title: 'Tu agua sale hoy, {nombre}',
           body:  `El pedido #${p.id} va en ${camion}. Ten lista tu entrada.` }
@@ -130,7 +131,7 @@ const msg = {
   },
   pedidoEntregado: (p, chofer = null) => ({
     title: 'Agua fresca en casa, {nombre}',
-    body:  `Pedido #${p.id} entregado${chofer ? ` por ${chofer}` : ''}. Gracias por preferir Agua Manú.`,
+    body:  `Pedido #${p.id} entregado${chofer ? ` por ${chofer}` : ''}. Gracias por preferir ${nombreMarca()}.`,
   }),
   pedidoNoEntregado: (p, motivo) => ({
     title: 'Tocamos y no estabas, {nombre}',

@@ -25,7 +25,7 @@ router.post('/', verifyToken, async (req, res) => {
   const { placa, marca, modelo, color, anio } = req.body
   if (!placa || !marca) return res.status(400).json({ message: 'placa y marca son requeridos' })
 
-  const existe = await prisma.camion.findUnique({ where: { placa: placa.toUpperCase() } })
+  const existe = await prisma.camion.findFirst({ where: { placa: placa.toUpperCase() } })
   if (existe) return res.status(409).json({ message: 'Ya existe un camión con esa placa' })
 
   const camion = await prisma.camion.create({

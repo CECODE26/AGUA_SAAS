@@ -1,7 +1,7 @@
 const express                        = require('express')
 const bcrypt                         = require('bcryptjs')
-const jwt                            = require('jsonwebtoken')
-const { verifyToken, verifyTokenConductor, JWT_SECRET } = require('../middleware/auth')
+const { verifyToken, verifyTokenConductor, firmarConductor, conductorDeToken } = require('../middleware/auth')
+const { correoInterno } = require('../lib/marca')
 const prisma                         = require('../lib/prisma')
 const sseClients                     = require('../lib/sseClients')
 const push                           = require('../lib/push')
@@ -119,11 +119,7 @@ router.post('/login', async (req, res) => {
     if (!ok && String(password).trim() !== password) ok = await bcrypt.compare(String(password).trim(), conductor.passwordHash)
     if (!ok) return res.status(401).json({ message: 'Credenciales incorrectas' })
 
-    const token = jwt.sign(
-      { conductorId: conductor.id, nombre: conductor.nombre, role: 'conductor' },
-      JWT_SECRET,
-      { expiresIn: '30d' }
-    )
+    const token = firmarConductor(conductor)
     res.json({ token, conductor: { id: conductor.id, nombre: conductor.nombre } })
   } catch (e) {
     res.status(500).json({ message: 'Error interno del servidor' })
@@ -321,11 +317,9 @@ router.post('/mi-ubicacion', verifyTokenConductor, async (req, res) => {
 router.get('/eventos', (req, res) => {
   const { token } = req.query
   if (!token) return res.status(401).json({ message: 'Token requerido' })
-  let conductorId
-  try {
-    const payload = jwt.verify(token, JWT_SECRET)
-    conductorId   = payload.conductorId
-  } catch { return res.status(401).json({ message: 'Token inválido' }) }
+  const payload = conductorDeToken(token)
+  if (!payload) return res.status(401).json({ message: 'Token inválido' })
+  const conductorId = payload.conductorId
 
   res.setHeader('Content-Type',  'text/event-stream')
   res.setHeader('Cache-Control', 'no-cache')
@@ -349,6 +343,9 @@ router.post('/visita-fijo', verifyTokenConductor, async (req, res) => {
   const fecha = new Date(hoy.toISOString().split('T')[0] + 'T00:00:00Z')
 
   const cantidadesGuardar = resultado === 'compro' && Array.isArray(cantidades) ? cantidades : null
+
+  const clienteExiste = await prisma.cliente.findUnique({ where: { id: parseInt(clienteId) }, select: { id: true } })
+  if (!clienteExiste) return res.status(404).json({ message: 'Cliente no encontrado' })
 
   // Leer registro previo
   const anterior = await prisma.visitaClienteFijo.findUnique({
@@ -469,10 +466,10 @@ router.post('/venta-rapida', verifyTokenConductor, async (req, res) => {
   // Con teléfono se registra/actualiza el cliente real; sin datos va al
   // cliente genérico de mostrador
   const email = clienteTelefono
-    ? `tel-${String(clienteTelefono).replace(/\D/g, '')}@clientes.aguamanu.local`
-    : 'venta-express@aguamanu.local'
+    ? correoInterno(`tel-${String(clienteTelefono).replace(/\D/g, '')}`, 'clientes')
+    : correoInterno('venta-express')
   const cliente = await prisma.cliente.upsert({
-    where:  { email },
+    where:  { distribuidoraId_email: { distribuidoraId: req.conductor.distribuidoraId, email } },
     update: clienteNombre ? { nombre: clienteNombre, ...(clienteTelefono ? { telefono: String(clienteTelefono) } : {}) } : {},
     create: {
       email,

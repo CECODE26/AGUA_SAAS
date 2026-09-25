@@ -80,27 +80,35 @@ npm run build        # Production build to dist/
 
 ## Architecture
 
+### SaaS multi-distribuidora
+Una sola instalación atiende a muchas distribuidoras. Cada tabla de negocio tiene `distribuidoraId`.
+- **Filtro central:** `server/lib/prisma.js` agrega el filtro por distribuidora a *todas* las consultas y valida que los ids foráneos (clienteId, camionId, pedidoId…) sean de la misma distribuidora. Las rutas se escriben como si hubiera una sola empresa: **no** agregues `distribuidoraId` a mano en los `where`, y nunca uses `prisma.sinFiltro` en rutas de una distribuidora.
+- **Contexto:** `server/lib/tenant.js` (AsyncLocalStorage). `conDistribuidora(d, fn)` para tareas programadas; `comoPlataforma(fn)` solo para el panel de plataforma.
+- **Cómo se identifica la distribuidora** (`server/middleware/distribuidora.js`): encabezado `X-Distribuidora: <slug>` → dominio propio (`Distribuidora.dominio`) → subdominio `<slug>.PLATAFORMA_DOMINIO` → `DISTRIBUIDORA_POR_DEFECTO`. El token también la lleva; si no coincide, 403.
+- **Únicos por distribuidora:** usuario (admin, chofer, maestro), email del cliente, placa, nombre de producto. Para `findUnique`/`upsert` por esos campos usa la clave compuesta (`distribuidoraId_email`) o `findFirst`.
+- **Plataforma:** `/api/plataforma/*` (tabla `PlataformaAdmin`) da de alta, edita y suspende distribuidoras. `/api/distribuidora` devuelve la marca pública; `/api/distribuidora/ajustes` la edita el superadmin.
+- Pruebas de aislamiento: `server/tests/` (`npm run test:e2e`, ver su README).
+
 ### Services
 | Service | URL | Notes |
 |---------|-----|-------|
 | Client (nginx) | http://localhost | React SPA via nginx |
 | API (Express) | http://localhost:3001 | Direct access |
-| PostgreSQL | localhost:5433 | User: postgres / Pass: 12345 / DB: agua_piatua |
+| PostgreSQL | localhost:5433 | credenciales en `docker-compose.yml` (no en el repo) |
 
 Nginx proxies `/api` and `/uploads` to the Express server (`http://server:3001`), so the React app always uses relative `/api` paths.
 
 ### Authentication Roles & Flow
-Three distinct auth roles with separate JWT tokens:
-1. **Admin** — `POST /api/auth/login` → 8h JWT, stored in `localStorage` as `admin_token`
-2. **Superadmin** — same endpoint, same storage, differentiated by `rol` field in token
-3. **Conductor (Driver)** — `POST /api/conductores/login` → 12h JWT, stored as `conductor_token`
+Cada token lleva `tipo` (`admin`, `conductor`, `maestro`, `cliente`, `plataforma`) y `distribuidoraId`. Un token solo sirve para su tipo y en su distribuidora. Se firman con los helpers `firmarAdmin`, `firmarConductor`, etc. de `server/middleware/auth.js`.
+1. **Admin / Superadmin** (de una distribuidora) — `POST /api/auth/login` → 8h, `rol` distingue superadmin
+2. **Conductor** — `POST /api/conductores/login` → 30d
+3. **Maestro de clientes** — `POST /api/maestro/login`
+4. **Cliente** — `POST /api/clientes/auth/login` → 30d (usa `clienteDeToken(req)`)
+5. **Plataforma** — `POST /api/plataforma/login` → 8h, sin distribuidora
 
-Middleware chain in `server/middleware/auth.js`:
-- `verifyToken` → validates admin/superadmin JWT
-- `verifySuperAdmin` → must chain after `verifyToken`, checks `rol === 'superadmin'`
-- `verifyTokenConductor` → validates driver JWT
+Middleware: `verifyToken` (admin), `verifySuperAdmin` (después de verifyToken), `verifyTokenConductor`, `verifyTokenMaestro`, `verifyTokenPlataforma`.
 
-JWT secret defaults to `'agua-piatua-secret-2026'`, overridden by `JWT_SECRET` env var.
+`JWT_SECRET` es obligatorio (el servidor no arranca sin él). Los errores de rutas async los atrapa `express-async-errors` y los responde `server/middleware/errores.js`.
 
 ### Workflow: Conductor Activation
 Conductors cannot be created directly. The flow is:
@@ -114,9 +122,9 @@ Schema at `server/prisma/schema.prisma`. Key relations:
 - `Conductor` → one `Camion` (unique FK), many `PlanRuta` → many `PlanRutaItem` → `Pedido`
 - `SolicitudActivacion` tracks pending/approved/rejected requests
 
-On Docker startup the server runs: `prisma migrate deploy && node prisma/seed.js && node index.js`
+On Docker startup the server runs: `prisma migrate deploy && node prisma/seed.js && node index.js`. Cambios de esquema: siempre con migración (`npm run db:migrate`), nunca `db push`.
 
-Seed creates: `superadmin` (pw: `superadmin2026`), `admin` (pw: `piatua2026`), and 6 water products.
+El seed no trae contraseñas fijas: crea el admin de plataforma desde `PLATAFORMA_USUARIO`/`PLATAFORMA_PASSWORD` y, con `SEED_DEMO=1` y la base vacía, la distribuidora `demo` (ver `server/prisma/seed.js`).
 
 ### Client Structure
 - `client/src/App.jsx` — defines all routes; two route trees: public site and `/admin/*`
@@ -139,15 +147,7 @@ Public site uses `CartProvider` + `AuthProvider`. Admin panel only needs `AuthPr
 - **Route planning:** Admins build `PlanRuta` with ordered `PlanRutaItem` stops; conductors see their route via `GET /api/conductores/mi-ruta` filtered to today's date.
 
 ### Environment Variables
-`server/.env` required keys:
-```
-DATABASE_URL=postgresql://postgres:12345@db:5432/agua_piatua
-JWT_SECRET=
-MAIL_USER=          # Gmail address
-MAIL_PASS=          # Gmail app password (not account password)
-MAIL_ADMIN=         # Recipient for new-order notifications
-SITE_URL=           # Used in customer email links (default: http://localhost:5173)
-```
+`server/.env` — ver `server/.env.example` (DATABASE_URL, JWT_SECRET, PLATAFORMA_*, DISTRIBUIDORA_POR_DEFECTO, MAIL_*, MAPBOX_TOKEN).
 
 `client/.env.local`:
 ```
@@ -194,5 +194,4 @@ docker compose up --build -d
 Production server: **31.220.98.255** (Contabo VPS, user `root`)
 
 ## Brand
-- Primary color: `#00763E` (green)
-- Brand name: Agua Piatua
+- Plataforma: **Agua Elite**. La marca de cada distribuidora (nombre, color, logo, contacto) sale de la tabla `Distribuidora`: no escribas nombres de empresa en el código.

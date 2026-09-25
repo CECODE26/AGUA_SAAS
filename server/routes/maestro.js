@@ -1,8 +1,9 @@
 const express = require('express')
 const bcrypt  = require('bcryptjs')
-const jwt     = require('jsonwebtoken')
 const prisma  = require('../lib/prisma')
-const { verifyToken, verifyTokenMaestro, JWT_SECRET } = require('../middleware/auth')
+const { verifyToken, verifyTokenMaestro, firmarMaestro } = require('../middleware/auth')
+const { distribuidoraIdObligatoria } = require('../lib/tenant')
+const { correoInterno, esCorreoInterno, DOMINIO_INTERNO, ciudadPorDefecto, provinciaPorDefecto } = require('../lib/marca')
 const validarId = require('../lib/validarId')
 
 const router = express.Router()
@@ -26,7 +27,7 @@ const DIAS_NUEVO_MS = 7 * 24 * 60 * 60 * 1000   // "nuevo" = eligió sus días h
 //   nuevo:     eligió sus días en los últimos 7 días
 function decorarCliente(c) {
   const { passwordHash, ...rest } = c
-  const origen    = passwordHash ? 'app' : (c.email?.endsWith('@aguamanu.local') ? 'maestro' : 'web')
+  const origen    = passwordHash ? 'app' : (esCorreoInterno(c.email) ? 'maestro' : 'web')
   const tieneDias = (Array.isArray(c.visitasHorario) && c.visitasHorario.length > 0) || !!c.diaSemana
   const nuevo     = !!c.fijoDesde && (Date.now() - new Date(c.fijoDesde).getTime()) < DIAS_NUEVO_MS
   return { ...rest, origen, tieneDias, sinDias: origen === 'app' && !tieneDias, nuevo }
@@ -69,11 +70,7 @@ router.post('/login', async (req, res) => {
   const ok = await bcrypt.compare(password, maestro.passwordHash)
   if (!ok) return res.status(401).json({ message: 'Credenciales incorrectas' })
 
-  const token = jwt.sign(
-    { maestroId: maestro.id, nombre: maestro.nombre, role: 'maestro' },
-    JWT_SECRET,
-    { expiresIn: '365d' }
-  )
+  const token = firmarMaestro(maestro)
   res.json({ token, maestro: { id: maestro.id, nombre: maestro.nombre } })
 })
 
@@ -111,7 +108,7 @@ router.post('/clientes', verifyTokenMaestro, async (req, res) => {
   if (!nombre || !telefono)
     return res.status(400).json({ message: 'Nombre y teléfono son requeridos' })
 
-  const emailFinal = email?.trim() || `sin-email-${Date.now()}@aguamanu.local`
+  const emailFinal = email?.trim() || correoInterno(`sin-email-${Date.now()}`)
   const visitas    = Array.isArray(visitasHorario) && visitasHorario.length > 0 ? visitasHorario : null
 
   try {
@@ -128,9 +125,9 @@ router.post('/clientes', verifyTokenMaestro, async (req, res) => {
     }
 
     const cliente = await prisma.cliente.upsert({
-      where:  { email: emailFinal },
+      where:  { distribuidoraId_email: { distribuidoraId: distribuidoraIdObligatoria(), email: emailFinal } },
       update: data,
-      create: { email: emailFinal, ciudad: 'Puyo', provincia: 'Pastaza', ...data },
+      create: { email: emailFinal, ciudad: ciudadPorDefecto(), provincia: provinciaPorDefecto(), ...data },
     })
     res.json({ success: true, cliente })
   } catch (e) {
@@ -189,7 +186,7 @@ router.get('/admin/clientes', verifyToken, async (req, res) => {
   const base = {
     OR: [
       { esFijo: true },
-      { email: { endsWith: '@aguamanu.local' } },
+      { email: { endsWith: DOMINIO_INTERNO } },
     ],
   }
 

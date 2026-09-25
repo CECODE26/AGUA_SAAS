@@ -1,12 +1,15 @@
 const express  = require('express')
 const bcrypt    = require('bcryptjs')
-const jwt       = require('jsonwebtoken')
 const prisma    = require('../lib/prisma')
 const { emailRecuperarPassword, emailNuevoClienteFijo } = require('../lib/mailer')
 
 
 const router = express.Router()
-const { JWT_SECRET: SECRET } = require('../middleware/auth')
+const { firmarCliente, clienteDeToken } = require('../middleware/auth')
+const { distribuidoraIdObligatoria } = require('../lib/tenant')
+
+// Clave única del cliente dentro de su distribuidora
+const porEmail = email => ({ distribuidoraId_email: { distribuidoraId: distribuidoraIdObligatoria(), email } })
 
 const CAMPOS_PUBLICOS = {
   id: true, nombre: true, email: true, cedula: true,
@@ -37,7 +40,7 @@ router.post('/registro', async (req, res) => {
       return res.status(400).json({ success: false, message: 'La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial' })
     }
     const emailLower  = email.trim().toLowerCase()
-    const existe      = await prisma.cliente.findUnique({ where: { email: emailLower } })
+    const existe      = await prisma.cliente.findUnique({ where: porEmail(emailLower) })
     if (existe?.passwordHash) {
       return res.status(409).json({ success: false, message: 'Ya tienes una cuenta con ese correo. Inicia sesión o recupera tu contraseña.' })
     }
@@ -45,7 +48,7 @@ router.post('/registro', async (req, res) => {
     // Si el cliente fue creado por el admin (sin contraseña), activamos su cuenta
     const cliente = existe
       ? await prisma.cliente.update({
-          where:  { email: emailLower },
+          where:  porEmail(emailLower),
           data:   { passwordHash },
           select: CAMPOS_PUBLICOS,
         })
@@ -61,7 +64,7 @@ router.post('/registro', async (req, res) => {
           },
           select: CAMPOS_PUBLICOS,
         })
-    const token = jwt.sign({ id: cliente.id, email: cliente.email }, SECRET, { expiresIn: '30d' })
+    const token = firmarCliente({ ...cliente, distribuidoraId: distribuidoraIdObligatoria() })
     res.status(201).json({ success: true, token, cliente })
   } catch (err) {
     console.error(err)
@@ -76,7 +79,7 @@ router.post('/login', async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({ success: false, message: 'Correo y contraseña requeridos' })
     }
-    const cliente = await prisma.cliente.findUnique({ where: { email: email.trim().toLowerCase() } })
+    const cliente = await prisma.cliente.findUnique({ where: porEmail(email.trim().toLowerCase()) })
     if (!cliente) {
       return res.status(404).json({ success: false, noAccount: true, message: 'No encontramos una cuenta con ese correo.' })
     }
@@ -87,7 +90,7 @@ router.post('/login', async (req, res) => {
     if (!ok) {
       return res.status(401).json({ success: false, message: 'Contraseña incorrecta' })
     }
-    const token = jwt.sign({ id: cliente.id, email: cliente.email }, SECRET, { expiresIn: '30d' })
+    const token = firmarCliente(cliente)
     const { passwordHash: _, ...datos } = cliente
     res.json({ success: true, token, cliente: datos })
   } catch (err) {
@@ -99,9 +102,8 @@ router.post('/login', async (req, res) => {
 // GET /api/clientes/auth/perfil  (token requerido)
 router.get('/perfil', async (req, res) => {
   try {
-    const auth = req.headers.authorization
-    if (!auth?.startsWith('Bearer ')) return res.status(401).json({ success: false })
-    const { id } = jwt.verify(auth.slice(7), SECRET)
+    const id = clienteDeToken(req)?.id
+    if (!id) return res.status(401).json({ success: false, message: 'Token inválido' })
     const cliente = await prisma.cliente.findUnique({ where: { id }, select: CAMPOS_PUBLICOS })
     if (!cliente) return res.status(404).json({ success: false })
     res.json({ success: true, cliente })
@@ -112,14 +114,7 @@ router.get('/perfil', async (req, res) => {
 
 // Extrae el id del cliente del header Authorization; null si no hay token válido
 function clienteIdDeReq(req) {
-  try {
-    const auth = req.headers.authorization
-    if (!auth?.startsWith('Bearer ')) return null
-    const { id } = jwt.verify(auth.slice(7), SECRET)
-    return id ?? null
-  } catch {
-    return null
-  }
+  return clienteDeToken(req)?.id ?? null
 }
 
 // POST /api/clientes/auth/push-token  — guardar Expo push token del teléfono
@@ -153,13 +148,13 @@ router.post('/recuperar', async (req, res) => {
     const { email } = req.body
     if (!email) return res.status(400).json({ success: false, message: 'Correo requerido' })
     const emailLower = email.trim().toLowerCase()
-    const cliente = await prisma.cliente.findUnique({ where: { email: emailLower } })
+    const cliente = await prisma.cliente.findUnique({ where: porEmail(emailLower) })
     if (!cliente)
       return res.status(404).json({ success: false, noAccount: true, message: 'No encontramos una cuenta con ese correo. ¿Ya te registraste?' })
     const codigo  = String(Math.floor(100000 + Math.random() * 900000))
     const expiry  = new Date(Date.now() + 15 * 60 * 1000)
     await prisma.cliente.update({
-      where: { email: emailLower },
+      where: porEmail(emailLower),
       data:  { resetCodigo: codigo, resetExpiry: expiry },
     })
     if (!process.env.MAIL_USER) {
@@ -187,12 +182,12 @@ router.post('/resetear', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Faltan datos' })
     }
     const emailLower = email.trim().toLowerCase()
-    const cliente = await prisma.cliente.findUnique({ where: { email: emailLower } })
+    const cliente = await prisma.cliente.findUnique({ where: porEmail(emailLower) })
     if (!cliente?.resetCodigo || cliente.resetCodigo !== codigo.trim()) {
       return res.status(400).json({ success: false, message: 'Código incorrecto' })
     }
     if (!cliente.resetExpiry || new Date() > cliente.resetExpiry) {
-      await prisma.cliente.update({ where: { email: emailLower }, data: { resetCodigo: null, resetExpiry: null } })
+      await prisma.cliente.update({ where: porEmail(emailLower), data: { resetCodigo: null, resetExpiry: null } })
       return res.status(400).json({ success: false, message: 'El código expiró. Solicita uno nuevo.' })
     }
     if (!validarPassword(password)) {
@@ -200,7 +195,7 @@ router.post('/resetear', async (req, res) => {
     }
     const passwordHash = await bcrypt.hash(password, 10)
     await prisma.cliente.update({
-      where: { email: emailLower },
+      where: porEmail(emailLower),
       data:  { passwordHash, resetCodigo: null, resetExpiry: null },
     })
     res.json({ success: true })
@@ -213,9 +208,8 @@ router.post('/resetear', async (req, res) => {
 // PATCH /api/clientes/auth/visitas — guardar horario de visitas (token requerido)
 router.patch('/visitas', async (req, res) => {
   try {
-    const auth = req.headers.authorization
-    if (!auth?.startsWith('Bearer ')) return res.status(401).json({ success: false })
-    const { id } = jwt.verify(auth.slice(7), SECRET)
+    const id = clienteDeToken(req)?.id
+    if (!id) return res.status(401).json({ success: false, message: 'Token inválido' })
     const { visitasHorario, latitud, longitud } = req.body
     if (!Array.isArray(visitasHorario) || visitasHorario.length === 0) {
       return res.status(400).json({ success: false, message: 'Debes seleccionar al menos una visita' })

@@ -1,27 +1,72 @@
 const jwt = require('jsonwebtoken')
+const { distribuidoraId } = require('../lib/tenant')
 
 const JWT_SECRET = process.env.JWT_SECRET
 if (!JWT_SECRET) throw new Error('JWT_SECRET no está definido en las variables de entorno')
 
-function verifyToken(req, res, next) {
-  const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1] // Bearer <token>
+// Cada token dice de qué tipo es (admin, conductor, maestro, cliente, plataforma) y de
+// qué distribuidora. Un token solo sirve para su tipo y en su distribuidora: el de un
+// cliente no abre el panel y el de una empresa no sirve en otra.
 
-  if (!token) {
-    return res.status(401).json({ success: false, message: 'Token requerido' })
-  }
+function tokenDe(req) {
+  const auth = req.headers['authorization']
+  if (auth?.startsWith('Bearer ')) return auth.slice(7)
+  return null
+}
 
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET)
-    req.admin = decoded
-    next()
-  } catch (err) {
-    if (err.name === 'TokenExpiredError') {
-      return res.status(401).json({ success: false, message: 'Token expirado', expired: true })
+// Payload verificado o null (sin lanzar)
+function leerToken(token) {
+  if (!token) return null
+  try { return jwt.verify(token, JWT_SECRET) } catch { return null }
+}
+
+// ── Firmar ───────────────────────────────────────────────────────────────────
+const firmar = (payload, expiresIn) => jwt.sign(payload, JWT_SECRET, { expiresIn })
+
+const firmarAdmin = a =>
+  firmar({ tipo: 'admin', username: a.username, rol: a.rol, distribuidoraId: a.distribuidoraId }, '8h')
+const firmarConductor = c =>
+  firmar({ tipo: 'conductor', role: 'conductor', conductorId: c.id, nombre: c.nombre, distribuidoraId: c.distribuidoraId }, '30d')
+const firmarMaestro = m =>
+  firmar({ tipo: 'maestro', role: 'maestro', maestroId: m.id, nombre: m.nombre, distribuidoraId: m.distribuidoraId }, '365d')
+const firmarCliente = c =>
+  firmar({ tipo: 'cliente', id: c.id, email: c.email, distribuidoraId: c.distribuidoraId }, '30d')
+const firmarPlataforma = p =>
+  firmar({ tipo: 'plataforma', plataformaId: p.id, username: p.username }, '8h')
+
+// ── Verificar ────────────────────────────────────────────────────────────────
+// Devuelve el payload si el token es de ese tipo y de la distribuidora de la petición
+function validarTipo(payload, tipo) {
+  if (!payload || payload.tipo !== tipo) return false
+  if (tipo === 'plataforma') return true
+  return payload.distribuidoraId === distribuidoraId()
+}
+
+function middleware(tipo, clave, { expirado = 'Token expirado' } = {}) {
+  return (req, res, next) => {
+    const token = tokenDe(req)
+    if (!token) return res.status(401).json({ success: false, message: 'Token requerido' })
+    let payload
+    try {
+      payload = jwt.verify(token, JWT_SECRET)
+    } catch (err) {
+      if (err.name === 'TokenExpiredError') {
+        return res.status(401).json({ success: false, message: expirado, expired: true })
+      }
+      return res.status(403).json({ success: false, message: 'Token inválido' })
     }
-    return res.status(403).json({ success: false, message: 'Token inválido' })
+    if (!validarTipo(payload, tipo)) {
+      return res.status(403).json({ success: false, message: 'Acceso denegado' })
+    }
+    req[clave] = payload
+    next()
   }
 }
+
+const verifyToken          = middleware('admin', 'admin')
+const verifyTokenConductor = middleware('conductor', 'conductor')
+const verifyTokenMaestro   = middleware('maestro', 'maestro', { expirado: 'Sesión expirada' })
+const verifyTokenPlataforma = middleware('plataforma', 'plataforma', { expirado: 'Sesión expirada' })
 
 function verifySuperAdmin(req, res, next) {
   // Debe usarse después de verifyToken
@@ -31,34 +76,21 @@ function verifySuperAdmin(req, res, next) {
   next()
 }
 
-function verifyTokenConductor(req, res, next) {
-  const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
-  if (!token) return res.status(401).json({ message: 'Token requerido' })
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET)
-    if (decoded.role !== 'conductor') return res.status(403).json({ message: 'Acceso denegado' })
-    req.conductor = decoded
-    next()
-  } catch {
-    return res.status(403).json({ message: 'Token inválido' })
-  }
+// Cliente de la app/sitio: { id, email } o null si no hay sesión válida de esta distribuidora
+function clienteDeToken(req) {
+  const payload = leerToken(tokenDe(req))
+  return validarTipo(payload, 'cliente') ? payload : null
 }
 
-function verifyTokenMaestro(req, res, next) {
-  const authHeader = req.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
-  if (!token) return res.status(401).json({ message: 'Token requerido' })
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET)
-    if (decoded.role !== 'maestro') return res.status(403).json({ message: 'Acceso denegado' })
-    req.maestro = decoded
-    next()
-  } catch (err) {
-    if (err.name === 'TokenExpiredError')
-      return res.status(401).json({ message: 'Sesión expirada', expired: true })
-    return res.status(403).json({ message: 'Token inválido' })
-  }
+// Conductor desde un token suelto (SSE lo manda por query string)
+function conductorDeToken(token) {
+  const payload = leerToken(token)
+  return validarTipo(payload, 'conductor') ? payload : null
 }
 
-module.exports = { verifyToken, verifySuperAdmin, verifyTokenConductor, verifyTokenMaestro, JWT_SECRET }
+module.exports = {
+  JWT_SECRET,
+  verifyToken, verifySuperAdmin, verifyTokenConductor, verifyTokenMaestro, verifyTokenPlataforma,
+  firmarAdmin, firmarConductor, firmarMaestro, firmarCliente, firmarPlataforma,
+  clienteDeToken, conductorDeToken, leerToken, tokenDe,
+}

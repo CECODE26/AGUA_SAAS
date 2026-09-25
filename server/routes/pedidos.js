@@ -1,6 +1,7 @@
 const express = require('express')
-const { verifyToken, JWT_SECRET } = require('../middleware/auth')
-const jwt = require('jsonwebtoken')
+const { verifyToken, clienteDeToken } = require('../middleware/auth')
+const { distribuidoraIdObligatoria } = require('../lib/tenant')
+const { nombreMarca, ciudadPorDefecto, provinciaPorDefecto } = require('../lib/marca')
 const prisma  = require('../lib/prisma')
 const { emailNuevoPedido, emailConfirmacionCliente } = require('../lib/mailer')
 const { autoDespachar } = require('../lib/autoDespacho')
@@ -14,13 +15,7 @@ const router = express.Router()
 // POST /api/pedidos — PÚBLICO (clientes del sitio)
 // Id del cliente según su token de la app (null si no hay sesión válida)
 function clienteIdDeToken(req) {
-  try {
-    const auth = req.headers.authorization
-    if (!auth?.startsWith('Bearer ')) return null
-    return jwt.verify(auth.slice(7), JWT_SECRET).id ?? null
-  } catch {
-    return null
-  }
+  return clienteDeToken(req)?.id ?? null
 }
 
 router.post('/', async (req, res) => {
@@ -42,14 +37,14 @@ router.post('/', async (req, res) => {
     numeracion:      cliente.numeracion      || null,
     referencia:      cliente.referencia      || null,
     sector:          cliente.sector          || null,
-    ciudad:          cliente.ciudad          || 'Puyo',
-    provincia:       cliente.provincia       || 'Pastaza',
+    ciudad:          cliente.ciudad          || ciudadPorDefecto(),
+    provincia:       cliente.provincia       || provinciaPorDefecto(),
     latitud:         (cliente.lat  ?? cliente.latitud)  != null ? parseFloat(cliente.lat  ?? cliente.latitud)  : null,
     longitud:        (cliente.lng  ?? cliente.longitud) != null ? parseFloat(cliente.lng  ?? cliente.longitud) : null,
   }
 
   const clienteDb = await prisma.cliente.upsert({
-    where:  { email: cliente.email },
+    where:  { distribuidoraId_email: { distribuidoraId: distribuidoraIdObligatoria(), email: cliente.email } },
     update: datosCliente,
     create: { email: cliente.email, ...datosCliente },
   })
@@ -160,7 +155,7 @@ router.post('/', async (req, res) => {
 // GET /api/pedidos/cliente/:email — PÚBLICO (historial del cliente)
 router.get('/cliente/:email', async (req, res) => {
   const { email } = req.params
-  const cliente = await prisma.cliente.findUnique({
+  const cliente = await prisma.cliente.findFirst({
     where: { email },
     include: {
       pedidos: {
@@ -193,12 +188,8 @@ router.patch('/:id/cancelar', async (req, res) => {
   if (!id) return res.status(400).json({ message: 'ID inválido' })
   const auth = req.headers.authorization
   if (!auth?.startsWith('Bearer ')) return res.status(401).json({ success: false, message: 'Token requerido' })
-  let clienteId
-  try {
-    ;({ id: clienteId } = jwt.verify(auth.slice(7), JWT_SECRET))
-  } catch {
-    return res.status(401).json({ success: false, message: 'Token inválido' })
-  }
+  const clienteId = clienteIdDeToken(req)
+  if (!clienteId) return res.status(401).json({ success: false, message: 'Token inválido' })
 
   try {
     const pedido = await prisma.pedido.findUnique({
@@ -220,7 +211,7 @@ router.patch('/:id/cancelar', async (req, res) => {
       return res.status(400).json({
         success: false,
         message: pedido.estado === 'planificado'
-          ? 'Este pedido ya fue asignado a ruta. Contacta a Agua Manú para cancelarlo.'
+          ? `Este pedido ya fue asignado a ruta. Contacta a ${nombreMarca()} para cancelarlo.`
           : 'Solo puedes cancelar pedidos pendientes',
       })
     }

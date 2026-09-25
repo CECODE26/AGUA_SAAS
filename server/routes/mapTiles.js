@@ -14,7 +14,7 @@ router.get('/:z/:x/:y', async (req, res) => {
   try {
     const upstream = await fetch(`https://tile.openstreetmap.org/${z}/${x}/${y}.png`, {
       headers: {
-        'User-Agent': 'Agua-Manu/1.0 (map tile proxy)',
+        'User-Agent': 'Agua-Elite/1.0 (map tile proxy)',
         'Accept': 'image/png,image/*;q=0.8,*/*;q=0.5',
       },
     })

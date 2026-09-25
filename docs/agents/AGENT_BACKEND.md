@@ -5,6 +5,14 @@ Tu área de trabajo es exclusivamente `server/`. No toques nada en `client/`.
 
 ---
 
+## Regla multi-distribuidora (leer antes de tocar consultas)
+
+El sistema es un SaaS: cada tabla de negocio tiene `distribuidoraId` y `lib/prisma.js`
+aplica el filtro solo. Escribe las consultas como si hubiera una sola empresa, no agregues
+`distribuidoraId` a mano y no uses `prisma.sinFiltro` en rutas. Los campos únicos
+(usuario, email, placa, nombre de producto) lo son **por distribuidora**. Detalles en
+`CLAUDE.md` → "SaaS multi-distribuidora". Antes de subir, corre `npm run test:e2e`.
+
 ## Tu Stack
 
 - **Runtime:** Node.js 20 + Express 4
@@ -76,8 +84,8 @@ router.get('/mi-ruta', verifyTokenConductor, handler)
 ## Variables de entorno requeridas
 
 ```
-DATABASE_URL   → postgresql://postgres:12345@db:5432/agua_piatua
-JWT_SECRET     → agua_piatua_secret_2026
+DATABASE_URL   → postgresql://postgres:<password>@db:5432/agua_elite
+JWT_SECRET     → obligatorio (openssl rand -base64 32)
 MAIL_USER      → cuenta Gmail
 MAIL_PASS      → app password de Gmail (no la contraseña normal)
 MAIL_ADMIN     → email que recibe notificaciones de pedidos

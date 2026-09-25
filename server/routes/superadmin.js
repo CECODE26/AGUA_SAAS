@@ -221,7 +221,7 @@ router.patch('/admins/:id/password', async (req, res) => {
   const { nueva, codigo } = req.body
   if (!nueva || String(nueva).length < 6) return res.status(400).json({ message: 'La contraseña nueva debe tener al menos 6 caracteres' })
 
-  const yo = await prisma.admin.findUnique({ where: { username: req.admin.username } })
+  const yo = await prisma.admin.findFirst({ where: { username: req.admin.username } })
   if (yo?.totpActivo) {
     const { authenticator } = require('otplib')
     authenticator.options = { window: 1 }

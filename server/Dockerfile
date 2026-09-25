@@ -10,5 +10,6 @@ RUN npx prisma generate
 
 EXPOSE 3001
 
-# Migra, carga seed y arranca el servidor
-CMD ["sh", "-c", "npx prisma db push --accept-data-loss && node prisma/seed.js && node index.js"]
+# Aplica las migraciones pendientes (nunca borra datos), carga el seed y arranca.
+# Antes usaba "prisma db push --accept-data-loss", que podía borrar columnas.
+CMD ["sh", "-c", "npx prisma migrate deploy && node prisma/seed.js && node index.js"]

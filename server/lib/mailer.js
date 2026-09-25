@@ -1,4 +1,16 @@
 const nodemailer = require('nodemailer')
+const { distribuidoraActual } = require('./tenant')
+const { nombreMarca } = require('./marca')
+const { urlSitio } = require('./distribuidoras')
+
+// Un solo buzón de envío (el de la plataforma); cada correo sale con el nombre de la
+// distribuidora y los avisos internos van a su correo de avisos.
+const remitente = () => `"${nombreMarca().replace(/"/g, '')}" <${process.env.MAIL_USER}>`
+const destinoAvisos = () => distribuidoraActual()?.emailAvisos || process.env.MAIL_ADMIN
+function pieDePagina() {
+  const d = distribuidoraActual()
+  return [nombreMarca(), d?.telefono, [d?.ciudad, d?.provincia].filter(Boolean).join(', ')].filter(Boolean).join(' · ')
+}
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -10,7 +22,7 @@ const transporter = nodemailer.createTransport({
 
 // ── Email al ADMIN: nuevo pedido ──────────────────────────────────────────
 async function emailNuevoPedido(pedido, cliente) {
-  if (!process.env.MAIL_USER || !process.env.MAIL_ADMIN) return
+  if (!process.env.MAIL_USER || !destinoAvisos()) return
 
   const itemsHtml = pedido.items.map(i =>
     `<tr>
@@ -21,8 +33,8 @@ async function emailNuevoPedido(pedido, cliente) {
   ).join('')
 
   await transporter.sendMail({
-    from:    `"Agua Manú" <${process.env.MAIL_USER}>`,
-    to:      process.env.MAIL_ADMIN,
+    from:    remitente(),
+    to:      destinoAvisos(),
     subject: `🚰 Nuevo pedido #${pedido.id} — ${cliente.nombre} ($${parseFloat(pedido.total).toFixed(2)})`,
     html: `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
@@ -59,7 +71,7 @@ async function emailNuevoPedido(pedido, cliente) {
 
         </div>
         <div style="background:#0f1d3e;padding:12px;text-align:center;border-radius:0 0 8px 8px">
-          <p style="color:#fff;margin:0;font-size:12px">Agua Manú · Puyo, Pastaza, Ecuador</p>
+          <p style="color:#fff;margin:0;font-size:12px">${pieDePagina()}</p>
         </div>
       </div>
     `,
@@ -78,9 +90,9 @@ async function emailConfirmacionCliente(pedido, cliente) {
   ).join('')
 
   await transporter.sendMail({
-    from:    `"Agua Manú" <${process.env.MAIL_USER}>`,
+    from:    remitente(),
     to:      cliente.email,
-    subject: `✅ Pedido #${pedido.id} confirmado — Agua Manú`,
+    subject: `✅ Pedido #${pedido.id} confirmado — ${nombreMarca()}`,
     html: `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
         <div style="background:#0066CC;padding:24px;text-align:center;border-radius:8px 8px 0 0">
@@ -110,14 +122,14 @@ async function emailConfirmacionCliente(pedido, cliente) {
 
           <p style="color:#555;font-size:13px">
             Puedes consultar el estado de tu pedido en cualquier momento en:<br>
-            <a href="${process.env.SITE_URL || 'http://localhost:5173'}/mis-pedidos" style="color:#0066CC;font-weight:bold">
+            <a href="${urlSitio(distribuidoraActual())}/mis-pedidos" style="color:#0066CC;font-weight:bold">
               Ver mis pedidos →
             </a>
           </p>
 
         </div>
         <div style="background:#0f1d3e;padding:12px;text-align:center;border-radius:0 0 8px 8px">
-          <p style="color:#fff;margin:0;font-size:12px">Agua Manú · (03) 2936000 · Puyo, Pastaza</p>
+          <p style="color:#fff;margin:0;font-size:12px">${pieDePagina()}</p>
         </div>
       </div>
     `,
@@ -128,9 +140,9 @@ async function emailConfirmacionCliente(pedido, cliente) {
 async function emailRecuperarPassword(email, nombre, codigo) {
   if (!process.env.MAIL_USER) return
   await transporter.sendMail({
-    from:    `"Agua Manú" <${process.env.MAIL_USER}>`,
+    from:    remitente(),
     to:      email,
-    subject: `🔐 Código de recuperación — Agua Manú`,
+    subject: `🔐 Código de recuperación — ${nombreMarca()}`,
     html: `
       <div style="font-family:Arial,sans-serif;max-width:500px;margin:0 auto">
         <div style="background:#0066CC;padding:24px;text-align:center;border-radius:8px 8px 0 0">
@@ -145,7 +157,7 @@ async function emailRecuperarPassword(email, nombre, codigo) {
           <p style="color:#9ca3af;font-size:12px;margin-top:24px">Si no solicitaste este código, ignora este correo.</p>
         </div>
         <div style="background:#0f1d3e;padding:12px;text-align:center;border-radius:0 0 8px 8px">
-          <p style="color:#fff;margin:0;font-size:12px">Agua Manú · Puyo, Pastaza, Ecuador</p>
+          <p style="color:#fff;margin:0;font-size:12px">${pieDePagina()}</p>
         </div>
       </div>
     `,
@@ -156,7 +168,7 @@ async function emailRecuperarPassword(email, nombre, codigo) {
 const DIAS_LABEL = { lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles', jueves: 'Jueves', viernes: 'Viernes', sabado: 'Sábado', domingo: 'Domingo' }
 
 async function emailNuevoClienteFijo(cliente) {
-  if (!process.env.MAIL_USER || !process.env.MAIL_ADMIN) return
+  if (!process.env.MAIL_USER || !destinoAvisos()) return
 
   const visitas = Array.isArray(cliente.visitasHorario) ? cliente.visitasHorario : []
   const visitasHtml = visitas.length
@@ -168,8 +180,8 @@ async function emailNuevoClienteFijo(cliente) {
     : '<b style="color:#dc2626">Sin GPS — no aparecerá en la ruta hasta que lo tenga</b>'
 
   await transporter.sendMail({
-    from:    `"Agua Manú" <${process.env.MAIL_USER}>`,
-    to:      process.env.MAIL_ADMIN,
+    from:    remitente(),
+    to:      destinoAvisos(),
     subject: `🗓️ Nuevo cliente fijo desde la app — ${cliente.nombre}`,
     html: `
       <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto">
@@ -189,7 +201,7 @@ async function emailNuevoClienteFijo(cliente) {
           <p style="margin:18px 0 0;font-size:13px;color:#475569">Revísalo en el Maestro de Clientes (filtro "Nuevos esta semana").</p>
         </div>
         <div style="background:#0f1d3e;padding:12px;text-align:center;border-radius:0 0 8px 8px">
-          <p style="color:#fff;margin:0;font-size:12px">Agua Manú · Puyo, Pastaza, Ecuador</p>
+          <p style="color:#fff;margin:0;font-size:12px">${pieDePagina()}</p>
         </div>
       </div>
     `,

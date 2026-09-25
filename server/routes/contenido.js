@@ -3,25 +3,24 @@ const { verifyToken, verifySuperAdmin } = require('../middleware/auth')
 const fs = require('fs')
 const path = require('path')
 const multer = require('multer')
+const prisma = require('../lib/prisma')
+const { comoPlataforma } = require('../lib/tenant')
 
 const router = express.Router()
-// Dentro de uploads/ para que viva en el volumen persistente:
-// las ediciones sobreviven a los rebuilds del contenedor
-const CONTENT_FILE = path.join(__dirname, '../uploads/contenido.json')
-
-function readContent() {
-  if (!fs.existsSync(CONTENT_FILE)) return {}
-  try { return JSON.parse(fs.readFileSync(CONTENT_FILE, 'utf8')) } catch { return {} }
-}
+// Los textos editables del sitio se guardan en Distribuidora.contenido (uno por empresa).
+// Antes vivían en uploads/contenido.json; prisma/importar-contenido.js los pasa a la base.
 
 // GET /api/contenido — público (lo leen las páginas del sitio)
-router.get('/', (req, res) => {
-  res.json(readContent())
+router.get('/', async (req, res) => {
+  const id = req.distribuidora.id
+  const d = await comoPlataforma(() => prisma.distribuidora.findUnique({ where: { id }, select: { contenido: true } }))
+  res.json(d?.contenido ?? {})
 })
 
 // PUT /api/contenido — solo superadmin
-router.put('/', verifyToken, verifySuperAdmin, (req, res) => {
-  fs.writeFileSync(CONTENT_FILE, JSON.stringify(req.body, null, 2))
+router.put('/', verifyToken, verifySuperAdmin, async (req, res) => {
+  const contenido = req.body && typeof req.body === 'object' && !Array.isArray(req.body) ? req.body : {}
+  await comoPlataforma(() => prisma.distribuidora.update({ where: { id: req.distribuidora.id }, data: { contenido } }))
   res.json({ ok: true })
 })
 

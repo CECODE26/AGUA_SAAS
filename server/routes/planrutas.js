@@ -4,6 +4,7 @@ const prisma                            = require('../lib/prisma')
 const { puntoDentroDePoligono, despacharPendientes } = require('../lib/autoDespacho')
 const validarId = require('../lib/validarId')
 const push      = require('../lib/push')
+const { distribuidoraActual } = require('../lib/tenant')
 
 const router = express.Router()
 
@@ -314,8 +315,8 @@ function haversine(a, b) {
 }
 
 // Centroide de una lista de puntos {lat, lng}
-function centroide(puntos) {
-  if (puntos.length === 0) return { lat: -1.488252, lng: -78.015242 } // depósito
+function centroide(puntos, vacio = null) {
+  if (puntos.length === 0) return vacio ?? { lat: 0, lng: 0 }
   return {
     lat: puntos.reduce((s, p) => s + p.lat, 0) / puntos.length,
     lng: puntos.reduce((s, p) => s + p.lng, 0) / puntos.length,
@@ -349,7 +350,6 @@ router.post('/auto-generar', verifyToken, async (req, res) => {
   const { fecha, reemplazar = false } = req.body
   if (!fecha) return res.status(400).json({ message: 'fecha requerida' })
 
-  const DEPOSITO = { lat: -1.488252, lng: -78.015242 }
   const COLORES  = ['#0d6efd', '#dc3545', '#198754', '#fd7e14', '#6f42c1', '#0dcaf0', '#d63384', '#20c997']
 
   // 1. Conductores activos con camión
@@ -376,6 +376,12 @@ router.post('/auto-generar', verifyToken, async (req, res) => {
   if (pedidosConGPS.length === 0) {
     return res.status(422).json({ message: 'No hay pedidos pendientes con ubicación GPS' })
   }
+
+  // Depósito de la distribuidora; si no lo cargó, el centro de sus pedidos
+  const d = distribuidoraActual()
+  const DEPOSITO = d?.depositoLat != null && d?.depositoLng != null
+    ? { lat: d.depositoLat, lng: d.depositoLng }
+    : centroide(pedidosConGPS.map(p => p.coords))
 
   // 3. Pedidos ya asignados a alguna ruta (para no duplicar)
   const fechaObj   = new Date(fecha + 'T12:00:00Z')
@@ -420,7 +426,7 @@ router.post('/auto-generar', verifyToken, async (req, res) => {
     let mejorIdx  = 0
     let mejorDist = Infinity
     for (let i = 0; i < N; i++) {
-      const c    = centroide(clusters[i].map(p => p.coords))
+      const c    = centroide(clusters[i].map(p => p.coords), DEPOSITO)
       const dist = haversine(c, pedido.coords)
       if (dist < mejorDist) { mejorDist = dist; mejorIdx = i }
     }

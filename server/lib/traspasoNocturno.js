@@ -9,6 +9,7 @@
  */
 
 const prisma = require('./prisma')
+const { comoPlataforma, conDistribuidora } = require('./tenant')
 
 // ─── Cálculo de próxima ejecución ────────────────────────────────────────────
 
@@ -43,8 +44,7 @@ function msHastaProximaEjecucion() {
 
 // ─── Lógica de traspaso ───────────────────────────────────────────────────────
 
-async function ejecutarTraspaso() {
-  console.log('🌙 Traspaso nocturno: iniciando...')
+async function traspasoDeDistribuidora() {
 
   const ahora = new Date()
 
@@ -81,7 +81,6 @@ async function ejecutarTraspaso() {
 
   if (itemsHoy.length === 0) {
     console.log('🌙 Traspaso nocturno: no hay pedidos pendientes de hoy. Nada que hacer.')
-    programarProximaEjecucion()
     return
   }
 
@@ -175,8 +174,27 @@ async function ejecutarTraspaso() {
     console.log(`🌙 Traspaso: ${insertados} pedidos pendientes → ${conductor.nombre} para mañana (ruta #${rutaMañana.id})`)
   }
 
-  console.log('🌙 Traspaso nocturno: completado.')
-  programarProximaEjecucion()
+}
+
+// Corre el traspaso en cada distribuidora activa; si una falla, sigue con las demás
+async function ejecutarTraspaso() {
+  console.log('🌙 Traspaso nocturno: iniciando...')
+  try {
+    const activas = await comoPlataforma(() => prisma.distribuidora.findMany({ where: { activo: true } }))
+    for (const d of activas) {
+      try {
+        console.log(`🌙 Traspaso: ${d.nombre} (${d.slug})`)
+        await conDistribuidora(d, traspasoDeDistribuidora)
+      } catch (e) {
+        console.error(`🌙 Traspaso nocturno falló en ${d.slug}:`, e.message)
+      }
+    }
+    console.log('🌙 Traspaso nocturno: completado.')
+  } catch (e) {
+    console.error('🌙 Traspaso nocturno:', e.message)
+  } finally {
+    programarProximaEjecucion()
+  }
 }
 
 // ─── Programación con setTimeout ─────────────────────────────────────────────

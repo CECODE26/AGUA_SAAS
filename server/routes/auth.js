@@ -1,9 +1,9 @@
 const express = require('express')
-const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const { authenticator } = require('otplib')
 const QRCode = require('qrcode')
-const { verifyToken, JWT_SECRET } = require('../middleware/auth')
+const { verifyToken, firmarAdmin } = require('../middleware/auth')
+const { distribuidoraActual } = require('../lib/tenant')
 const prisma = require('../lib/prisma')
 
 const router = express.Router()
@@ -22,7 +22,7 @@ const perfil = a => ({
 })
 
 async function adminActual(req) {
-  return prisma.admin.findUnique({ where: { username: req.admin.username } })
+  return prisma.admin.findFirst({ where: { username: req.admin.username } })
 }
 
 // ── POST /api/auth/login ─────────────────────────────────────────────────────
@@ -60,7 +60,7 @@ router.post('/login', async (req, res) => {
     }
   }
 
-  const token = jwt.sign({ username: admin.username, rol: admin.rol }, JWT_SECRET, { expiresIn: '8h' })
+  const token = firmarAdmin(admin)
   res.json({ success: true, token, rol: admin.rol })
 })
 
@@ -79,7 +79,9 @@ router.get('/me', verifyToken, async (req, res) => {
 router.put('/me', verifyToken, async (req, res) => {
   const telefono = req.body.telefono != null ? String(req.body.telefono).trim() : undefined
   if (telefono === undefined) return res.status(400).json({ message: 'Nada que actualizar' })
-  const admin = await prisma.admin.update({ where: { username: req.admin.username }, data: { telefono: telefono || null } })
+  const actual = await adminActual(req)
+  if (!actual) return res.status(404).json({ message: 'Cuenta no encontrada' })
+  const admin = await prisma.admin.update({ where: { id: actual.id }, data: { telefono: telefono || null } })
   res.json({ admin: perfil(admin) })
 })
 
@@ -95,7 +97,7 @@ router.post('/totp/iniciar', verifyToken, async (req, res) => {
   if (admin.totpActivo) return res.status(400).json({ message: 'La verificación en dos pasos ya está activa' })
 
   const secret  = authenticator.generateSecret()
-  const otpauth = authenticator.keyuri(admin.username, 'Agua Manú', secret)
+  const otpauth = authenticator.keyuri(admin.username, distribuidoraActual()?.nombre || 'Agua Elite', secret)
   const qr      = await QRCode.toDataURL(otpauth, { margin: 1, width: 220 })
   await prisma.admin.update({ where: { id: admin.id }, data: { totpSecret: secret, totpActivo: false, totpLogin: false } })
   res.json({ qr, secret })
@@ -158,7 +160,7 @@ router.post('/recuperar', async (req, res) => {
   if (!username || !codigo || !nueva) return res.status(400).json({ success: false, message: 'Usuario, código y contraseña nueva requeridos' })
   if (String(nueva).length < 6) return res.status(400).json({ success: false, message: 'La nueva contraseña debe tener al menos 6 caracteres' })
 
-  const admin = await prisma.admin.findUnique({ where: { username } })
+  const admin = await prisma.admin.findFirst({ where: { username: { equals: String(username).trim(), mode: 'insensitive' } } })
   // Misma respuesta si el usuario no existe o el código falla: no revela cuentas
   if (!admin || !admin.activo) return res.status(400).json({ success: false, message: 'Usuario o código incorrectos' })
   if (!admin.totpActivo) {

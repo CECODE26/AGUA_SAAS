@@ -8,14 +8,20 @@
 //  - El bidón de premio (precio 0) no suma sellos.
 //  - Nada de esto puede romper una entrega: todo va en try/catch y solo registra.
 const prisma = require('./prisma')
+const { distribuidoraIdObligatoria } = require('./tenant')
 
-const CONFIG_ID = 1
-
-// ── Configuración (una sola fila, id = 1) ────────────────────────────────────
+// ── Configuración (una fila por distribuidora) ───────────────────────────────
 async function getConfig() {
-  const existente = await prisma.configFidelidad.findUnique({ where: { id: CONFIG_ID } })
+  const distribuidoraId = distribuidoraIdObligatoria()
+  const existente = await prisma.configFidelidad.findUnique({ where: { distribuidoraId } })
   if (existente) return existente
-  return prisma.configFidelidad.create({ data: { id: CONFIG_ID } })
+  try {
+    return await prisma.configFidelidad.create({ data: {} })
+  } catch (e) {
+    // Dos peticiones a la vez crearon la fila: usar la que quedó
+    if (e?.code === 'P2002') return prisma.configFidelidad.findUnique({ where: { distribuidoraId } })
+    throw e
+  }
 }
 
 async function guardarConfig(datos = {}) {
@@ -36,11 +42,24 @@ async function guardarConfig(datos = {}) {
     if (!Number.isInteger(n) || n < 5 || n > 100) throw new Error('El descuento debe estar entre 5 % y 100 %')
     data.descuentoPct = n
   }
+  // Los productos del programa tienen que ser de esta distribuidora
+  const idsProductos = [
+    ...(data.productoPremioId != null ? [parseInt(data.productoPremioId)] : []),
+    ...(Array.isArray(data.productosQueSuman) ? data.productosQueSuman.map(Number) : []),
+  ]
+  if (idsProductos.length) {
+    const unicos = [...new Set(idsProductos)]
+    if (unicos.some(n => !Number.isInteger(n))) throw new Error('Producto no válido')
+    const encontrados = await prisma.producto.count({ where: { id: { in: unicos } } })
+    if (encontrados !== unicos.length) throw new Error('Producto no encontrado')
+    if (data.productoPremioId != null) data.productoPremioId = parseInt(data.productoPremioId)
+  }
+
   const actual = await getConfig()
   const final  = { ...actual, ...data }
   if (final.activo && final.tipoPremio === 'producto' && !final.productoPremioId) throw new Error('Elige qué producto se regala antes de activar el programa')
   if (final.activo && final.tipoPremio === 'descuento' && !final.descuentoPct) throw new Error('Indica el % de descuento antes de activar el programa')
-  return prisma.configFidelidad.update({ where: { id: CONFIG_ID }, data })
+  return prisma.configFidelidad.update({ where: { distribuidoraId: actual.distribuidoraId }, data })
 }
 
 // ── Cuántos sellos da un pedido ──────────────────────────────────────────────
@@ -128,7 +147,7 @@ async function avisarPremio(clienteId, premios) {
   }
 }
 
-// Cómo se dice el premio en los avisos y en la app ("1 Agua Manú 20L gratis", "15 % de descuento")
+// Cómo se dice el premio en los avisos y en la app ("1 Bidón 20L gratis", "15 % de descuento")
 async function textoPremio(config) {
   if (config.tipoPremio === 'descuento') return `${config.descuentoPct} % de descuento`
   if (!config.productoPremioId) return 'un premio'

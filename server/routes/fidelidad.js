@@ -1,6 +1,5 @@
 const express = require('express')
-const jwt = require('jsonwebtoken')
-const { verifyToken, verifySuperAdmin, verifyTokenConductor, JWT_SECRET } = require('../middleware/auth')
+const { verifyToken, verifySuperAdmin, verifyTokenConductor, clienteDeToken } = require('../middleware/auth')
 const prisma = require('../lib/prisma')
 const validarId = require('../lib/validarId')
 const fidelidad = require('../lib/fidelidad')
@@ -9,14 +8,7 @@ const router = express.Router()
 
 // Id del cliente a partir de su token (mismo esquema que /api/clientes/auth)
 function clienteIdDeReq(req) {
-  try {
-    const auth = req.headers.authorization
-    if (!auth?.startsWith('Bearer ')) return null
-    const { id } = jwt.verify(auth.slice(7), JWT_SECRET)
-    return id ?? null
-  } catch {
-    return null
-  }
+  return clienteDeToken(req)?.id ?? null
 }
 
 // ── Cliente: su tarjeta ──────────────────────────────────────────────────────
