@@ -40,6 +40,16 @@ Antes de escribir código, anuncia explícitamente: *"Delegando al agente [NOMBR
 
 Solo proceder cuando el usuario responda afirmativamente. Si responde no, cancelar y preguntar qué ajustar.
 
+### 3. Secretos: nunca en el repositorio
+
+Ninguna contraseña, token, llave ni dato de acceso va en un archivo del repo: ni en el código, ni en la documentación, ni en `docker-compose`, ni en comentarios, ni "solo por ahora". Eso incluye contraseñas de la base de datos, del servidor (SSH), del correo, `JWT_SECRET`, tokens de Mapbox/Google/Expo, keystores y contraseñas de usuarios (admin, superadmin, choferes).
+
+- Los valores reales van en archivos `.env` (ignorados por git) o en las variables del servidor / de EAS. En el repo solo va `.env.example` con marcadores (`PASSWORD_SEGURO_AQUI`).
+- El seed y los tests toman las contraseñas de variables de entorno; nunca las escriben fijas.
+- La documentación dice *dónde* está un secreto ("en el gestor de contraseñas del equipo"), nunca *cuál* es. Tampoco la IP ni el usuario del servidor.
+- Antes de cada commit corre gitleaks (activar una vez con `sh scripts/instalar-hooks.sh`) y en GitHub lo revisa el check **Secretos** (`.github/workflows/secretos.yml`). Si salta, se saca el secreto; no se desactiva la revisión.
+- Si un secreto llega a subirse, se considera filtrado: se cambia (rota) de inmediato, además de borrarlo.
+
 ## Agentes especializados
 
 Para trabajo en paralelo, cada agente debe leer su `.md` específico:
@@ -177,22 +187,7 @@ git push origin main
 ```
 
 #### 3. Deploy to Production (after push)
-Connect via SSH and pull + rebuild on the Contabo VPS:
-
-```bash
-ssh root@31.220.98.255
-# Contraseña: pedirla al responsable del servidor (no se guarda en el repo)
-```
-
-Once connected, run inside the project directory:
-```bash
-cd /root/AGUAPAG          # or wherever the repo lives on the server
-git pull origin main
-docker compose down
-docker compose up --build -d
-```
-
-Production server: **31.220.98.255** (Contabo VPS, user `root`)
+Ver `docs/agents/AGENT_DEVOPS.md`. La IP, el usuario y las credenciales del servidor **no** van en el repo: se piden al responsable del servidor.
 
 ## Brand
 - Plataforma: **Agua Elite**. La marca de cada distribuidora (nombre, color, logo, contacto) sale de la tabla `Distribuidora`: no escribas nombres de empresa en el código.

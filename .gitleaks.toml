@@ -1,0 +1,63 @@
+# Reglas de gitleaks (https://github.com/gitleaks/gitleaks) para este repo.
+# Usa todas las reglas por defecto y agrega las contraseñas que ya se filtraron alguna vez,
+# para que no vuelvan a entrar aunque no tengan forma de "token".
+[extend]
+useDefault = true
+
+[[rules]]
+id = "contrasena-en-texto"
+description = "Contraseña escrita en texto plano (password/clave/contraseña = valor)"
+regex = '''(?i)(?:password|passwd|contrase(?:n|ñ)a|clave|mail_pass|db_password|postgres_password|jwt_secret)["']?\s*[:=]\s*["']([^"'\s$<{]{6,})["']'''
+secretGroup = 1
+keywords = ["password", "passwd", "contrasena", "contraseña", "clave", "mail_pass", "db_password", "postgres_password", "jwt_secret"]
+
+[rules.allowlist]
+# Ejemplos y marcadores que no son secretos reales
+regexes = [
+  '''(?i)(PASSWORD_SEGURO_AQUI|GENERA_CON|GMAIL_APP_PASSWORD|TU_|tu_|ejemplo|example|xxxx|\*\*\*\*|process\.env|import\.meta\.env)''',
+  '''(?i)clave-(segura|plataforma|valle|sierra)-\d''',
+]
+paths = [
+  '''(^|/)tests?/''',
+  '''\.env\.example$''',
+  '''package-lock\.json$''',
+  '''yarn\.lock$''',
+]
+
+[[rules]]
+id = "url-con-contrasena"
+description = "URL de base de datos con usuario y contraseña (postgresql://usuario:clave@host)"
+regex = '''(?i)(?:postgres(?:ql)?|mysql|mongodb(?:\+srv)?|redis|amqp)://[^:\s/"']+:([^@\s"'$<{]{3,})@'''
+secretGroup = 1
+keywords = ["postgres", "mysql", "mongodb", "redis", "amqp"]
+
+[rules.allowlist]
+# Marcadores de ejemplo y la base local de desarrollo (usuario y clave "postgres")
+regexes = ['''^(PASSWORD|password|postgres|clave|contrasena)$''']
+
+[[rules]]
+id = "contrasena-app-gmail"
+description = "Contraseña de aplicación de Gmail (cuatro grupos de cuatro letras)"
+regex = '''(?i)(?:mail_pass|pass|password|contrase(?:n|ñ)a)\S*\s*[:=]\s*["']?([a-z]{4} [a-z]{4} [a-z]{4} [a-z]{4})'''
+secretGroup = 1
+keywords = ["pass", "contrase"]
+
+[[rules]]
+id = "variable-secreta-sin-comillas"
+description = "Variable de entorno con contraseña o secreto (CLAVE=valor / CLAVE: valor)"
+regex = '''(?:^|\s)(?:[A-Z_]*(?:PASSWORD|PASS|SECRET|TOKEN|API_KEY))\s*[:=]\s*([^\s"'$<{#][^\s"'#]{5,})'''
+secretGroup = 1
+keywords = ["password", "pass", "secret", "token", "api_key"]
+
+[rules.allowlist]
+# Leer de variables de entorno está bien: eso es justamente lo correcto
+regexes = ['''(?i)(PASSWORD_SEGURO_AQUI|GENERA_CON|GMAIL_APP_PASSWORD|^pk\.eyJ\.\.\.$|^process\.env|^import\.meta\.env|^require\(|^req\.|^body\.|^data\.)''']
+paths = ['''\.env\.example$''', '''(^|/)tests?/''']
+
+[allowlist]
+description = "Archivos que no llevan secretos"
+paths = [
+  '''node_modules/''',
+  '''(^|/)dist/''',
+  '''plantillas/capturas/''',
+]

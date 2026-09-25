@@ -1,7 +1,7 @@
 node_modules/
 .env
-.env.local
-.env.mobile
+.env.*
+!.env.example
 dist/
 .claude/
 *.log
@@ -31,3 +31,14 @@ mobile/android/key.properties
 .vscode/
 *.swp
 *.swo
+
+# Llaves y credenciales (NUNCA en git)
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+credentials.json
+google-services.json
+GoogleService-Info.plist
+*firebase-adminsdk*.json

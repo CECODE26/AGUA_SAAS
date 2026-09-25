@@ -50,7 +50,6 @@ if [ -n "$URL" ]; then
   echo "     $URL"
   echo ""
   echo "  👤 Admin panel:  $URL/admin/login"
-  echo "     Usuario: admin  |  Contraseña: piatua2026"
   echo ""
 else
   echo "  ⏳ Espera unos segundos y visita: http://localhost:4040"

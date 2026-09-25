@@ -1,0 +1,14 @@
+#!/bin/sh
+# Antes de cada commit: busca contraseñas, tokens y llaves en lo que vas a subir.
+# Se activa una sola vez por copia del repo con:  sh scripts/instalar-hooks.sh
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks git --pre-commit --staged --config .gitleaks.toml --redact --no-banner -v || {
+    echo ""
+    echo "✋ El commit tiene algo que parece una contraseña o token."
+    echo "   Sácalo del archivo y ponlo en .env (que no se sube). Ver CLAUDE.md → Secretos."
+    exit 1
+  }
+else
+  echo "⚠️  gitleaks no está instalado: no se revisaron secretos en este commit."
+  echo "   Instálalo: https://github.com/gitleaks/gitleaks#installing"
+fi

@@ -11,12 +11,12 @@ No toques código de `client/src/` ni `server/routes/`.
 | Dato | Valor |
 |---|---|
 | Proveedor | Contabo VPS |
-| IP | 31.220.98.255 |
+| IP | ver el gestor de contraseñas del equipo (no va en el repo) |
 | OS | AlmaLinux 9.7 |
 | CPU | 6 núcleos AMD EPYC |
 | RAM | 11 GB |
 | Disco | 199 GB |
-| SSH | `ssh root@31.220.98.255` |
+| SSH | con llave SSH, nunca con contraseña (usuario e IP fuera del repo) |
 | Dominio | https://aguamanu.com |
 | Repo en server | `/root/AGUAPAG` |
 
@@ -143,14 +143,10 @@ Ubicación: `/root/AGUAPAG/server/.env`
 Si se pierden, recrear con:
 
 ```bash
-cat > /root/AGUAPAG/server/.env << EOF
-DATABASE_URL="postgresql://postgres:12345@db:5432/agua_piatua"
-JWT_SECRET="agua_piatua_secret_2026"
-MAIL_USER="janick1cev@gmail.com"
-MAIL_PASS="fcws umcy sguq vsxm"
-MAIL_ADMIN="janick1cev@gmail.com"
-SITE_URL="https://aguamanu.com"
-EOF
+cp server/.env.example server/.env
+# y completar cada valor desde el gestor de contraseñas del equipo.
+# Nunca escribir los valores reales en este archivo ni en ningún otro del repo.
+# JWT_SECRET nuevo:  openssl rand -base64 32
 ```
 
 ## SELinux (importante en AlmaLinux)

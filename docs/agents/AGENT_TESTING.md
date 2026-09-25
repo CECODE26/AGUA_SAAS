@@ -122,7 +122,7 @@ let adminToken
 beforeAll(async () => {
   const res = await request(app)
     .post('/api/auth/login')
-    .send({ username: 'admin', password: 'piatua2026' })
+    .send({ username: process.env.TEST_ADMIN_USER, password: process.env.TEST_ADMIN_PASSWORD })
   adminToken = res.body.token
 })
 
