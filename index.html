@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agua Elite · Plantillas de landing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fondo: #F2F6FA;
+    --tinta: #0F1D3E;
+    --suave: #4A5A78;
+    --azul: #0066CC;
+    --borde: rgba(15, 29, 62, .12);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--fondo);
+    color: var(--tinta);
+    font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+  }
+  .contenedor {
+    width: min(1200px, 100% - 32px);
+    margin: 0 auto;
+    padding: 56px 0 72px;
+  }
+  h1 {
+    margin: 0;
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    letter-spacing: -.02em;
+  }
+  .intro {
+    margin: 12px 0 40px;
+    max-width: 640px;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--suave);
+  }
+  .rejilla {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr));
+    gap: 28px;
+  }
+  .plantilla {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid var(--borde);
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(15, 29, 62, .06);
+  }
+  .plantilla img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1440 / 900;
+    object-fit: cover;
+    border-bottom: 1px solid var(--borde);
+  }
+  .plantilla__cuerpo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 22px 24px 24px;
+  }
+  .plantilla h2 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+  }
+  .plantilla p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--suave);
+  }
+  .enlaces {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 6px;
+  }
+  .enlaces a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 1px solid var(--borde);
+    color: var(--tinta);
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .enlaces a:first-child {
+    background: var(--azul);
+    border-color: var(--azul);
+    color: #fff;
+  }
+  .enlaces a:hover { border-color: var(--azul); }
+  .enlaces a:focus-visible { outline: 2px solid var(--azul); outline-offset: 3px; }
+</style>
+</head>
+<body>
+  <main class="contenedor">
+    <h1>Agua Elite · Plantillas de landing</h1>
+    <p class="intro">Cuatro propuestas para la portada de Agua Elite, el software para distribuidoras de agua en bidón. Cada una tiene versión de escritorio (1440 × 900) y de celular (390 × 844).</p>
+
+    <div class="rejilla">
+      <article class="plantilla">
+        <img src="plantillas/capturas/a-cristalina-escritorio.png" alt="Vista previa de la plantilla A, Cristalina" width="1440" height="900" loading="lazy">
+        <div class="plantilla__cuerpo">
+          <h2>A · Cristalina</h2>
+          <p>Clara y fresca: un bidón de 20 L translúcido con burbujas y tarjetas de vidrio de las tres apps.</p>
+          <div class="enlaces">
+            <a href="plantillas/a-cristalina/escritorio.html">Ver escritorio</a>
+            <a href="plantillas/a-cristalina/movil.html">Ver celular</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="plantilla">
+        <img src="plantillas/capturas/b-ruta-en-vivo-escritorio.png" alt="Vista previa de la plantilla B, Ruta en vivo" width="1440" height="900" loading="lazy">
+        <div class="plantilla__cuerpo">
+          <h2>B · Ruta en vivo</h2>
+          <p>Azul noche con el mapa de Puyo, la ruta del camión dibujándose y la app del chofer encima.</p>
+          <div class="enlaces">
+            <a href="plantillas/b-ruta-en-vivo/escritorio.html">Ver escritorio</a>
+            <a href="plantillas/b-ruta-en-vivo/movil.html">Ver celular</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="plantilla">
+        <img src="plantillas/capturas/c-tres-apps-escritorio.png" alt="Vista previa de la plantilla C, Tres apps" width="1440" height="900" loading="lazy">
+        <div class="plantilla__cuerpo">
+          <h2>C · Tres apps</h2>
+          <p>Ola azul con el celular del cliente, el del chofer y el panel del dueño contando una misma historia.</p>
+          <div class="enlaces">
+            <a href="plantillas/c-tres-apps/escritorio.html">Ver escritorio</a>
+            <a href="plantillas/c-tres-apps/movil.html">Ver celular</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="plantilla">
+        <img src="plantillas/capturas/d-elite-escritorio.png" alt="Vista previa de la plantilla D, Elite" width="1440" height="900" loading="lazy">
+        <div class="plantilla__cuerpo">
+          <h2>D · Elite</h2>
+          <p>Lujo bajo el agua: océano profundo con reflejos de luz, un bidón gigante y letra elegante.</p>
+          <div class="enlaces">
+            <a href="plantillas/d-elite/escritorio.html">Ver escritorio</a>
+            <a href="plantillas/d-elite/movil.html">Ver celular</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </main>
+</body>
+</html>

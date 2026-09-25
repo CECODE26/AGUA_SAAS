@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Agua Elite · Landing (D · Elite, móvil)</title>
+<meta name="viewport" content="width=390">
+<style>html{background:#0b1220}body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:flex-start}</style>
+</head>
+<body>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&amp;family=Jost:wght@400..600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#06122B}
+a{color:#EAF4FF}
+a:hover{color:#FFFFFF}
+.nl:hover{color:#FFFFFF !important;text-decoration-color:rgba(214,230,246,.7) !important}
+.cta:hover{filter:brightness(1.14);transform:translateY(-1px)}
+.cta:focus-visible,.nl:focus-visible,.lk:focus-visible,.logo:focus-visible,.mb:focus-visible{outline:2px solid #EAF4FF;outline-offset:5px}
+.mb:hover{background:rgba(214,232,255,.14) !important}
+.lk:hover{color:#FFFFFF !important;text-decoration-color:#A8E4F0 !important}
+.wm{background-image:linear-gradient(100deg,#DCE7F3 0%,#DCE7F3 38%,#FFFFFF 47%,#BFE9F4 52%,#DCE7F3 60%,#DCE7F3 100%);background-size:260% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+@keyframes drift-a{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(-150px,70px,0)}}
+@keyframes drift-b{0%{transform:translate3d(0,0,0)}100%{transform:translate3d(130px,-60px,0)}}
+@keyframes drift-c{0%{transform:translate(0,0)}100%{transform:translate(-40px,-90px)}}
+@keyframes rise{0%{transform:translate(0,0);opacity:0}12%{opacity:1}82%{opacity:1}100%{transform:translate(10px,-440px);opacity:0}}
+@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes shimmer{0%,55%{background-position:100% 0}100%{background-position:0% 0}}
+@media (prefers-reduced-motion: no-preference){
+.drift-a{animation:drift-a 26s ease-in-out infinite alternate;will-change:transform}
+.drift-b{animation:drift-b 34s ease-in-out infinite alternate;will-change:transform}
+.drift-c{animation:drift-c 18s ease-in-out infinite alternate}
+.bub{animation:rise 7s cubic-bezier(.45,0,.7,1) infinite}
+.marquee{animation:marquee 46s linear infinite}
+.wm{animation:shimmer 7s ease-in-out infinite}
+}
+</style>
+<div style="width: 390px; height: 844px; position: relative; overflow: hidden; background: radial-gradient(ellipse 95% 58% at 66% 78%, #1146A0 0%, #0C3279 32%, #09204F 64%, #06122B 100%); font-family: 'Jost', 'Futura', 'Century Gothic', 'Avenir Next', sans-serif; color: #EAF4FF;">
+
+  <!-- caustics: two drifting light-network layers, screened onto the deep water -->
+  <div aria-hidden="true" style="position: absolute; inset: 0; mix-blend-mode: screen; -webkit-mask-image: radial-gradient(ellipse 95% 52% at 62% 80%, #000 0%, rgba(0,0,0,.55) 42%, rgba(0,0,0,.14) 80%, rgba(0,0,0,.07) 100%); mask-image: radial-gradient(ellipse 95% 52% at 62% 80%, #000 0%, rgba(0,0,0,.55) 42%, rgba(0,0,0,.14) 80%, rgba(0,0,0,.07) 100%); pointer-events: none;">
+    <svg class="drift-a" width="700" height="1100" viewBox="0 0 700 1100" style="position: absolute; left: -140px; top: -120px; opacity: .5;">
+      <defs>
+        <filter id="mcausA" x="0" y="0" width="700" height="1100" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+          <feTurbulence type="turbulence" baseFrequency="0.0075 0.0095" numOctaves="1" seed="11"></feTurbulence>
+          <feColorMatrix type="matrix" values="0 0 0 0 0.70  0 0 0 0 0.93  0 0 0 0 1  -24 0 0 0 1.0"></feColorMatrix>
+          <feGaussianBlur stdDeviation="0.6" result="core"></feGaussianBlur>
+          <feGaussianBlur in="core" stdDeviation="4" result="glow"></feGaussianBlur>
+          <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="core"></feMergeNode></feMerge>
+        </filter>
+      </defs>
+      <rect width="700" height="1100" filter="url(#mcausA)"></rect>
+    </svg>
+    <svg class="drift-b" width="700" height="1100" viewBox="0 0 700 1100" style="position: absolute; left: -200px; top: -60px; opacity: .34;">
+      <defs>
+        <filter id="mcausB" x="0" y="0" width="700" height="1100" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+          <feTurbulence type="turbulence" baseFrequency="0.0048 0.0062" numOctaves="1" seed="4"></feTurbulence>
+          <feColorMatrix type="matrix" values="0 0 0 0 0.55  0 0 0 0 0.85  0 0 0 0 1  -20 0 0 0 1.0"></feColorMatrix>
+          <feGaussianBlur stdDeviation="1" result="core"></feGaussianBlur>
+          <feGaussianBlur in="core" stdDeviation="7" result="glow"></feGaussianBlur>
+          <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="core"></feMergeNode></feMerge>
+        </filter>
+      </defs>
+      <rect width="700" height="1100" filter="url(#mcausB)"></rect>
+    </svg>
+  </div>
+
+  <!-- light shafts from the surface -->
+  <div aria-hidden="true" style="position: absolute; inset: 0; mix-blend-mode: screen; pointer-events: none;">
+    <div style="position: absolute; left: 250px; top: 360px; width: 60px; height: 600px; background: linear-gradient(180deg, rgba(150,210,255,0) 0%, rgba(150,210,255,.16) 30%, rgba(150,210,255,0) 90%); transform: rotate(17deg); transform-origin: 50% 0; filter: blur(12px);"></div>
+    <div style="position: absolute; left: 340px; top: 340px; width: 100px; height: 600px; background: linear-gradient(180deg, rgba(150,210,255,0) 0%, rgba(150,210,255,.14) 30%, rgba(150,210,255,0) 90%); transform: rotate(17deg); transform-origin: 50% 0; filter: blur(16px);"></div>
+  </div>
+
+  <!-- the bidón: tilted, cropped by the bottom edge -->
+  <svg aria-hidden="true" viewBox="0 0 640 1200" width="400" height="750" style="position: absolute; left: 30px; top: 498px; transform: rotate(-7deg); transform-origin: 50% 50%; overflow: visible;">
+    <defs>
+      <clipPath id="mbdClip"><path d="M266 98 L266 168 C266 236 10 244 10 384 L10 1160 Q10 1198 48 1198 L592 1198 Q630 1198 630 1160 L630 384 C630 244 374 236 374 168 L374 98 Z"></path></clipPath>
+      <clipPath id="mbdWater"><path d="M34 316 A286 22 0 0 1 606 316 L640 316 L640 1200 L0 1200 L0 316 Z"></path></clipPath>
+      <linearGradient id="mbdGlass" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#A8E6FF" stop-opacity=".5"></stop>
+        <stop offset=".1" stop-color="#4A90E6" stop-opacity=".14"></stop>
+        <stop offset=".5" stop-color="#2A68D0" stop-opacity=".06"></stop>
+        <stop offset=".9" stop-color="#4A90E6" stop-opacity=".16"></stop>
+        <stop offset="1" stop-color="#CDEEFF" stop-opacity=".55"></stop>
+      </linearGradient>
+      <linearGradient id="mbdWaterV" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#4AA2F3" stop-opacity=".9"></stop>
+        <stop offset=".18" stop-color="#2567D6" stop-opacity=".88"></stop>
+        <stop offset=".55" stop-color="#154AB4" stop-opacity=".9"></stop>
+        <stop offset="1" stop-color="#092773" stop-opacity=".95"></stop>
+      </linearGradient>
+      <linearGradient id="mbdVolume" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#01092A" stop-opacity=".8"></stop>
+        <stop offset=".08" stop-color="#01092A" stop-opacity=".42"></stop>
+        <stop offset=".24" stop-color="#01092A" stop-opacity="0"></stop>
+        <stop offset=".7" stop-color="#01092A" stop-opacity="0"></stop>
+        <stop offset=".9" stop-color="#01092A" stop-opacity=".4"></stop>
+        <stop offset="1" stop-color="#01092A" stop-opacity=".82"></stop>
+      </linearGradient>
+      <linearGradient id="mbdFocus" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#CFF3FF" stop-opacity="0"></stop>
+        <stop offset=".5" stop-color="#CFF3FF" stop-opacity=".3"></stop>
+        <stop offset="1" stop-color="#CFF3FF" stop-opacity="0"></stop>
+      </linearGradient>
+      <linearGradient id="mbdSpec" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"></stop>
+        <stop offset=".06" stop-color="#FFFFFF" stop-opacity=".95"></stop>
+        <stop offset=".5" stop-color="#FFFFFF" stop-opacity=".55"></stop>
+        <stop offset="1" stop-color="#FFFFFF" stop-opacity=".08"></stop>
+      </linearGradient>
+      <linearGradient id="mbdNeck" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#CDEEFF" stop-opacity=".42"></stop>
+        <stop offset=".2" stop-color="#7FB8F0" stop-opacity=".1"></stop>
+        <stop offset=".7" stop-color="#7FB8F0" stop-opacity=".05"></stop>
+        <stop offset="1" stop-color="#E6F7FF" stop-opacity=".45"></stop>
+      </linearGradient>
+      <linearGradient id="mbdCap" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#6F7F96"></stop>
+        <stop offset=".14" stop-color="#E9EFF6"></stop>
+        <stop offset=".3" stop-color="#A9B6C7"></stop>
+        <stop offset=".52" stop-color="#F7FAFD"></stop>
+        <stop offset=".74" stop-color="#95A3B6"></stop>
+        <stop offset=".9" stop-color="#D5DEE8"></stop>
+        <stop offset="1" stop-color="#56657C"></stop>
+      </linearGradient>
+      <linearGradient id="mbdCapTop" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#FFFFFF" stop-opacity=".9"></stop>
+        <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop>
+      </linearGradient>
+      <filter id="mbdBlur8" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="8"></feGaussianBlur></filter>
+      <filter id="mbdBlur3" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="3"></feGaussianBlur></filter>
+      <filter id="mbdCaus" x="0" y="0" width="760" height="1100" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <feTurbulence type="turbulence" baseFrequency="0.02 0.0085" numOctaves="1" seed="23"></feTurbulence>
+        <feColorMatrix type="matrix" values="0 0 0 0 0.82  0 0 0 0 0.96  0 0 0 0 1  -18 0 0 0 1.0"></feColorMatrix>
+        <feGaussianBlur stdDeviation="0.6" result="core"></feGaussianBlur>
+        <feGaussianBlur in="core" stdDeviation="4" result="glow"></feGaussianBlur>
+        <feMerge><feMergeNode in="glow"></feMergeNode><feMergeNode in="glow"></feMergeNode><feMergeNode in="core"></feMergeNode></feMerge>
+      </filter>
+    </defs>
+
+    <!-- rim glow behind the glass -->
+    <path d="M266 98 L266 168 C266 236 10 244 10 384 L10 1160 Q10 1198 48 1198 L592 1198 Q630 1198 630 1160 L630 384 C630 244 374 236 374 168 L374 98 Z" fill="none" stroke="#8FD6FF" stroke-opacity=".42" stroke-width="16" filter="url(#mbdBlur8)"></path>
+
+    <g clip-path="url(#mbdClip)">
+      <rect x="0" y="0" width="640" height="1200" fill="url(#mbdGlass)"></rect>
+      <rect x="266" y="96" width="108" height="76" fill="url(#mbdNeck)"></rect>
+      <rect x="266" y="104" width="108" height="14" fill="#021032" opacity=".45" filter="url(#mbdBlur3)"></rect>
+      <g clip-path="url(#mbdWater)">
+        <rect x="0" y="280" width="640" height="920" fill="url(#mbdWaterV)"></rect>
+        <g style="mix-blend-mode: screen;">
+          <rect class="drift-c" x="-60" y="240" width="760" height="1100" filter="url(#mbdCaus)" opacity=".42"></rect>
+        </g>
+        <rect x="290" y="300" width="170" height="900" fill="url(#mbdFocus)"></rect>
+        <!-- bubbles -->
+        <g transform="translate(150 720)"><g class="bub" style="animation-duration: 7.5s; animation-delay: -1.2s;"><circle r="11" fill="#D2F0FF" fill-opacity=".12" stroke="#EAF9FF" stroke-opacity=".85" stroke-width="1.6"></circle><circle cx="-3.6" cy="-3.8" r="2.6" fill="#FFFFFF" opacity=".95"></circle></g></g>
+        <g transform="translate(214 690)"><g class="bub" style="animation-duration: 6s; animation-delay: -4.1s;"><circle r="6" fill="#D2F0FF" fill-opacity=".12" stroke="#EAF9FF" stroke-opacity=".85" stroke-width="1.3"></circle><circle cx="-2" cy="-2.1" r="1.5" fill="#FFFFFF" opacity=".95"></circle></g></g>
+        <g transform="translate(270 780)"><g class="bub" style="animation-duration: 8.5s; animation-delay: -6.3s;"><circle r="16" fill="#D2F0FF" fill-opacity=".1" stroke="#EAF9FF" stroke-opacity=".8" stroke-width="1.7"></circle><circle cx="-5.4" cy="-5.6" r="3.4" fill="#FFFFFF" opacity=".9"></circle></g></g>
+        <g transform="translate(336 700)"><g class="bub" style="animation-duration: 6.8s; animation-delay: -2.6s;"><circle r="5" fill="#D2F0FF" fill-opacity=".12" stroke="#EAF9FF" stroke-opacity=".9" stroke-width="1.2"></circle></g></g>
+        <g transform="translate(380 800)"><g class="bub" style="animation-duration: 9s; animation-delay: -3.5s;"><circle r="9" fill="#D2F0FF" fill-opacity=".12" stroke="#EAF9FF" stroke-opacity=".85" stroke-width="1.5"></circle><circle cx="-3" cy="-3.2" r="2" fill="#FFFFFF" opacity=".95"></circle></g></g>
+        <g transform="translate(430 680)"><g class="bub" style="animation-duration: 7.2s; animation-delay: -5.4s;"><circle r="13" fill="#D2F0FF" fill-opacity=".1" stroke="#EAF9FF" stroke-opacity=".8" stroke-width="1.6"></circle><circle cx="-4.4" cy="-4.5" r="2.8" fill="#FFFFFF" opacity=".9"></circle></g></g>
+        <g transform="translate(482 770)"><g class="bub" style="animation-duration: 6.4s; animation-delay: -0.4s;"><circle r="7" fill="#D2F0FF" fill-opacity=".12" stroke="#EAF9FF" stroke-opacity=".85" stroke-width="1.3"></circle><circle cx="-2.3" cy="-2.5" r="1.7" fill="#FFFFFF" opacity=".95"></circle></g></g>
+        <g transform="translate(528 700)"><g class="bub" style="animation-duration: 8s; animation-delay: -2s;"><circle r="4.5" fill="#D2F0FF" fill-opacity=".12" stroke="#EAF9FF" stroke-opacity=".9" stroke-width="1.2"></circle></g></g>
+        <g transform="translate(560 790)"><g class="bub" style="animation-duration: 7.6s; animation-delay: -5s;"><circle r="10" fill="#D2F0FF" fill-opacity=".1" stroke="#EAF9FF" stroke-opacity=".8" stroke-width="1.5"></circle><circle cx="-3.3" cy="-3.4" r="2.2" fill="#FFFFFF" opacity=".9"></circle></g></g>
+        <g transform="translate(100 800)"><g class="bub" style="animation-duration: 8.8s; animation-delay: -7.4s;"><circle r="7" fill="#D2F0FF" fill-opacity=".12" stroke="#EAF9FF" stroke-opacity=".85" stroke-width="1.3"></circle><circle cx="-2.3" cy="-2.4" r="1.6" fill="#FFFFFF" opacity=".95"></circle></g></g>
+        <g transform="translate(456 740)"><g class="bub" style="animation-duration: 5.6s; animation-delay: -1s;"><circle r="3" fill="#EAF9FF" fill-opacity=".5"></circle></g></g>
+        <g transform="translate(460 740)"><g class="bub" style="animation-duration: 5.6s; animation-delay: -2.4s;"><circle r="3.5" fill="#EAF9FF" fill-opacity=".5"></circle></g></g>
+        <g transform="translate(452 740)"><g class="bub" style="animation-duration: 5.6s; animation-delay: -3.8s;"><circle r="2.6" fill="#EAF9FF" fill-opacity=".5"></circle></g></g>
+        <g transform="translate(458 740)"><g class="bub" style="animation-duration: 5.6s; animation-delay: -5.1s;"><circle r="4" fill="#EAF9FF" fill-opacity=".45"></circle></g></g>
+      </g>
+      <!-- water surface (meniscus) -->
+      <ellipse cx="320" cy="316" rx="286" ry="22" fill="#CDEFFF" fill-opacity=".22"></ellipse>
+      <path d="M34 316 A286 22 0 0 1 606 316" fill="none" stroke="#DDF4FF" stroke-opacity=".5" stroke-width="1.3"></path>
+      <path d="M34 316 A286 22 0 0 0 606 316" fill="none" stroke="#BFEAFF" stroke-opacity=".5" stroke-width="9" filter="url(#mbdBlur3)"></path>
+      <path d="M34 316 A286 22 0 0 0 606 316" fill="none" stroke="#F4FCFF" stroke-opacity=".95" stroke-width="2.6"></path>
+      <!-- cylindrical depth -->
+      <rect x="0" y="0" width="640" height="1200" fill="url(#mbdVolume)"></rect>
+      <!-- grip rings -->
+      <g fill="none">
+        <path d="M10 480 Q320 516 630 480" stroke="#01092A" stroke-opacity=".6" stroke-width="12" filter="url(#mbdBlur3)"></path>
+        <path d="M10 490 Q320 526 630 490" stroke="#E8F8FF" stroke-opacity=".75" stroke-width="1.8"></path>
+        <path d="M10 640 Q320 676 630 640" stroke="#01092A" stroke-opacity=".6" stroke-width="12" filter="url(#mbdBlur3)"></path>
+        <path d="M10 650 Q320 686 630 650" stroke="#E8F8FF" stroke-opacity=".7" stroke-width="1.8"></path>
+        <path d="M10 800 Q320 836 630 800" stroke="#01092A" stroke-opacity=".6" stroke-width="12" filter="url(#mbdBlur3)"></path>
+        <path d="M10 810 Q320 846 630 810" stroke="#E8F8FF" stroke-opacity=".65" stroke-width="1.8"></path>
+        <path d="M10 960 Q320 996 630 960" stroke="#01092A" stroke-opacity=".6" stroke-width="12" filter="url(#mbdBlur3)"></path>
+        <path d="M10 970 Q320 1006 630 970" stroke="#E8F8FF" stroke-opacity=".6" stroke-width="1.8"></path>
+      </g>
+      <!-- softbox reflections -->
+      <rect x="52" y="396" width="48" height="800" rx="8" fill="url(#mbdSpec)" opacity=".38" filter="url(#mbdBlur8)"></rect>
+      <rect x="60" y="400" width="34" height="800" rx="6" fill="url(#mbdSpec)" opacity=".6"></rect>
+      <rect x="112" y="420" width="4" height="760" rx="2" fill="#FFFFFF" opacity=".45"></rect>
+      <rect x="546" y="410" width="22" height="770" rx="11" fill="url(#mbdSpec)" opacity=".55" filter="url(#mbdBlur3)"></rect>
+      <path d="M254 190 C248 250 80 262 46 352" fill="none" stroke="#FFFFFF" stroke-opacity=".7" stroke-width="10" stroke-linecap="round" filter="url(#mbdBlur3)"></path>
+      <path d="M258 196 C252 254 92 266 58 350" fill="none" stroke="#FFFFFF" stroke-opacity=".85" stroke-width="2.2" stroke-linecap="round"></path>
+      <path d="M386 196 C420 248 566 268 604 330" fill="none" stroke="#FFFFFF" stroke-opacity=".45" stroke-width="5" stroke-linecap="round" filter="url(#mbdBlur3)"></path>
+      <rect x="279" y="112" width="6" height="66" rx="3" fill="url(#mbdSpec)" opacity=".75"></rect>
+      <rect x="356" y="112" width="3" height="60" rx="1.5" fill="url(#mbdSpec)" opacity=".5"></rect>
+    </g>
+
+    <!-- crisp rim light -->
+    <path d="M266 98 L266 168 C266 236 10 244 10 384 L10 1160 Q10 1198 48 1198 L592 1198 Q630 1198 630 1160 L630 384 C630 244 374 236 374 168 L374 98 Z" fill="none" stroke="#CFEFFF" stroke-opacity=".7" stroke-width="2.2"></path>
+    <path d="M266 98 L266 168 C266 236 10 244 10 384 L10 1160" fill="none" stroke="#A6ECFA" stroke-opacity=".95" stroke-width="3"></path>
+    <path d="M374 98 L374 168 C374 236 630 244 630 384 L630 1160" fill="none" stroke="#F2FBFF" stroke-opacity=".95" stroke-width="2.8"></path>
+
+    <!-- neck collar -->
+    <rect x="250" y="120" width="140" height="15" rx="7.5" fill="#CFEFFF" fill-opacity=".3" stroke="#EAF9FF" stroke-opacity=".75" stroke-width="1.3"></rect>
+    <rect x="258" y="123" width="50" height="3.5" rx="1.75" fill="#FFFFFF" opacity=".7"></rect>
+    <!-- platinum cap -->
+    <rect x="242" y="88" width="156" height="22" rx="7" fill="url(#mbdCap)"></rect>
+    <rect x="248" y="6" width="144" height="88" rx="16" fill="url(#mbdCap)"></rect>
+    <g stroke="#3E4C62" stroke-opacity=".3" stroke-width="1.4">
+      <path d="M262 22 V84"></path><path d="M274 20 V86"></path><path d="M286 20 V86"></path><path d="M298 20 V86"></path><path d="M310 20 V86"></path><path d="M322 20 V86"></path><path d="M334 20 V86"></path><path d="M346 20 V86"></path><path d="M358 20 V86"></path><path d="M370 20 V86"></path><path d="M382 22 V84"></path>
+    </g>
+    <rect x="252" y="8" width="136" height="16" rx="8" fill="url(#mbdCapTop)" opacity=".7"></rect>
+    <rect x="248" y="6" width="144" height="88" rx="16" fill="none" stroke="#FFFFFF" stroke-opacity=".4" stroke-width="1"></rect>
+  </svg>
+
+  <!-- header -->
+  <header style="position: absolute; left: 0; top: 0; width: 390px; height: 72px; box-sizing: border-box; padding: 0 16px 0 20px; display: flex; align-items: center; justify-content: space-between; z-index: 5;">
+    <a class="logo" href="#" aria-label="Agua Elite, inicio" style="display: flex; align-items: center; gap: 11px; text-decoration: none;">
+      <svg width="34" height="34" viewBox="0 0 40 40" aria-hidden="true">
+        <defs>
+          <clipPath id="mmkLow"><rect x="0" y="22" width="40" height="18"></rect></clipPath>
+          <linearGradient id="mmkRing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F2F7FC"></stop><stop offset=".5" stop-color="#8E9DB2"></stop><stop offset="1" stop-color="#E4ECF5"></stop></linearGradient>
+        </defs>
+        <circle cx="20" cy="20" r="19" fill="none" stroke="url(#mmkRing)" stroke-width="1.3"></circle>
+        <path d="M20 8 C16.4 13 12.6 17.2 12.6 22.6 A7.4 7.4 0 0 0 27.4 22.6 C27.4 17.2 23.6 13 20 8 Z" fill="none" stroke="#EAF4FF" stroke-width="1.4"></path>
+        <path d="M20 8 C16.4 13 12.6 17.2 12.6 22.6 A7.4 7.4 0 0 0 27.4 22.6 C27.4 17.2 23.6 13 20 8 Z" fill="#A8E4F0" clip-path="url(#mmkLow)"></path>
+        <path d="M11.5 22 H28.5" stroke="#EAF4FF" stroke-width="1.2"></path>
+      </svg>
+      <span class="wm" style="font-family: 'Bodoni Moda', 'Didot', 'Bodoni 72', 'Times New Roman', serif; font-size: 17px; font-weight: 500; letter-spacing: .2em; line-height: 1;">AGUA ELITE</span>
+    </a>
+    <button class="mb" type="button" aria-label="Abrir menú" style="width: 44px; height: 44px; box-sizing: border-box; border-radius: 50%; border: 1px solid rgba(214,232,255,.32); background: rgba(8,24,62,.35); display: grid; place-items: center; color: #EAF4FF; cursor: pointer; padding: 0;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 9h16"></path><path d="M8 15h12"></path></svg>
+    </button>
+  </header>
+
+  <!-- hero copy -->
+  <main style="position: absolute; left: 20px; top: 94px; width: 350px; display: flex; flex-direction: column; gap: 22px; z-index: 4;">
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <p style="margin: 0; font-size: 10.5px; font-weight: 500; letter-spacing: .17em; text-transform: uppercase; color: #A8E4F0;">Software para distribuidoras de agua</p>
+      <h1 style="margin: 0; font-family: 'Bodoni Moda', 'Didot', 'Bodoni 72', 'Times New Roman', serif; font-weight: 400; font-size: 52px; line-height: .98; letter-spacing: -0.02em; color: #F2F8FF; text-wrap: balance;">
+        <span style="display: block;">Cada bidón</span>
+        <span style="display: block;">en su ruta.</span>
+        <span style="display: block;">Cada cliente,</span>
+        <em style="display: block; font-style: italic; color: #A8E4F0;">siempre fiel.</em>
+      </h1>
+    </div>
+    <p style="margin: 0; max-width: 330px; font-size: 16px; line-height: 1.5; color: #C9DBEC;">Pedidos, rutas, venta exprés y tarjeta de fidelidad, en tres apps conectadas.</p>
+    <div style="display: flex; align-items: center; gap: 22px;">
+      <a class="cta" href="#demo" style="display: inline-flex; align-items: center; gap: 12px; height: 52px; box-sizing: border-box; padding: 0 22px 0 26px; border-radius: 999px; background: linear-gradient(180deg, #2A62D8 0%, #1741A8 100%); border: 1px solid rgba(214,232,255,.55); box-shadow: inset 0 1px 0 rgba(255,255,255,.28), 0 14px 30px -16px rgba(24,86,230,.75); color: #F4F9FF; font-size: 16px; font-weight: 500; letter-spacing: .05em; text-decoration: none; white-space: nowrap; transition: filter .2s, transform .2s;">
+        Pide tu demo
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
+      </a>
+      <a class="lk" href="#como-funciona" style="display: inline-flex; align-items: center; height: 44px; color: #D5E9F4; font-size: 15px; letter-spacing: .02em; text-decoration: underline; text-decoration-color: rgba(168,228,240,.45); text-underline-offset: 6px; white-space: nowrap;">Ver cómo funciona</a>
+    </div>
+  </main>
+
+  <!-- glass card: loyalty stamps -->
+  <div role="group" aria-label="Vista de la app del cliente" style="position: absolute; left: 144px; top: 626px; width: 230px; box-sizing: border-box; padding: 15px 16px 14px; border-radius: 18px; background: rgba(8,24,62,.62); -webkit-backdrop-filter: blur(18px) saturate(150%); backdrop-filter: blur(18px) saturate(150%); border: 1px solid rgba(214,232,255,.24); box-shadow: 0 30px 60px -24px rgba(0,6,24,.85), inset 0 1px 0 rgba(255,255,255,.14); display: flex; flex-direction: column; gap: 11px; z-index: 3;">
+    <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 8px;">
+      <div style="display: flex; flex-direction: column; gap: 2px;">
+        <span style="font-size: 9.5px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; color: #A8E4F0;">App del cliente</span>
+        <span style="font-family: 'Bodoni Moda', 'Didot', 'Bodoni 72', 'Times New Roman', serif; font-size: 18px; line-height: 1.15; color: #F2F8FF;">Tu fidelidad</span>
+      </div>
+      <span style="font-family: 'Bodoni Moda', 'Didot', 'Bodoni 72', 'Times New Roman', serif; font-style: italic; font-size: 18px; line-height: 1.15; color: #A8E4F0; white-space: nowrap;">7 <span style="font-size: 12px; font-style: normal; font-family: 'Jost', 'Futura', sans-serif; color: #C6D8EA;">de 10</span></span>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(5, 30px); justify-content: space-between; row-gap: 8px;">
+        <span style="width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(160deg, #CDF0F8, #8FD2E6);"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5c-3 4-5.5 7-5.5 10a5.5 5.5 0 0 0 11 0c0-3-2.5-6-5.5-10z" fill="#0A2766"></path></svg></span>
+        <span style="width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(160deg, #CDF0F8, #8FD2E6);"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5c-3 4-5.5 7-5.5 10a5.5 5.5 0 0 0 11 0c0-3-2.5-6-5.5-10z" fill="#0A2766"></path></svg></span>
+        <span style="width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(160deg, #CDF0F8, #8FD2E6);"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5c-3 4-5.5 7-5.5 10a5.5 5.5 0 0 0 11 0c0-3-2.5-6-5.5-10z" fill="#0A2766"></path></svg></span>
+        <span style="width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(160deg, #CDF0F8, #8FD2E6);"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5c-3 4-5.5 7-5.5 10a5.5 5.5 0 0 0 11 0c0-3-2.5-6-5.5-10z" fill="#0A2766"></path></svg></span>
+        <span style="width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(160deg, #CDF0F8, #8FD2E6);"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5c-3 4-5.5 7-5.5 10a5.5 5.5 0 0 0 11 0c0-3-2.5-6-5.5-10z" fill="#0A2766"></path></svg></span>
+        <span style="width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(160deg, #CDF0F8, #8FD2E6);"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5c-3 4-5.5 7-5.5 10a5.5 5.5 0 0 0 11 0c0-3-2.5-6-5.5-10z" fill="#0A2766"></path></svg></span>
+        <span style="width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(160deg, #CDF0F8, #8FD2E6);"><svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5c-3 4-5.5 7-5.5 10a5.5 5.5 0 0 0 11 0c0-3-2.5-6-5.5-10z" fill="#0A2766"></path></svg></span>
+        <span style="width: 30px; height: 30px; box-sizing: border-box; border-radius: 50%; border: 1.5px dashed rgba(203,216,232,.5);"></span>
+        <span style="width: 30px; height: 30px; box-sizing: border-box; border-radius: 50%; border: 1.5px dashed rgba(203,216,232,.5);"></span>
+        <span style="width: 30px; height: 30px; box-sizing: border-box; border-radius: 50%; display: grid; place-items: center; border: 1.5px solid #F2B872; background: rgba(242,184,114,.12);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#F6C891" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 2.8h5v2.6h-5z"></path><path d="M10.4 5.4v1.8M13.6 5.4v1.8"></path><path d="M7 10c0-1.6 1.3-2.8 3-2.8h4c1.7 0 3 1.2 3 2.8v9.2a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z"></path><path d="M7 13.2h10M7 16.6h10"></path></svg></span>
+    </div>
+    <p style="margin: 0; font-size: 12px; line-height: 1.4; color: #C9DBEC;">Te faltan 3 para tu <span style="color: #F6C891;">bidón gratis</span>.</p>
+  </div>
+
+  <!-- marquee of modules -->
+  <div style="position: absolute; left: 0; bottom: 0; width: 390px; height: 44px; overflow: hidden; border-top: 1px solid rgba(203,216,232,.28); background: rgba(4,12,34,.66); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); display: flex; align-items: center; z-index: 6;">
+    <div class="marquee" style="display: flex; width: max-content;">
+      <ul aria-label="Módulos de Agua Elite" style="display: flex; align-items: center; gap: 28px; margin: 0; padding: 0 28px 0 0; list-style: none; white-space: nowrap;">
+        <li style="display: flex; align-items: center; gap: 28px;"><span style="display: flex; align-items: baseline; gap: 9px;"><span style="font-family: 'Bodoni Moda', 'Didot', 'Bodoni 72', 'Times New Roman', serif; font-style: italic; font-size: 13px; color: #A8E4F0;">01</span><span style="font-size: 11px; font-weight: 500; letter-spacing: .26em; color: #E3EDF7;">PEDIDOS</span></span><svg width="6" height="6" viewBox="0 0 7 7" aria-hidden="true"><path d="M3.5 0 7 3.5 3.5 7 0 3.5z" fill="#C9D4E1"></path></svg></li>
+        <li style="display: flex; align-items: center; gap: 28px;"><span style="display: flex; align-items: baseline; gap: 9px;"><span style="font-family: 'Bodoni Moda', 'Didot', 'Bodoni 72', 'Times New Roman', serif; font-style: italic; font-size: 13px; color: #A8E4F0;">02</span><span style="font-size: 11px; font-weight: 500; letter-spacing: .26em; color: #E3EDF7;">RUTAS</span></span><svg width="6" height="6" viewBox="0 0 7 7" aria-hidden="true"><path d="M3.5 0 7 3.5 3.5 7 0 3.5z" fill="#C9D4E1"></path></svg></li>
+        <li style="display: flex; align-items: center; gap: 28px;"><span style="display: flex; align-items: baseline; gap: 9px;"><span style="font-family: 'Bodoni Moda', 'Didot', 'Bodoni 72', 'Times New Roman', serif; font-style: italic; font-size: 13px; color: #A8E4F0;">03</span><span style="font-size: 11px; font-weight: 500; letter-spacing: .26em; color: #E3EDF7;">VENTA EXPRÉS</span></span><svg width="6" height="6" viewBox="0 0 7 7" aria-hidden="true"><path d="M3.5 0 7 3.5 3.5 7 0 3.5z" fill="#C9D4E1"></path></svg></li>
+        <li style="display: flex; align-items: center; gap: 28px;"><span style="display: flex; align-items: baseline; gap: 9px;"><span style="font-family: 'Bodoni Moda', 'Didot', 'Bodoni 72', 'Times New Roman', serif; font-style: italic; font-size: 13px; color: #A8E4F0;">04</span><span style="font-size: 11px; font-weight: 500; letter-spacing: .26em; color: #E3EDF7;">FIDELIDAD</span></span><svg width="6" height="6" viewBox="0 0 7 7" aria-hidden="true"><path d="M3.5 0 7 3.5 3.5 7 0 3.5z" fill="#C9D4E1"></path></svg></li>
+        <li style="display: flex; align-items: center; gap: 28px;"><span style="display: flex; align-items: baseline; gap: 9px;"><span style="font-family: 'Bodoni Moda', 'Didot', 'Bodoni 72', 'Times New Roman', serif; font-style: italic; font-size: 13px; color: #A8E4F0;">05</span><span style="font-size: 11px; font-weight: 500; letter-spacing: .26em; color: #E3EDF7;">PANEL DEL DUEÑO</span></span><svg width="6" height="6" viewBox="0 0 7 7" aria-hidden="true"><path d="M3.5 0 7 3.5 3.5 7 0 3.5z" fill="#C9D4E1"></path></svg></li>
+      </ul>
+      <ul aria-hidden="true" style="display: flex; align-items: center; gap: 28px; margin: 0; padding: 0 28px 0 0; list-style: none; white-space: nowrap;">
+        <li style="display: flex; align-items: center; gap: 28px;"><span style="display: flex; align-items: baseline; gap: 9px;"><span style="font-family: 'Bodoni Moda', 'Didot', 'Bodoni 72', 'Times New Roman', serif; font-style: italic; font-size: 13px; color: #A8E4F0;">01</span><span style="font-size: 11px; font-weight: 500; letter-spacing: .26em; color: #E3EDF7;">PEDIDOS</span></span><svg width="6" height="6" viewBox="0 0 7 7" aria-hidden="true"><path d="M3.5 0 7 3.5 3.5 7 0 3.5z" fill="#C9D4E1"></path></svg></li>
+        <li style="display: flex; align-items: center; gap: 28px;"><span style="display: flex; align-items: baseline; gap: 9px;"><span style="font-family: 'Bodoni Moda', 'Didot', 'Bodoni 72', 'Times New Roman', serif; font-style: italic; font-size: 13px; color: #A8E4F0;">02</span><span style="font-size: 11px; font-weight: 500; letter-spacing: .26em; color: #E3EDF7;">RUTAS</span></span><svg width="6" height="6" viewBox="0 0 7 7" aria-hidden="true"><path d="M3.5 0 7 3.5 3.5 7 0 3.5z" fill="#C9D4E1"></path></svg></li>
+        <li style="display: flex; align-items: center; gap: 28px;"><span style="display: flex; align-items: baseline; gap: 9px;"><span style="font-family: 'Bodoni Moda', 'Didot', 'Bodoni 72', 'Times New Roman', serif; font-style: italic; font-size: 13px; color: #A8E4F0;">03</span><span style="font-size: 11px; font-weight: 500; letter-spacing: .26em; color: #E3EDF7;">VENTA EXPRÉS</span></span><svg width="6" height="6" viewBox="0 0 7 7" aria-hidden="true"><path d="M3.5 0 7 3.5 3.5 7 0 3.5z" fill="#C9D4E1"></path></svg></li>
+        <li style="display: flex; align-items: center; gap: 28px;"><span style="display: flex; align-items: baseline; gap: 9px;"><span style="font-family: 'Bodoni Moda', 'Didot', 'Bodoni 72', 'Times New Roman', serif; font-style: italic; font-size: 13px; color: #A8E4F0;">04</span><span style="font-size: 11px; font-weight: 500; letter-spacing: .26em; color: #E3EDF7;">FIDELIDAD</span></span><svg width="6" height="6" viewBox="0 0 7 7" aria-hidden="true"><path d="M3.5 0 7 3.5 3.5 7 0 3.5z" fill="#C9D4E1"></path></svg></li>
+        <li style="display: flex; align-items: center; gap: 28px;"><span style="display: flex; align-items: baseline; gap: 9px;"><span style="font-family: 'Bodoni Moda', 'Didot', 'Bodoni 72', 'Times New Roman', serif; font-style: italic; font-size: 13px; color: #A8E4F0;">05</span><span style="font-size: 11px; font-weight: 500; letter-spacing: .26em; color: #E3EDF7;">PANEL DEL DUEÑO</span></span><svg width="6" height="6" viewBox="0 0 7 7" aria-hidden="true"><path d="M3.5 0 7 3.5 3.5 7 0 3.5z" fill="#C9D4E1"></path></svg></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

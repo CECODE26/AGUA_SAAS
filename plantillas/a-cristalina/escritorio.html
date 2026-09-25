@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Agua Elite · Landing (A · Cristalina, escritorio)</title>
+<meta name="viewport" content="width=1440">
+<style>html{background:#0b1220}body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:flex-start}</style>
+</head>
+<body>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EEF6F9}
+a{color:#0B1F3A;text-decoration:none}
+a:hover{color:#1459D9}
+.nl{color:#2A3F5E}
+.nl:hover{color:#1459D9;background:rgba(255,255,255,.9)}
+.cta:hover{filter:brightness(.92) saturate(1.1);transform:translateY(-1px)}
+.link2:hover .play{background:#1459D9;color:#fff;border-color:#1459D9}
+a:focus-visible,button:focus-visible{outline:3px solid #1459D9;outline-offset:3px;border-radius:12px}
+.cta:focus-visible{outline-color:#0B1F3A}
+@keyframes ae-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes ae-rise{0%{transform:translateY(60px);opacity:0}15%{opacity:1}80%{opacity:.9}100%{transform:translateY(-130px);opacity:0}}
+@keyframes ae-slosh{0%,100%{transform:rotate(-1.3deg)}50%{transform:rotate(1.3deg)}}
+@keyframes ae-ripple{from{transform:translateX(0)}to{transform:translateX(-40px)}}
+@media (prefers-reduced-motion: no-preference){
+.ae-float-a{animation:ae-float 7s ease-in-out infinite both}
+.ae-float-b{animation:ae-float 8.5s ease-in-out -3s infinite both}
+.ae-float-c{animation:ae-float 6.5s ease-in-out -1.5s infinite both}
+.ae-bub{animation:ae-rise 5s cubic-bezier(.45,.05,.6,.95) infinite both}
+.ae-slosh{animation:ae-slosh 5.5s ease-in-out infinite both}
+.ae-ripple{animation:ae-ripple 2.6s linear infinite both}
+.ae-ripple-r{animation:ae-ripple 3.8s linear infinite reverse both}
+}
+</style>
+<div style="width: 1440px; height: 900px; position: relative; overflow: hidden; background: #EEF6F9; font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif; color: #0B1F3A;">
+
+  <!-- Fondo: agua en calma -->
+  <svg width="1440" height="900" viewBox="0 0 1440 900" aria-hidden="true" style="position: absolute; left: 0; top: 0; z-index: 0;">
+    <defs>
+      <filter id="aeBlur8" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="8"></feGaussianBlur></filter>
+      <filter id="aeBlur16" x="-50%" y="-200%" width="200%" height="500%"><feGaussianBlur stdDeviation="16"></feGaussianBlur></filter>
+    </defs>
+    <path d="M0 744 C 240 728 440 750 660 730 C 860 710 1000 622 1190 616 C 1300 613 1390 624 1440 616 L1440 900 L0 900 Z" fill="#E3F0F5"></path>
+    <path d="M0 800 C 280 790 540 750 780 704 C 900 682 1000 674 1085 672 C 1180 670 1300 662 1440 636 L1440 900 L0 900 Z" fill="#D5EBF3"></path>
+    <path d="M0 800 C 280 790 540 750 780 704 C 900 682 1000 674 1085 672 C 1180 670 1300 662 1440 636" fill="none" stroke="#FFFFFF" stroke-width="2.5"></path>
+    <path d="M0 856 C 300 844 560 830 860 838 C 1100 846 1280 828 1440 816" fill="none" stroke="#C3E0EC" stroke-width="1.5"></path>
+    <ellipse cx="1085" cy="816" rx="168" ry="12" fill="#0B2A5A" opacity=".24" filter="url(#aeBlur8)"></ellipse>
+    <ellipse cx="1170" cy="828" rx="170" ry="22" fill="#2E8FEA" opacity=".30" filter="url(#aeBlur16)"></ellipse>
+  </svg>
+
+  <!-- Bidón 20 L -->
+  <svg viewBox="0 0 400 620" width="400" height="620" aria-hidden="true" style="position: absolute; left: 885px; top: 216px; z-index: 1; overflow: visible;">
+    <defs>
+      <clipPath id="aeOuter"><path d="M166 96 L166 124 C166 146 146 156 116 166 C74 180 50 200 50 240 L50 334 C50 348 58 356 58 372 L58 432 C58 448 50 456 50 470 L50 560 C50 586 68 600 96 600 L304 600 C332 600 350 586 350 560 L350 470 C350 456 342 448 342 432 L342 372 C342 356 350 348 350 334 L350 240 C350 200 326 180 284 166 C254 156 234 146 234 124 L234 96 Z"></path></clipPath>
+      <clipPath id="aeInner"><path d="M173 104 L173 126 C173 150 150 162 120 172 C82 185 57 204 57 242 L57 334 C57 350 65 358 65 374 L65 430 C65 448 57 456 57 472 L57 558 C57 580 72 593 96 593 L304 593 C328 593 343 580 343 558 L343 472 C343 456 335 448 335 430 L335 374 C335 358 343 350 343 334 L343 242 C343 204 318 185 280 172 C250 162 227 150 227 126 L227 104 Z"></path></clipPath>
+      <clipPath id="aeSurf"><ellipse cx="200" cy="226" rx="146" ry="10"></ellipse></clipPath>
+      <linearGradient id="aePet" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#2B7BD6" stop-opacity=".55"></stop>
+        <stop offset=".14" stop-color="#8CC7F2" stop-opacity=".34"></stop>
+        <stop offset=".45" stop-color="#E2F4FF" stop-opacity=".26"></stop>
+        <stop offset=".8" stop-color="#9ACDF3" stop-opacity=".32"></stop>
+        <stop offset="1" stop-color="#1F6BCB" stop-opacity=".62"></stop>
+      </linearGradient>
+      <linearGradient id="aeWater" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#A2DAFB"></stop>
+        <stop offset=".22" stop-color="#5EAEF0"></stop>
+        <stop offset=".62" stop-color="#2F7CE0"></stop>
+        <stop offset="1" stop-color="#1446B0"></stop>
+      </linearGradient>
+      <linearGradient id="aeVol" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#062A6E" stop-opacity=".45"></stop>
+        <stop offset=".17" stop-color="#062A6E" stop-opacity="0"></stop>
+        <stop offset=".33" stop-color="#FFFFFF" stop-opacity=".2"></stop>
+        <stop offset=".5" stop-color="#FFFFFF" stop-opacity="0"></stop>
+        <stop offset=".78" stop-color="#062A6E" stop-opacity="0"></stop>
+        <stop offset="1" stop-color="#062A6E" stop-opacity=".52"></stop>
+      </linearGradient>
+      <linearGradient id="aeSurfG" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#F4FCFF"></stop>
+        <stop offset="1" stop-color="#A6DBF8"></stop>
+      </linearGradient>
+      <linearGradient id="aeCap" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#0A3A9C"></stop>
+        <stop offset=".22" stop-color="#3A84F2"></stop>
+        <stop offset=".42" stop-color="#1D60D9"></stop>
+        <stop offset="1" stop-color="#092F82"></stop>
+      </linearGradient>
+      <linearGradient id="aeHl" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"></stop>
+        <stop offset="1" stop-color="#FFFFFF" stop-opacity=".35"></stop>
+      </linearGradient>
+      <linearGradient id="aeReflG" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#FFFFFF"></stop>
+        <stop offset="1" stop-color="#000000"></stop>
+      </linearGradient>
+      <mask id="aeReflMask" maskUnits="userSpaceOnUse" x="0" y="600" width="400" height="90"><rect x="0" y="601" width="400" height="56" fill="url(#aeReflG)"></rect></mask>
+      <filter id="aeHlBlur" x="-100%" y="-40%" width="300%" height="180%"><feGaussianBlur stdDeviation="4"></feGaussianBlur></filter>
+      <filter id="aeSoft" x="-30%" y="-100%" width="160%" height="300%"><feGaussianBlur stdDeviation="6"></feGaussianBlur></filter>
+    </defs>
+
+    <!-- reflejo sobre el agua -->
+    <g opacity=".16" mask="url(#aeReflMask)">
+      <path d="M166 96 L166 124 C166 146 146 156 116 166 C74 180 50 200 50 240 L50 334 C50 348 58 356 58 372 L58 432 C58 448 50 456 50 470 L50 560 C50 586 68 600 96 600 L304 600 C332 600 350 586 350 560 L350 470 C350 456 342 448 342 432 L342 372 C342 356 350 348 350 334 L350 240 C350 200 326 180 284 166 C254 156 234 146 234 124 L234 96 Z" transform="matrix(1 0 0 -1 0 1202)" fill="#3A8BE4"></path>
+    </g>
+
+    <!-- cuerpo PET -->
+    <path d="M166 96 L166 124 C166 146 146 156 116 166 C74 180 50 200 50 240 L50 334 C50 348 58 356 58 372 L58 432 C58 448 50 456 50 470 L50 560 C50 586 68 600 96 600 L304 600 C332 600 350 586 350 560 L350 470 C350 456 342 448 342 432 L342 372 C342 356 350 348 350 334 L350 240 C350 200 326 180 284 166 C254 156 234 146 234 124 L234 96 Z" fill="url(#aePet)"></path>
+
+    <!-- agua -->
+    <g clip-path="url(#aeInner)">
+      <g class="ae-slosh" style="transform-box: view-box; transform-origin: 200px 226px;">
+        <path d="M20 226 Q200 246 380 226 L380 680 L20 680 Z" fill="url(#aeWater)" fill-opacity=".9"></path>
+        <ellipse cx="200" cy="226" rx="146" ry="10" fill="url(#aeSurfG)"></ellipse>
+        <g clip-path="url(#aeSurf)" fill="none">
+          <path class="ae-ripple" d="M-40 223 q10 -2.5 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" stroke="#FFFFFF" stroke-opacity=".9" stroke-width="1.3"></path>
+          <path class="ae-ripple-r" d="M-40 230 q10 2 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" stroke="#4FA6EC" stroke-opacity=".55" stroke-width="1.3"></path>
+        </g>
+        <ellipse cx="200" cy="226" rx="146" ry="10" fill="none" stroke="#FFFFFF" stroke-opacity=".8" stroke-width="1.3"></ellipse>
+      </g>
+      <!-- refracción de la línea del fondo -->
+      <path d="M40 482 Q200 494 360 468 L360 620 L40 620 Z" fill="#A8E6F4" fill-opacity=".13"></path>
+      <path d="M40 482 Q200 494 360 468" fill="none" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="2"></path>
+      <!-- costillas traseras vistas a través -->
+      <g fill="none" stroke="#FFFFFF" stroke-opacity=".14" stroke-width="1.6">
+        <path d="M57 272 Q200 260 343 272"></path>
+        <path d="M65 404 Q200 392 335 404"></path>
+        <path d="M57 530 Q200 518 343 530"></path>
+      </g>
+      <rect x="40" y="226" width="320" height="380" fill="url(#aeVol)"></rect>
+      <ellipse cx="200" cy="584" rx="120" ry="12" fill="#D4F2FF" opacity=".55" filter="url(#aeSoft)"></ellipse>
+      <!-- burbujas -->
+      <g class="ae-bub" style="animation-duration: 5.2s; animation-delay: -0.4s;"><circle cx="130" cy="500" r="6" fill="#FFFFFF" fill-opacity=".16" stroke="#FFFFFF" stroke-opacity=".9" stroke-width="1.3"></circle><circle cx="128" cy="498" r="1.6" fill="#FFFFFF"></circle></g>
+      <g class="ae-bub" style="animation-duration: 4.4s; animation-delay: -2.1s;"><circle cx="168" cy="430" r="4" fill="#FFFFFF" fill-opacity=".16" stroke="#FFFFFF" stroke-opacity=".9" stroke-width="1.2"></circle><circle cx="166.8" cy="428.8" r="1.1" fill="#FFFFFF"></circle></g>
+      <g class="ae-bub" style="animation-duration: 6s; animation-delay: -3.3s;"><circle cx="240" cy="520" r="7.5" fill="#FFFFFF" fill-opacity=".14" stroke="#FFFFFF" stroke-opacity=".85" stroke-width="1.3"></circle><circle cx="237.6" cy="517.6" r="2" fill="#FFFFFF"></circle></g>
+      <g class="ae-bub" style="animation-duration: 4.8s; animation-delay: -1.2s;"><circle cx="268" cy="410" r="3.5" fill="#FFFFFF" fill-opacity=".18" stroke="#FFFFFF" stroke-opacity=".9" stroke-width="1.1"></circle><circle cx="267" cy="409" r="1" fill="#FFFFFF"></circle></g>
+      <g class="ae-bub" style="animation-duration: 5.6s; animation-delay: -4.6s;"><circle cx="208" cy="380" r="5" fill="#FFFFFF" fill-opacity=".16" stroke="#FFFFFF" stroke-opacity=".9" stroke-width="1.2"></circle><circle cx="206.4" cy="378.4" r="1.4" fill="#FFFFFF"></circle></g>
+      <g class="ae-bub" style="animation-duration: 4.2s; animation-delay: -0.9s;"><circle cx="292" cy="486" r="4.5" fill="#FFFFFF" fill-opacity=".16" stroke="#FFFFFF" stroke-opacity=".85" stroke-width="1.2"></circle><circle cx="290.6" cy="484.6" r="1.2" fill="#FFFFFF"></circle></g>
+      <g class="ae-bub" style="animation-duration: 6.4s; animation-delay: -5.2s;"><circle cx="112" cy="400" r="3" fill="#FFFFFF" fill-opacity=".18" stroke="#FFFFFF" stroke-opacity=".85" stroke-width="1"></circle></g>
+      <g class="ae-bub" style="animation-duration: 5s; animation-delay: -2.8s;"><circle cx="188" cy="530" r="3" fill="#FFFFFF" fill-opacity=".18" stroke="#FFFFFF" stroke-opacity=".85" stroke-width="1"></circle></g>
+      <g class="ae-bub" style="animation-duration: 5.8s; animation-delay: -1.7s;"><circle cx="226" cy="456" r="2.5" fill="#FFFFFF" fill-opacity=".2" stroke="#FFFFFF" stroke-opacity=".85" stroke-width="1"></circle></g>
+      <g class="ae-bub" style="animation-duration: 4.6s; animation-delay: -3.9s;"><circle cx="150" cy="370" r="2.5" fill="#FFFFFF" fill-opacity=".2" stroke="#FFFFFF" stroke-opacity=".85" stroke-width="1"></circle></g>
+    </g>
+
+    <!-- brillos (bajo las costillas) -->
+    <g clip-path="url(#aeOuter)">
+      <g fill="#FFFFFF" opacity=".3" filter="url(#aeHlBlur)">
+        <rect x="68" y="204" width="32" height="48" rx="16"></rect>
+        <rect x="66" y="292" width="34" height="86" rx="17"></rect>
+        <rect x="72" y="428" width="32" height="76" rx="16"></rect>
+        <rect x="68" y="558" width="30" height="28" rx="14"></rect>
+        <rect x="316" y="238" width="22" height="130" rx="11"></rect>
+        <rect x="312" y="436" width="22" height="70" rx="11"></rect>
+      </g>
+      <rect x="79" y="208" width="8" height="40" rx="4" fill="url(#aeHl)"></rect>
+      <rect x="78" y="296" width="9" height="78" rx="4.5" fill="url(#aeHl)"></rect>
+      <rect x="84" y="432" width="8" height="68" rx="4" fill="url(#aeHl)"></rect>
+      <rect x="80" y="562" width="7" height="20" rx="3.5" fill="url(#aeHl)" opacity=".8"></rect>
+      <rect x="104" y="214" width="3" height="366" rx="1.5" fill="#FFFFFF" opacity=".3"></rect>
+      <rect x="327" y="244" width="4" height="118" rx="2" fill="#FFFFFF" opacity=".6"></rect>
+      <rect x="323" y="440" width="4" height="62" rx="2" fill="#FFFFFF" opacity=".5"></rect>
+      <path d="M160 134 C132 150 96 160 74 192" fill="none" stroke="#FFFFFF" stroke-opacity=".35" stroke-width="16" stroke-linecap="round" filter="url(#aeHlBlur)"></path>
+      <path d="M158 136 C132 150 98 160 77 190" fill="none" stroke="#FFFFFF" stroke-opacity=".85" stroke-width="5" stroke-linecap="round"></path>
+      <path d="M248 140 C280 154 314 168 332 198" fill="none" stroke="#FFFFFF" stroke-opacity=".4" stroke-width="3.5" stroke-linecap="round"></path>
+      <rect x="175" y="108" width="6" height="24" rx="3" fill="#FFFFFF" opacity=".75"></rect>
+      <path d="M62 592 Q200 606 338 592" fill="none" stroke="#FFFFFF" stroke-opacity=".5" stroke-width="2"></path>
+      <path d="M118 169 C77 183 53 202 53 241 L53 334 C53 348 61 356 61 372 L61 432 C61 448 53 456 53 470 L53 560 C53 580 64 592 84 596" fill="none" stroke="#FFFFFF" stroke-opacity=".55" stroke-width="1.4"></path>
+    </g>
+
+    <!-- costillas de agarre -->
+    <g clip-path="url(#aeOuter)" fill="none" stroke-linecap="round">
+      <g stroke="#0A357A" stroke-opacity=".09" stroke-width="9">
+        <path d="M46 263 Q200 275 354 263"></path>
+        <path d="M46 281 Q200 293 354 281"></path>
+        <path d="M54 391 Q200 403 346 391"></path>
+        <path d="M54 405 Q200 417 346 405"></path>
+        <path d="M54 419 Q200 431 346 419"></path>
+        <path d="M46 517 Q200 529 354 517"></path>
+        <path d="M46 533 Q200 545 354 533"></path>
+        <path d="M46 549 Q200 561 354 549"></path>
+      </g>
+      <g stroke="#0A357A" stroke-opacity=".42" stroke-width="2.6">
+        <path d="M46 262 Q200 274 354 262"></path>
+        <path d="M46 280 Q200 292 354 280"></path>
+        <path d="M54 390 Q200 402 346 390"></path>
+        <path d="M54 404 Q200 416 346 404"></path>
+        <path d="M54 418 Q200 430 346 418"></path>
+        <path d="M46 516 Q200 528 354 516"></path>
+        <path d="M46 532 Q200 544 354 532"></path>
+        <path d="M46 548 Q200 560 354 548"></path>
+      </g>
+      <g stroke="#FFFFFF" stroke-opacity=".7" stroke-width="1.6">
+        <path d="M46 265.5 Q200 277.5 354 265.5"></path>
+        <path d="M46 283.5 Q200 295.5 354 283.5"></path>
+        <path d="M54 393.5 Q200 405.5 346 393.5"></path>
+        <path d="M54 407.5 Q200 419.5 346 407.5"></path>
+        <path d="M54 421.5 Q200 433.5 346 421.5"></path>
+        <path d="M46 519.5 Q200 531.5 354 519.5"></path>
+        <path d="M46 535.5 Q200 547.5 354 535.5"></path>
+        <path d="M46 551.5 Q200 563.5 354 551.5"></path>
+      </g>
+    </g>
+
+    <!-- relieve 20 L -->
+    <g font-family="Outfit, 'Avenir Next', sans-serif" font-weight="600" font-size="28" text-anchor="middle" letter-spacing="1">
+      <text x="200" y="345" fill="#0A3478" fill-opacity=".22">20 L</text>
+      <text x="200" y="343.5" fill="#FFFFFF" fill-opacity=".7">20 L</text>
+    </g>
+
+    <!-- contorno -->
+    <path d="M166 96 L166 124 C166 146 146 156 116 166 C74 180 50 200 50 240 L50 334 C50 348 58 356 58 372 L58 432 C58 448 50 456 50 470 L50 560 C50 586 68 600 96 600 L304 600 C332 600 350 586 350 560 L350 470 C350 456 342 448 342 432 L342 372 C342 356 350 348 350 334 L350 240 C350 200 326 180 284 166 C254 156 234 146 234 124 L234 96 Z" fill="none" stroke="#0E4FB0" stroke-opacity=".4" stroke-width="1.6"></path>
+    <path d="M173 104 L173 126 C173 150 150 162 120 172 C82 185 57 204 57 242 L57 334 C57 350 65 358 65 374 L65 430 C65 448 57 456 57 472 L57 558 C57 580 72 593 96 593 L304 593 C328 593 343 580 343 558 L343 472 C343 456 335 448 335 430 L335 374 C335 358 343 350 343 334 L343 242 C343 204 318 185 280 172 C250 162 227 150 227 126 L227 104 Z" fill="none" stroke="#FFFFFF" stroke-opacity=".4" stroke-width="1"></path>
+
+    <!-- gotas de condensación -->
+    <g stroke="#0B3E8C" stroke-opacity=".25" stroke-width=".8">
+      <ellipse cx="302" cy="318" rx="3.2" ry="4" fill="#FFFFFF" fill-opacity=".35"></ellipse>
+      <ellipse cx="286" cy="352" rx="2.4" ry="3" fill="#FFFFFF" fill-opacity=".35"></ellipse>
+      <ellipse cx="128" cy="462" rx="3.4" ry="4.2" fill="#FFFFFF" fill-opacity=".35"></ellipse>
+      <ellipse cx="292" cy="452" rx="2.6" ry="3.2" fill="#FFFFFF" fill-opacity=".35"></ellipse>
+      <ellipse cx="146" cy="306" rx="2.2" ry="2.8" fill="#FFFFFF" fill-opacity=".35"></ellipse>
+      <ellipse cx="258" cy="574" rx="3" ry="3.8" fill="#FFFFFF" fill-opacity=".35"></ellipse>
+    </g>
+    <g fill="#FFFFFF">
+      <circle cx="301" cy="316.4" r="1.1"></circle>
+      <circle cx="285.3" cy="350.8" r=".8"></circle>
+      <circle cx="127" cy="460.3" r="1.2"></circle>
+      <circle cx="291.2" cy="450.6" r=".9"></circle>
+      <circle cx="145.4" cy="304.8" r=".8"></circle>
+      <circle cx="257" cy="572.4" r="1"></circle>
+    </g>
+
+    <!-- cuello, anillo y tapa -->
+    <rect x="150" y="104" width="100" height="10" rx="5" fill="#CFE8FA" fill-opacity=".75" stroke="#0E4FB0" stroke-opacity=".35" stroke-width="1"></rect>
+    <rect x="160" y="106" width="30" height="3" rx="1.5" fill="#FFFFFF" opacity=".9"></rect>
+    <rect x="156" y="86" width="88" height="18" rx="4" fill="#0C44AE"></rect>
+    <g stroke="#FFFFFF" stroke-opacity=".28" stroke-width="1.4">
+      <path d="M170 90 V100"></path><path d="M186 90 V100"></path><path d="M202 90 V100"></path><path d="M218 90 V100"></path><path d="M234 90 V100"></path>
+    </g>
+    <rect x="148" y="24" width="104" height="66" rx="13" fill="url(#aeCap)"></rect>
+    <g stroke-width="2" stroke-linecap="round">
+      <g stroke="#041D5C" stroke-opacity=".35">
+        <path d="M160 40 V80"></path><path d="M168 40 V80"></path><path d="M176 40 V80"></path><path d="M184 40 V80"></path><path d="M192 40 V80"></path><path d="M200 40 V80"></path><path d="M208 40 V80"></path><path d="M216 40 V80"></path><path d="M224 40 V80"></path><path d="M232 40 V80"></path><path d="M240 40 V80"></path>
+      </g>
+    </g>
+    <rect x="152" y="27" width="96" height="7" rx="3.5" fill="#FFFFFF" fill-opacity=".32"></rect>
+    <rect x="166" y="36" width="9" height="46" rx="4.5" fill="#FFFFFF" fill-opacity=".42"></rect>
+    <rect x="148" y="24" width="104" height="66" rx="13" fill="none" stroke="#062A73" stroke-opacity=".5" stroke-width="1.2"></rect>
+  </svg>
+
+  <!-- Navegación -->
+  <header style="position: absolute; left: 0; top: 0; width: 1440px; height: 96px; box-sizing: border-box; padding: 0 96px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; z-index: 5;">
+    <a href="#" aria-label="Agua Elite, inicio" style="display: inline-flex; align-items: center; gap: 10px; justify-self: start;">
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+        <path d="M17 3.2C17 3.2 6.6 14.4 6.6 21.2a10.4 10.4 0 0 0 20.8 0C27.4 14.4 17 3.2 17 3.2Z" fill="#1459D9"></path>
+        <path d="M9.4 22.6c2.5-2.2 5.1-2.2 7.6 0s5.1 2.2 7.6 0" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round"></path>
+        <path d="M11.8 16.4c.8-1.9 1.9-3.6 3-5" fill="none" stroke="#FFFFFF" stroke-opacity=".65" stroke-width="1.8" stroke-linecap="round"></path>
+      </svg>
+      <span style="font-family: 'Outfit', 'Avenir Next', 'Segoe UI', sans-serif; font-size: 23px; font-weight: 600; letter-spacing: -0.02em; color: #0B1F3A;">Agua Elite</span>
+    </a>
+    <nav aria-label="Principal" style="display: flex; align-items: center; gap: 4px; padding: 5px; border-radius: 999px; background: rgba(255,255,255,.55); border: 1px solid rgba(255,255,255,.95); box-shadow: 0 6px 20px -12px rgba(11,31,58,.25);">
+      <a href="#funciones" class="nl" style="display: inline-flex; align-items: center; height: 38px; padding: 0 18px; border-radius: 999px; font-size: 15px; font-weight: 500;">Funciones</a>
+      <a href="#precios" class="nl" style="display: inline-flex; align-items: center; height: 38px; padding: 0 18px; border-radius: 999px; font-size: 15px; font-weight: 500;">Precios</a>
+      <a href="#clientes" class="nl" style="display: inline-flex; align-items: center; height: 38px; padding: 0 18px; border-radius: 999px; font-size: 15px; font-weight: 500;">Clientes</a>
+      <a href="#contacto" class="nl" style="display: inline-flex; align-items: center; height: 38px; padding: 0 18px; border-radius: 999px; font-size: 15px; font-weight: 500;">Contacto</a>
+    </nav>
+    <a href="#ingresar" style="justify-self: end; display: inline-flex; align-items: center; gap: 8px; height: 44px; font-size: 15px; font-weight: 600;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 20c1.4-3.6 4.4-5.5 7.5-5.5s6.1 1.9 7.5 5.5"></path></svg>
+      Ingresar
+    </a>
+  </header>
+
+  <!-- Texto principal -->
+  <div style="position: absolute; left: 96px; top: 96px; width: 600px; height: 780px; display: flex; flex-direction: column; justify-content: center; gap: 28px; z-index: 3;">
+    <div style="align-self: flex-start; display: inline-flex; align-items: center; gap: 9px; height: 36px; padding: 0 16px 0 8px; border-radius: 999px; background: rgba(255,255,255,.72); border: 1px solid rgba(20,89,217,.14); font-size: 14px; font-weight: 600; color: #0E48B5;">
+      <span style="width: 22px; height: 22px; border-radius: 50%; background: #D6F5EC; display: inline-flex; align-items: center; justify-content: center;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0A6650" stroke-width="2.6" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s-6.5 7-6.5 11.5a6.5 6.5 0 0 0 13 0C18.5 10 12 3 12 3z"></path></svg>
+      </span>
+      Software para distribuidoras de agua
+    </div>
+    <h1 style="margin: 0; font-family: 'Outfit', 'Avenir Next', 'Segoe UI', sans-serif; font-size: 78px; line-height: 0.98; font-weight: 600; letter-spacing: -0.035em; color: #0B1F3A; text-wrap: balance;">Tu distribuidora,<br><span style="color: #1459D9;">clara como<br>el agua.</span></h1>
+    <p style="margin: 0; max-width: 500px; font-size: 19px; line-height: 1.6; color: #34496A; text-wrap: pretty;">Tres apps conectadas: <strong style="font-weight: 600; color: #0B1F3A;">tu cliente</strong> pide desde su celular, <strong style="font-weight: 600; color: #0B1F3A;">tu chofer</strong> sigue su ruta y tú lo ves todo desde <strong style="font-weight: 600; color: #0B1F3A;">tu panel</strong>.</p>
+    <div style="display: flex; align-items: center; gap: 28px; padding-top: 6px;">
+      <a href="#demo" class="cta" style="display: inline-flex; align-items: center; gap: 10px; height: 58px; padding: 0 26px 0 30px; border-radius: 16px; background: #1459D9; color: #FFFFFF; font-size: 17px; font-weight: 600; box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 14px 28px -12px rgba(20,89,217,.75); transition: transform .2s, filter .2s;">
+        Pide tu demo
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg>
+      </a>
+      <a href="#como-funciona" class="link2" style="display: inline-flex; align-items: center; gap: 12px; height: 48px; font-size: 16px; font-weight: 600;">
+        <span class="play" style="width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid rgba(11,31,58,.18); background: rgba(255,255,255,.7); display: inline-flex; align-items: center; justify-content: center; color: #1459D9; transition: all .2s;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.9l10.2-6.5a1 1 0 0 0 0-1.8L9.5 4.6A1 1 0 0 0 8 5.5z"></path></svg>
+        </span>
+        Ver cómo funciona
+      </a>
+    </div>
+  </div>
+
+  <!-- Tarjeta: app del cliente -->
+  <div class="ae-float-a" style="position: absolute; left: 724px; top: 184px; width: 272px; z-index: 4;">
+    <div style="display: flex; flex-direction: column; gap: 14px; padding: 18px 18px 16px; border-radius: 22px; background: rgba(255,255,255,.76); backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%); border: 1px solid rgba(255,255,255,.95); box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 28px 50px -24px rgba(10,40,90,.35), 0 4px 14px -6px rgba(10,40,90,.12);">
+      <div style="display: flex; align-items: center; gap: 7px; font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #4A6182;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="6" y="2.5" width="12" height="19" rx="3"></rect><path d="M10.5 18h3"></path></svg>
+        App del cliente
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+          <span style="font-family: 'Outfit', 'Avenir Next', sans-serif; font-size: 21px; font-weight: 600; letter-spacing: -0.01em; color: #0B1F3A;">Pedido #124</span>
+          <span style="display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px; border-radius: 999px; background: #FFE3C2; color: #8A3B00; font-size: 12px; font-weight: 700;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #EE8412;"></span>En camino</span>
+        </div>
+        <span style="font-size: 14px; color: #3B4F6B;">2 bidones · Bidón 20 L</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 7px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px;">
+          <span style="height: 6px; border-radius: 3px; background: #1459D9;"></span>
+          <span style="height: 6px; border-radius: 3px; background: #F3962E;"></span>
+          <span style="height: 6px; border-radius: 3px; background: #D3E0EE;"></span>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; font-size: 11.5px; font-weight: 600; color: #5A6E89;">
+          <span>Recibido</span><span style="color: #8A3B00;">En camino</span><span>Entregado</span>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 11px; padding-top: 12px; border-top: 1px solid rgba(11,31,58,.08);">
+        <span style="width: 36px; height: 36px; border-radius: 50%; background: #1459D9; color: #FFFFFF; display: inline-flex; align-items: center; justify-content: center; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 16px;">K</span>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 14px; font-weight: 600; color: #0B1F3A;">En camino con Kevin</span>
+          <span style="font-size: 12.5px; color: #4E6380;">Tu chofer · Barrio Obrero</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tarjeta: tu panel · fidelidad -->
+  <div class="ae-float-b" style="position: absolute; left: 1160px; top: 470px; width: 228px; z-index: 4;">
+    <div style="display: flex; flex-direction: column; gap: 14px; padding: 18px; border-radius: 22px; background: rgba(255,255,255,.76); backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%); border: 1px solid rgba(255,255,255,.95); box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 28px 50px -24px rgba(10,40,90,.35), 0 4px 14px -6px rgba(10,40,90,.12);">
+      <div style="display: flex; align-items: center; gap: 7px; font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #4A6182;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"></rect><path d="M8.5 20h7"></path><path d="M12 16v4"></path></svg>
+        Tu panel · Fidelidad
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="width: 34px; height: 34px; border-radius: 50%; background: #DCE9FB; color: #0E48B5; display: inline-flex; align-items: center; justify-content: center; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 13px;">CV</span>
+        <div style="display: flex; flex-direction: column; gap: 1px;">
+          <span style="font-size: 14px; font-weight: 600; color: #0B1F3A;">Carlos V.</span>
+          <span style="font-size: 12.5px; color: #4E6380;">El Dorado</span>
+        </div>
+      </div>
+      <div style="display: flex; align-items: baseline; gap: 6px;">
+        <span style="font-family: 'Outfit', 'Avenir Next', sans-serif; font-size: 30px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; color: #1459D9;">7</span>
+        <span style="font-family: 'Outfit', 'Avenir Next', sans-serif; font-size: 18px; font-weight: 500; color: #0B1F3A;">de 10 sellos</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(5, 32px); gap: 6px;">
+        <span style="width: 32px; height: 32px; border-radius: 50%; background: #1459D9; display: inline-flex; align-items: center; justify-content: center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true"><path d="M12 2.5s-7 7.5-7 12.3a7 7 0 0 0 14 0C19 10 12 2.5 12 2.5z"></path></svg></span>
+        <span style="width: 32px; height: 32px; border-radius: 50%; background: #1459D9; display: inline-flex; align-items: center; justify-content: center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true"><path d="M12 2.5s-7 7.5-7 12.3a7 7 0 0 0 14 0C19 10 12 2.5 12 2.5z"></path></svg></span>
+        <span style="width: 32px; height: 32px; border-radius: 50%; background: #1459D9; display: inline-flex; align-items: center; justify-content: center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true"><path d="M12 2.5s-7 7.5-7 12.3a7 7 0 0 0 14 0C19 10 12 2.5 12 2.5z"></path></svg></span>
+        <span style="width: 32px; height: 32px; border-radius: 50%; background: #1459D9; display: inline-flex; align-items: center; justify-content: center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true"><path d="M12 2.5s-7 7.5-7 12.3a7 7 0 0 0 14 0C19 10 12 2.5 12 2.5z"></path></svg></span>
+        <span style="width: 32px; height: 32px; border-radius: 50%; background: #1459D9; display: inline-flex; align-items: center; justify-content: center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true"><path d="M12 2.5s-7 7.5-7 12.3a7 7 0 0 0 14 0C19 10 12 2.5 12 2.5z"></path></svg></span>
+        <span style="width: 32px; height: 32px; border-radius: 50%; background: #1459D9; display: inline-flex; align-items: center; justify-content: center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true"><path d="M12 2.5s-7 7.5-7 12.3a7 7 0 0 0 14 0C19 10 12 2.5 12 2.5z"></path></svg></span>
+        <span style="width: 32px; height: 32px; border-radius: 50%; background: #1459D9; display: inline-flex; align-items: center; justify-content: center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true"><path d="M12 2.5s-7 7.5-7 12.3a7 7 0 0 0 14 0C19 10 12 2.5 12 2.5z"></path></svg></span>
+        <span style="width: 32px; height: 32px; box-sizing: border-box; border-radius: 50%; border: 1.5px dashed #8FA9CC; background: rgba(255,255,255,.55);"></span>
+        <span style="width: 32px; height: 32px; box-sizing: border-box; border-radius: 50%; border: 1.5px dashed #8FA9CC; background: rgba(255,255,255,.55);"></span>
+        <span style="width: 32px; height: 32px; box-sizing: border-box; border-radius: 50%; border: 1.5px dashed #8FA9CC; background: rgba(255,255,255,.55);"></span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; padding-top: 12px; border-top: 1px solid rgba(11,31,58,.08);">
+        <span style="display: inline-flex; align-items: center; height: 24px; padding: 0 9px; border-radius: 999px; background: #D3F4EA; color: #0A5E48; font-size: 11.5px; font-weight: 700;">Cerca del premio</span>
+        <span style="font-size: 12.5px; color: #4E6380;">Faltan 3</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chip: app del chofer -->
+  <div class="ae-float-c" style="position: absolute; left: 704px; top: 718px; z-index: 4;">
+    <div style="display: flex; align-items: center; gap: 12px; padding: 12px 18px 12px 12px; border-radius: 18px; background: rgba(255,255,255,.78); backdrop-filter: blur(16px) saturate(160%); -webkit-backdrop-filter: blur(16px) saturate(160%); border: 1px solid rgba(255,255,255,.95); box-shadow: 0 1px 0 rgba(255,255,255,.9) inset, 0 22px 40px -20px rgba(10,40,90,.35), 0 4px 12px -6px rgba(10,40,90,.12);">
+      <span style="width: 42px; height: 42px; border-radius: 12px; background: #0B1F3A; display: inline-flex; align-items: center; justify-content: center;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 6.5h11v9h-11z"></path><path d="M13.5 9.5h4l3 3.2v2.8h-7"></path><circle cx="6.5" cy="17" r="1.8"></circle><circle cx="16.5" cy="17" r="1.8"></circle></svg>
+      </span>
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <span style="font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #4A6182;">App del chofer</span>
+        <span style="font-size: 15px; font-weight: 600; color: #0B1F3A;">Ruta de hoy · 12 entregas</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
