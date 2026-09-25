@@ -29,6 +29,10 @@ Una sola instalación atiende a varias distribuidoras, cada una con sus datos se
 - **Cómo entra cada distribuidora:** por su dominio propio (`aguanorte.com`) o por
   `<slug>.PLATAFORMA_DOMINIO`. Las apps móviles mandan su slug en cada llamada.
 - **Marca:** cada superadmin edita nombre, color, logo y contacto en *Mi distribuidora*.
+- **Sitio público:** cada distribuidora tiene su sitio con el diseño *D · Elite* (código en
+  `client/src/sitio/`): inicio, catálogo con carrito y pedido en línea, seguimiento en
+  *Mis pedidos*, tarjeta de fidelidad (si el programa está activo), *Nosotros*, contacto y
+  política de privacidad. Los textos se editan en el panel, en *Sitio Web*.
 - **Apps móviles (marca blanca):** un build por distribuidora con las variables de
   `mobile/.env.example`.
 - **Datos que ya existían** (una base de AGUAPAG): la migración los deja en la

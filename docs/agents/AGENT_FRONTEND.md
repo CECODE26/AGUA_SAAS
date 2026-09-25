@@ -13,6 +13,11 @@ ninguna empresa ni sus datos de contacto en el código. Las llamadas a `/api` no
 nada extra: la distribuidora sale del dominio (o de `VITE_DISTRIBUIDORA` en desarrollo y
 en la app de Capacitor, ver `src/lib/distribuidora.js`).
 
+El sitio público usa el diseño D · Elite: estilos en `src/sitio/elite.css` (todo bajo la
+clase `.elite`), marco en `src/sitio/SitioLayout.jsx` y piezas en `src/sitio/Piezas.jsx`.
+Los textos editables salen de `useContenido()` y se configuran en
+`src/pages/admin/SuperAdminPaginas.jsx`; si agregas un texto editable, agrégalo en los dos.
+
 ## Tu Stack
 
 - **Framework:** React 18 + React Router DOM v6

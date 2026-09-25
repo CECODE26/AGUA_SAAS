@@ -1,108 +1,53 @@
+// Política de privacidad (Ley Orgánica de Protección de Datos Personales del Ecuador).
+// Texto base común; el responsable y sus datos de contacto son los de cada distribuidora.
+// Cada distribuidora debería revisarlo con su asesor legal antes de publicarlo.
+import { useDistribuidora } from '../context/DistribuidoraContext'
+import SitioLayout, { CabeceraPagina } from '../sitio/SitioLayout'
+
 export default function LOPDP() {
-  const secciones = [
-    {
-      titulo: '1. Responsable del tratamiento',
-      contenido: (
-        <p>
-          <b>Agua Manú S.A.</b><br />
-          Puyo, Pastaza, Ecuador<br />
-          Teléfono: (03) 2936000 · Correo: ralt4565@hotmail.es
-        </p>
-      )
-    },
-    {
-      titulo: '2. Datos que recopilamos',
-      contenido: (
-        <ul>
-          <li>Nombre y apellidos</li>
-          <li>Número de teléfono</li>
-          <li>Dirección de correo electrónico</li>
-          <li>Dirección postal (para el servicio a domicilio)</li>
-          <li>Datos de preferencias de producto</li>
-        </ul>
-      )
-    },
-    {
-      titulo: '3. Finalidad del tratamiento',
-      contenido: (
-        <ul>
-          <li>Gestionar y entregar pedidos del servicio a domicilio</li>
-          <li>Responder a consultas y solicitudes de contacto</li>
-          <li>Enviar información comercial y promociones (solo con su consentimiento)</li>
-          <li>Cumplir con obligaciones legales y fiscales</li>
-        </ul>
-      )
-    },
-    {
-      titulo: '4. Base legal del tratamiento',
-      contenido: (
-        <ul>
-          <li>Su consentimiento expreso (Art. 8, LOPDP)</li>
-          <li>La ejecución de un contrato del cual usted es parte</li>
-          <li>El cumplimiento de obligaciones legales aplicables</li>
-        </ul>
-      )
-    },
-    {
-      titulo: '5. Conservación de datos',
-      contenido: <p>Sus datos personales serán conservados durante el tiempo necesario para cumplir con la finalidad para la que fueron recopilados, y en todo caso, durante los plazos legalmente establecidos en la legislación ecuatoriana.</p>
-    },
-    {
-      titulo: '6. Sus derechos',
-      contenido: (
-        <>
-          <p>Conforme a la LOPDP, usted tiene derecho a:</p>
-          <ul>
-            <li><b>Acceso:</b> conocer qué datos personales tenemos sobre usted</li>
-            <li><b>Rectificación:</b> corregir datos inexactos o incompletos</li>
-            <li><b>Cancelación/Supresión:</b> solicitar la eliminación de sus datos</li>
-            <li><b>Oposición:</b> oponerse al tratamiento de sus datos</li>
-            <li><b>Portabilidad:</b> recibir sus datos en formato estructurado</li>
-            <li><b>Revocación del consentimiento:</b> retirar su consentimiento en cualquier momento</li>
-          </ul>
-          <p>Para ejercer cualquiera de estos derechos: <b>ralt4565@hotmail.es</b></p>
-        </>
-      )
-    },
-    {
-      titulo: '7. Seguridad',
-      contenido: <p>Implementamos medidas técnicas y organizativas adecuadas para proteger sus datos personales contra acceso no autorizado, pérdida, alteración o divulgación.</p>
-    },
-    {
-      titulo: '8. Cookies',
-      contenido: <p>Este sitio web puede utilizar cookies técnicas necesarias para su funcionamiento. No utilizamos cookies de seguimiento o publicidad sin su consentimiento explícito.</p>
-    },
-    {
-      titulo: '9. Actualizaciones',
-      contenido: (
-        <>
-          <p>Esta política puede ser actualizada periódicamente. La versión vigente siempre estará disponible en esta página.</p>
-          <p className="text-muted"><small>Última actualización: marzo 2026</small></p>
-        </>
-      )
-    },
-  ]
+  const { distribuidora, nombre } = useDistribuidora()
+  const lugar = [distribuidora?.ciudad, distribuidora?.provincia, 'Ecuador'].filter(Boolean).join(', ')
+  const contacto = [distribuidora?.telefono && `teléfono ${distribuidora.telefono}`, distribuidora?.whatsapp && `WhatsApp ${distribuidora.whatsapp}`].filter(Boolean).join(' o ')
 
   return (
-    <div style={{ paddingTop: '90px' }}>
-      {/* Banner */}
-      <div className="py-5" style={{ background: 'linear-gradient(135deg, #0066CC 0%, #004fa3 100%)' }}>
-        <div className="container text-white text-center py-3">
-          <p style={{ letterSpacing: '4px', fontSize: '0.8rem', fontWeight: 700, opacity: 0.8 }}>ECUADOR · LOPDP</p>
-          <h1 className="section-heading text-white mb-2">POLÍTICA DE PRIVACIDAD</h1>
-          <p className="mb-0 opacity-75">Ley Orgánica de Protección de Datos Personales</p>
-        </div>
-      </div>
+    <SitioLayout>
+      <CabeceraPagina ceja="Protección de datos" titulo="Política de" destacado="privacidad">
+        Cómo {nombre} usa y cuida los datos que nos das al hacer un pedido o escribirnos.
+      </CabeceraPagina>
+      <section className="e-papel">
+        <div className="e-contenedor e-texto-largo">
+          <h2>1. Responsable del tratamiento</h2>
+          <p><b>{nombre}</b>, {lugar}.{contacto && <> Puedes comunicarte con nosotros por {contacto}, o desde el formulario de contacto de este sitio.</>}</p>
 
-      <div className="container py-5" style={{ maxWidth: '860px' }}>
-        {secciones.map(({ titulo, contenido }) => (
-          <section key={titulo} className="mb-5">
-            <h4 className="fw-bold text-verde mb-3">{titulo}</h4>
-            {contenido}
-            <hr style={{ borderColor: '#e8f0fd' }} />
-          </section>
-        ))}
-      </div>
-    </div>
+          <h2>2. Datos que recopilamos</h2>
+          <ul>
+            <li>Nombre, cédula o RUC y número de teléfono.</li>
+            <li>Correo electrónico.</li>
+            <li>Dirección de entrega y, si nos das permiso, la ubicación de tu celular.</li>
+            <li>Los pedidos que haces y, si participas, los sellos de tu tarjeta de fidelidad.</li>
+          </ul>
+
+          <h2>3. Para qué los usamos</h2>
+          <ul>
+            <li>Recibir, planificar y entregar tus pedidos.</li>
+            <li>Avisarte del estado de tu pedido por correo o notificaciones de la app.</li>
+            <li>Llevar tu tarjeta de fidelidad, si el programa está activo.</li>
+            <li>Responder tus mensajes y consultas.</li>
+          </ul>
+
+          <h2>4. Base legal</h2>
+          <p>Tratamos tus datos para cumplir el servicio que nos pides (la entrega de tus pedidos) y con tu consentimiento, que das al hacer el pedido o al enviarnos un mensaje, según la Ley Orgánica de Protección de Datos Personales del Ecuador.</p>
+
+          <h2>5. Con quién los compartimos</h2>
+          <p>Solo con las personas de nuestro equipo que preparan y entregan tu pedido, y con los proveedores tecnológicos que usamos para operar el servicio (alojamiento del sistema, correo y notificaciones). No vendemos tus datos.</p>
+
+          <h2>6. Cuánto tiempo los guardamos</h2>
+          <p>Mientras seas cliente y durante el tiempo que exijan las obligaciones contables y tributarias. Después los eliminamos o anonimizamos.</p>
+
+          <h2>7. Tus derechos</h2>
+          <p>Puedes pedirnos acceder, rectificar, actualizar o eliminar tus datos, oponerte a su uso o pedir su portabilidad. Escríbenos por los medios de contacto de arriba y te responderemos en los plazos que fija la ley.</p>
+        </div>
+      </section>
+    </SitioLayout>
   )
 }

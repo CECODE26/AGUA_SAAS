@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import { apiUrl } from '../lib/api'
 import { useDistribuidora } from '../context/DistribuidoraContext'
+import SitioLayout, { CabeceraPagina } from '../sitio/SitioLayout'
 
 const BADGE = {
   pendiente:  { bg: '#fff3cd', color: '#856404', label: 'Pendiente',  icon: 'bi-clock' },
+  planificado: { bg: '#dbe8ff', color: '#1741A8', label: 'En camino', icon: 'bi-truck' },
+  no_entregado: { bg: '#fde8d7', color: '#7a3a0b', label: 'No entregado', icon: 'bi-exclamation-circle' },
   entregado:  { bg: '#cddcf8', color: '#0a1845', label: 'Entregado',  icon: 'bi-check-circle-fill' },
   suspendido: { bg: '#f8d7da', color: '#58151c', label: 'Suspendido', icon: 'bi-x-circle-fill' },
 }
@@ -40,18 +43,12 @@ export default function MisPedidos() {
   }
 
   return (
-    <div style={{ paddingTop: '110px', paddingBottom: '60px', minHeight: '100vh', background: '#f8fafb' }}>
+    <SitioLayout>
+    <CabeceraPagina ceja="Seguimiento" titulo="Mis" destacado="pedidos">
+      Escribe el correo con el que hiciste tu pedido para ver en qué estado está.
+    </CabeceraPagina>
+    <section className="e-papel">
       <div className="container" style={{ maxWidth: '680px' }}>
-
-        {/* Cabecera */}
-        <div className="text-center mb-5">
-          <div className="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-            style={{ width: '64px', height: '64px', background: '#e8f0fd' }}>
-            <i className="bi bi-receipt fs-3" style={{ color: '#0066CC' }}></i>
-          </div>
-          <h2 className="fw-bold mb-1" style={{ color: '#0f1d3e' }}>Mis pedidos</h2>
-          <p className="text-muted">Ingresa tu correo electrónico para ver el historial de tus pedidos.</p>
-        </div>
 
         {/* Formulario de búsqueda */}
         <form onSubmit={buscar} className="bg-white rounded-4 shadow-sm p-4 mb-4">
@@ -156,6 +153,18 @@ export default function MisPedidos() {
                           Tu pedido está siendo preparado. Te contactaremos pronto para coordinar la entrega.
                         </div>
                       )}
+                      {p.estado === 'planificado' && (
+                        <div className="d-flex align-items-center gap-2 small" style={{ color: '#1741A8' }}>
+                          <i className="bi bi-truck"></i>
+                          Tu pedido ya está en la ruta del camión.
+                        </div>
+                      )}
+                      {p.estado === 'no_entregado' && (
+                        <div className="d-flex align-items-center gap-2 small" style={{ color: '#7a3a0b' }}>
+                          <i className="bi bi-telephone-fill"></i>
+                          No pudimos entregarlo. Te contactaremos para reprogramarlo{distribuidora?.telefono ? ` o llámanos al ${distribuidora.telefono}` : ''}.
+                        </div>
+                      )}
                       {p.estado === 'entregado' && (
                         <div className="d-flex align-items-center gap-2 small"
                           style={{ color: '#0a1845' }}>
@@ -178,6 +187,7 @@ export default function MisPedidos() {
           </>
         )}
       </div>
-    </div>
+    </section>
+    </SitioLayout>
   )
 }

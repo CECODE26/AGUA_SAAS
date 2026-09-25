@@ -117,7 +117,7 @@ export default function CartSidebar() {
             </div>
             <div className="d-flex align-items-center gap-2 mb-3">
               <i className="bi bi-truck text-verde"></i>
-              <small className="text-muted">Entrega sin costo adicional{distribuidora?.ciudad ? ` en ${distribuidora.ciudad}` : ''}</small>
+              <small className="text-muted">Te lo llevamos a domicilio{distribuidora?.ciudad ? ` en ${distribuidora.ciudad}` : ''}</small>
             </div>
             <button
               className="btn btn-verde w-100 py-2 fw-bold"

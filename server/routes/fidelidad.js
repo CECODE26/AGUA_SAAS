@@ -11,6 +11,13 @@ function clienteIdDeReq(req) {
   return clienteDeToken(req)?.id ?? null
 }
 
+// ── Público: cómo funciona el programa (para el sitio de la distribuidora) ───
+router.get('/programa', async (req, res) => {
+  const config = await fidelidad.getConfig()
+  if (!config.activo) return res.json({ activo: false })
+  res.json({ activo: true, meta: config.sellosParaPremio, textoPremio: await fidelidad.textoPremio(config) })
+})
+
 // ── Cliente: su tarjeta ──────────────────────────────────────────────────────
 router.get('/mi-tarjeta', async (req, res) => {
   const id = clienteIdDeReq(req)

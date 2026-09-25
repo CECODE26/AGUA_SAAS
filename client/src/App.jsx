@@ -1,19 +1,13 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { CartProvider } from './context/CartContext'
 import { AuthProvider } from './context/AuthContext'
 import { DistribuidoraProvider } from './context/DistribuidoraContext'
 import ProtectedRoute from './components/ProtectedRoute'
 
-// Layout público
-import Navbar from './components/Navbar'
-import Footer from './components/Footer'
-
-// Páginas públicas
+// Sitio público (diseño D · Elite, ver src/sitio/)
 import Inicio from './pages/Inicio'
-import Historia from './pages/Historia'
-import Sostenibilidad from './pages/Sostenibilidad'
 import Productos from './pages/Productos'
-import Blog from './pages/Blog'
+import Nosotros from './pages/Nosotros'
 import Contacto from './pages/Contacto'
 import LOPDP from './pages/LOPDP'
 import MisPedidos from './pages/MisPedidos'
@@ -67,18 +61,18 @@ function SitioDistribuidora() {
         {/* ── Sitio público ──────────────────────────── */}
         <Route path="/*" element={
           <CartProvider>
-            <Navbar />
             <Routes>
               <Route path="/"               element={<Inicio />} />
-              <Route path="/historia"       element={<Historia />} />
-              <Route path="/sostenibilidad" element={<Sostenibilidad />} />
               <Route path="/productos"      element={<Productos />} />
-              <Route path="/blog"           element={<Blog />} />
+              <Route path="/nosotros"       element={<Nosotros />} />
               <Route path="/contacto"       element={<Contacto />} />
-              <Route path="/lopdp"          element={<LOPDP />} />
               <Route path="/mis-pedidos"    element={<MisPedidos />} />
+              <Route path="/privacidad"     element={<LOPDP />} />
+              {/* Direcciones del sitio anterior */}
+              <Route path="/lopdp"          element={<Navigate to="/privacidad" replace />} />
+              <Route path="/historia"       element={<Navigate to="/nosotros" replace />} />
+              <Route path="*"               element={<Navigate to="/" replace />} />
             </Routes>
-            <Footer />
           </CartProvider>
         } />
 

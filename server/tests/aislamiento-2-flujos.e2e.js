@@ -45,6 +45,9 @@ const login = async slug => (await req('POST', '/auth/login', { slug, body: { us
   const fid = await req('GET', `/fidelidad/cliente/${rosa.id}`, { token: kN })
   ok(fid.json.sellos === 3, `fidelidad suma sellos en norte (${fid.json.sellos})`)
   ok((await req('GET', `/fidelidad/cliente/${rosa.id}`, { token: kS })).status === 404 || (await req('GET', `/fidelidad/cliente/${rosa.id}`, { token: kS })).json.activo === false, 'chofer de sur no ve la tarjeta de un cliente de norte')
+  const progN = await req('GET', '/fidelidad/programa', { slug: 'norte' })
+  ok(progN.json.activo === true && progN.json.meta === 5 && /gratis/.test(progN.json.textoPremio), `programa público de norte (${JSON.stringify(progN.json)})`)
+  ok((await req('GET', '/fidelidad/programa', { slug: 'sur' })).json.activo === false, 'sur sin programa de fidelidad')
   const res = await req('GET', '/fidelidad/resumen', { token: N })
   ok(res.status === 200 && res.json.conTarjeta === 1, 'resumen de fidelidad de norte')
 

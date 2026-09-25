@@ -3,113 +3,43 @@ import { useAuth } from '../../context/AuthContext'
 import { invalidarContenido } from '../../hooks/useContenido'
 
 // ── Configuración declarativa de todas las páginas y secciones editables ──────
+// Coincide con lo que leen las páginas del sitio (src/pages/Inicio.jsx, Productos.jsx,
+// Nosotros.jsx y el pie en src/sitio/SitioLayout.jsx). Lo que se deja vacío usa el
+// texto por defecto del diseño.
 const PAGINAS = {
   inicio: {
     label: 'Inicio',
     path: '/',
     secciones: {
       hero: {
-        label: 'Hero Principal',
+        label: 'Portada',
         icon: 'bi-image-fill',
         campos: [
-          { key: 'badge',    label: 'Badge superior',   tipo: 'text' },
-          { key: 'titulo',   label: 'Título principal',  tipo: 'textarea' },
-          { key: 'subtitulo',label: 'Slogan / Subtítulo',tipo: 'text' },
-          { key: 'imagen',   label: 'Imagen de fondo',   tipo: 'imagen' },
+          { key: 'ceja',      label: 'Texto pequeño sobre el título (ej: Agua a domicilio en Puyo)', tipo: 'text' },
+          { key: 'titulo',    label: 'Título grande (una línea por renglón)', tipo: 'textarea' },
+          { key: 'destacado', label: 'Última línea en cursiva (ej: siempre a tiempo.)', tipo: 'text' },
+          { key: 'subtitulo', label: 'Texto bajo el título', tipo: 'textarea' },
         ],
       },
-      origen: {
-        label: 'El Origen del Agua',
+      productos: {
+        label: 'Productos destacados',
         icon: 'bi-droplet-fill',
         campos: [
-          { key: 'badge',          label: 'Badge',                  tipo: 'text' },
-          { key: 'titulo',         label: 'Título',                  tipo: 'text' },
-          { key: 'descripcion',    label: 'Descripción',             tipo: 'textarea' },
-          { key: 'card1_titulo',   label: 'Tarjeta 1 — Título',      tipo: 'text' },
-          { key: 'card1_desc',     label: 'Tarjeta 1 — Descripción', tipo: 'textarea' },
-          { key: 'card2_titulo',   label: 'Tarjeta 2 — Título',      tipo: 'text' },
-          { key: 'card2_desc',     label: 'Tarjeta 2 — Descripción', tipo: 'textarea' },
-          { key: 'card3_titulo',   label: 'Tarjeta 3 — Título',      tipo: 'text' },
-          { key: 'card3_desc',     label: 'Tarjeta 3 — Descripción', tipo: 'textarea' },
-          { key: 'card4_titulo',   label: 'Tarjeta 4 — Título',      tipo: 'text' },
-          { key: 'card4_desc',     label: 'Tarjeta 4 — Descripción', tipo: 'textarea' },
+          { key: 'ceja',      label: 'Texto pequeño', tipo: 'text' },
+          { key: 'titulo',    label: 'Título', tipo: 'text' },
+          { key: 'destacado', label: 'Final del título en cursiva', tipo: 'text' },
         ],
       },
-      stats: {
-        label: 'Estadísticas',
-        icon: 'bi-bar-chart-fill',
+      pasos: {
+        label: 'Cómo funciona',
+        icon: 'bi-list-ol',
         campos: [
-          { key: 'stat1_num',   label: 'Stat 1 — Número (ej: 500000)', tipo: 'text' },
-          { key: 'stat1_label', label: 'Stat 1 — Etiqueta',            tipo: 'text' },
-          { key: 'stat2_num',   label: 'Stat 2 — Número',              tipo: 'text' },
-          { key: 'stat2_label', label: 'Stat 2 — Etiqueta',            tipo: 'text' },
-          { key: 'stat3_num',   label: 'Stat 3 — Texto (ej: 100%)',    tipo: 'text' },
-          { key: 'stat3_label', label: 'Stat 3 — Etiqueta',            tipo: 'text' },
-          { key: 'stat4_num',   label: 'Stat 4 — Número',              tipo: 'text' },
-          { key: 'stat4_label', label: 'Stat 4 — Etiqueta',            tipo: 'text' },
-        ],
-      },
-      servicio: {
-        label: 'Servicio a Domicilio',
-        icon: 'bi-truck',
-        campos: [
-          { key: 'badge',       label: 'Badge',                   tipo: 'text' },
-          { key: 'titulo',      label: 'Título',                   tipo: 'text' },
-          { key: 'subtitulo',   label: 'Pregunta principal',       tipo: 'text' },
-          { key: 'descripcion', label: 'Descripción',              tipo: 'textarea' },
-          { key: 'info1_titulo',label: 'Info 1 — Título',          tipo: 'text' },
-          { key: 'info1_desc',  label: 'Info 1 — Descripción',     tipo: 'text' },
-          { key: 'info2_titulo',label: 'Info 2 — Título',          tipo: 'text' },
-          { key: 'info2_desc',  label: 'Info 2 — Descripción',     tipo: 'text' },
-          { key: 'info3_titulo',label: 'Info 3 — Título',          tipo: 'text' },
-          { key: 'info3_desc',  label: 'Info 3 — Descripción',     tipo: 'text' },
-          { key: 'imagen',      label: 'Imagen lateral',           tipo: 'imagen' },
-        ],
-      },
-    },
-  },
-  historia: {
-    label: 'Historia',
-    path: '/historia',
-    secciones: {
-      banner: {
-        label: 'Banner principal',
-        icon: 'bi-image-fill',
-        campos: [
-          { key: 'badge',    label: 'Badge',     tipo: 'text' },
-          { key: 'titulo',   label: 'Título',    tipo: 'text' },
-          { key: 'subtitulo',label: 'Subtítulo', tipo: 'text' },
-        ],
-      },
-      intro: {
-        label: 'Introducción',
-        icon: 'bi-text-paragraph',
-        campos: [
-          { key: 'texto1', label: 'Párrafo 1', tipo: 'textarea' },
-          { key: 'texto2', label: 'Párrafo 2', tipo: 'textarea' },
-        ],
-      },
-      origen: {
-        label: 'Nuestro Origen',
-        icon: 'bi-geo-alt-fill',
-        campos: [
-          { key: 'titulo',   label: 'Título',          tipo: 'text' },
-          { key: 'subtitulo',label: 'Subtítulo',        tipo: 'text' },
-          { key: 'parrafo1', label: 'Párrafo 1',        tipo: 'textarea' },
-          { key: 'parrafo2', label: 'Párrafo 2',        tipo: 'textarea' },
-          { key: 'parrafo3', label: 'Párrafo 3',        tipo: 'textarea' },
-          { key: 'cita',     label: 'Cita destacada',   tipo: 'text' },
-        ],
-      },
-      compromiso: {
-        label: 'Nuestro Compromiso',
-        icon: 'bi-heart-fill',
-        campos: [
-          { key: 'badge',    label: 'Badge',               tipo: 'text' },
-          { key: 'titulo',   label: 'Título',               tipo: 'text' },
-          { key: 'parrafo1', label: 'Párrafo 1',            tipo: 'textarea' },
-          { key: 'cita',     label: 'Cita normativa',       tipo: 'textarea' },
-          { key: 'parrafo2', label: 'Párrafo 2',            tipo: 'textarea' },
+          { key: 'paso1_titulo', label: 'Paso 1 — Título', tipo: 'text' },
+          { key: 'paso1_texto',  label: 'Paso 1 — Texto',  tipo: 'textarea' },
+          { key: 'paso2_titulo', label: 'Paso 2 — Título', tipo: 'text' },
+          { key: 'paso2_texto',  label: 'Paso 2 — Texto',  tipo: 'textarea' },
+          { key: 'paso3_titulo', label: 'Paso 3 — Título', tipo: 'text' },
+          { key: 'paso3_texto',  label: 'Paso 3 — Texto',  tipo: 'textarea' },
         ],
       },
     },
@@ -119,32 +49,43 @@ const PAGINAS = {
     path: '/productos',
     secciones: {
       banner: {
-        label: 'Banner principal',
+        label: 'Encabezado',
         icon: 'bi-image-fill',
         campos: [
-          { key: 'badge',    label: 'Badge',     tipo: 'text' },
-          { key: 'titulo',   label: 'Título',    tipo: 'text' },
-          { key: 'subtitulo',label: 'Subtítulo', tipo: 'text' },
+          { key: 'ceja',      label: 'Texto pequeño', tipo: 'text' },
+          { key: 'titulo',    label: 'Título', tipo: 'text' },
+          { key: 'destacado', label: 'Final del título en cursiva', tipo: 'text' },
+          { key: 'subtitulo', label: 'Texto bajo el título', tipo: 'textarea' },
         ],
       },
-      calidad: {
-        label: 'El Agua Que Bebemos',
-        icon: 'bi-droplet-half',
+    },
+  },
+  nosotros: {
+    label: 'Nosotros',
+    path: '/nosotros',
+    secciones: {
+      principal: {
+        label: 'Nuestra historia',
+        icon: 'bi-people-fill',
         campos: [
-          { key: 'badge',       label: 'Badge',        tipo: 'text' },
-          { key: 'titulo',      label: 'Título',        tipo: 'text' },
-          { key: 'descripcion', label: 'Descripción',   tipo: 'textarea' },
+          { key: 'titulo',    label: 'Título (si lo dejas vacío, va el nombre de la distribuidora)', tipo: 'text' },
+          { key: 'destacado', label: 'Final del título en cursiva', tipo: 'text' },
+          { key: 'subtitulo', label: 'Texto bajo el título', tipo: 'textarea' },
+          { key: 'texto',     label: 'Historia (separa los párrafos con una línea en blanco). Si está vacía, "Nosotros" no sale en el menú.', tipo: 'textarea' },
         ],
       },
-      entrega: {
-        label: 'Servicio a Domicilio',
-        icon: 'bi-truck',
+    },
+  },
+  pie: {
+    label: 'Pie de página',
+    path: '/',
+    secciones: {
+      general: {
+        label: 'Pie de página',
+        icon: 'bi-layout-text-window-reverse',
         campos: [
-          { key: 'titulo',    label: 'Título',                   tipo: 'text' },
-          { key: 'subtitulo', label: 'Subtítulo',                tipo: 'text' },
-          { key: 'horario1',  label: 'Horario Lun–Vie',          tipo: 'text' },
-          { key: 'horario2',  label: 'Horario Sábado',           tipo: 'text' },
-          { key: 'condicion', label: 'Condición de entrega',     tipo: 'text' },
+          { key: 'descripcion', label: 'Frase bajo el logo', tipo: 'textarea' },
+          { key: 'horario',     label: 'Horario de atención (una línea por renglón)', tipo: 'textarea' },
         ],
       },
     },
