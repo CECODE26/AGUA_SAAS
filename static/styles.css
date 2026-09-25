@@ -1,0 +1,102 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.main-header {
+    min-height: 100vh;
+    position: relative;
+}
+
+.navbar .nav-link {
+    font-size: 1.1rem;
+    margin-right: 1rem;
+    transition: color 0.2s;
+}
+
+.navbar .nav-link:hover {
+    color: #90e0ef !important;
+}
+
+.navbar .navbar-brand {
+    letter-spacing: 2px;
+    font-size: 1.5rem;
+}
+
+/* ===== ONDA DEL FOOTER ===== */
+.footer-wave {
+    position: relative;
+    margin-top: 80px;
+}
+
+.footer-wave::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: -80px;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background: hsl(205, 85%, 52%);
+    clip-path: ellipse(55% 100% at 50% 100%);
+}
+
+footer {
+    background: #0096c7;
+    color: #fff;
+    position: relative;
+    padding-top: 2rem;
+}
+
+footer h5 {
+    border-left: 3px solid #fff;
+    padding-left: 10px;
+}
+
+footer ul li {
+    margin-bottom: 8px;
+    opacity: 0.9;
+}
+
+footer a {
+    text-decoration: none;
+    opacity: 0.9;
+    transition: opacity 0.2s;
+}
+
+footer a:hover {
+    opacity: 1;
+}
+
+/* ===== NUBE DIVISORA ENTRE SECCIONES ===== */
+.cloud-divider {
+    line-height: 0;
+    margin-top: -2px;
+    margin-bottom: -2px;
+    overflow: hidden;
+}
+
+.cloud-divider svg {
+    display: block;
+    width: 100%;
+    height: 80px;
+}
+
+.cloud-divider-flip {
+    transform: scaleY(-1);
+}
+
+/* ===== ONDA SVG MEJORADA ===== */
+.wave-container {
+    position: relative;
+    margin-top: 0;
+    line-height: 0;
+}
+
+.wave-container svg {
+    display: block;
+    width: 100%;
+}
+
+

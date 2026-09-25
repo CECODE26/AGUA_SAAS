@@ -1,0 +1,68 @@
+{
+  "expo": {
+    "name": "Agua Manú",
+    "slug": "agua-manu",
+    "scheme": "aguamanu",
+    "version": "1.4.8",
+    "orientation": "portrait",
+    "icon": "./src/assets/logoooo.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./src/assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0066CC"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.aguamanu.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Agua Manú necesita tu ubicación para asignarte entregas cercanas.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Agua Manú necesita tu ubicación para asignarte entregas cercanas."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/logoooo.png",
+        "backgroundColor": "#0C1F3F"
+      },
+      "package": "com.aguamanu.conductores",
+      "googleServicesFile": "./google-services.json",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyCDd3h4UaPFQJhF_aiy6TwhJ3g-nLx54xI"
+        }
+      },
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ]
+    },
+    "web": {
+      "favicon": "./src/assets/logoooo.png"
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Agua Manú necesita tu ubicación para asignarte entregas cercanas."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./src/assets/notification-icon.png",
+          "color": "#0066CC"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "7451355d-4641-437e-9d8b-4ce10a75102b"
+      }
+    },
+    "owner": "janick1"
+  }
+}

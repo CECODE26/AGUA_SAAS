@@ -1,0 +1,360 @@
+// Agua Piatua — Prisma Schema
+// Base de datos: SQLite (desarrollo) → PostgreSQL (producción)
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────
+// ADMIN — panel de administración
+// ─────────────────────────────────────────
+model Admin {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique
+  passwordHash String
+  rol          RolAdmin @default(admin)
+  activo       Boolean  @default(true)
+  creadoEn     DateTime @default(now())
+  telefono     String?                    // celular de contacto
+  // Verificación en dos pasos (Google Authenticator / TOTP)
+  totpSecret   String?                    // secreto TOTP (pendiente hasta confirmar)
+  totpActivo   Boolean  @default(false)   // confirmado con un código válido
+  totpLogin    Boolean  @default(false)   // también pide código al iniciar sesión
+}
+
+enum RolAdmin {
+  superadmin
+  admin
+}
+
+// ─────────────────────────────────────────
+// MAESTRO DE CLIENTES
+// ─────────────────────────────────────────
+model MaestroClientes {
+  id           Int      @id @default(autoincrement())
+  nombre       String
+  username     String   @unique
+  passwordHash String
+  activo       Boolean  @default(true)
+  creadoEn     DateTime @default(now())
+}
+
+// ─────────────────────────────────────────
+// SOLICITUD DE ACTIVACIÓN
+// ─────────────────────────────────────────
+model SolicitudActivacion {
+  id                 Int             @id @default(autoincrement())
+  tipo               TipoSolicitud
+  targetId           Int?            // camionId en cambio_conductor
+  targetNombre       String          // nombre del conductor solicitado
+  targetUsername     String?         // username del conductor/admin
+  targetPasswordHash String?         // hash de la contraseña propuesta
+  targetTelefono     String?         // celular del conductor/admin solicitado
+  solicitadoPor      String          // username del admin que solicita
+  estado             EstadoSolicitud @default(pendiente)
+  nota               String?         // nota del superadmin al resolver
+  creadoEn           DateTime        @default(now())
+  resueltaEn         DateTime?
+
+  // Campos para camion_nuevo
+  camionPlaca        String?
+  camionMarca        String?
+  camionModelo       String?
+  camionColor        String?
+  camionAnio         Int?
+}
+
+enum TipoSolicitud {
+  conductor
+  admin
+  camion_nuevo
+  cambio_conductor
+}
+
+enum EstadoSolicitud {
+  pendiente
+  aprobada
+  rechazada
+}
+
+// ─────────────────────────────────────────
+// PRODUCTO — catálogo de agua
+// ─────────────────────────────────────────
+model Producto {
+  id          Int           @id @default(autoincrement())
+  nombre      String        @unique
+  descripcion String        @default("")
+  precio      Float
+  stock       Int           @default(0)
+  tag         String?       // "Más popular", "Mejor valor", etc.
+  imagen      String?       // nombre del archivo subido
+  activo      Boolean       @default(true)
+  orden       Int           @default(0)
+  creadoEn    DateTime      @default(now())
+  actualizadoEn DateTime    @updatedAt
+
+  items       PedidoItem[]
+}
+
+// ─────────────────────────────────────────
+// CLIENTE — se registra al hacer un pedido
+// ─────────────────────────────────────────
+model Cliente {
+  id            Int      @id @default(autoincrement())
+  email         String   @unique
+  passwordHash   String?
+  resetCodigo    String?
+  resetExpiry    DateTime?
+  nombre         String
+  telefono      String
+  cedula        String?  // cédula o RUC
+  // Dirección de entrega
+  callePrincipal  String?
+  calleSecundaria String?  // intersección
+  numeracion      String?
+  referencia      String?
+  sector          String?
+  ciudad          String   @default("Santa Clara")
+  provincia       String   @default("Pastaza")
+  latitud         Float?   // GPS exacto del cliente
+  longitud        Float?
+  diaSemana        String?  // legacy — un solo día
+  visitasHorario   Json?    // [{dia: "lunes", hora: "09:00"}, ...]
+  esFijo           Boolean  @default(false)
+  productosDefault Json?    // [{productoId: 1, nombre: "...", cantidad: 2}, ...]
+  pushToken        String?  // Expo push token del teléfono del cliente
+  sellos             Int    @default(0)   // fidelidad: sellos de la tarjeta en curso
+  premiosDisponibles Int    @default(0)   // fidelidad: bidones gratis sin usar
+  fijoDesde        DateTime? // cuándo eligió sus días de visita por primera vez (para "nuevos")
+  creadoEn         DateTime @default(now())
+  actualizadoEn    DateTime @updatedAt
+
+  pedidos       Pedido[]
+  visitasFijas  VisitaClienteFijo[]
+  movimientosFidelidad MovimientoFidelidad[]
+}
+
+// ─────────────────────────────────────────
+// PEDIDO
+// ─────────────────────────────────────────
+model Pedido {
+  id                Int          @id @default(autoincrement())
+  estado            EstadoPedido @default(pendiente)
+  total             Float
+  notas             String?      // instrucciones especiales de entrega
+  motivoNoEntrega   String?      // razón cuando estado = no_entregado
+  latitud           Float?       // coordenada de entrega específica de este pedido
+  longitud          Float?
+  creadoEn          DateTime     @default(now())
+  actualizadoEn     DateTime     @updatedAt
+
+  clienteId  Int
+  cliente    Cliente      @relation(fields: [clienteId], references: [id])
+
+  // Venta exprés: origen "express" cuando el chofer la registra en la calle
+  origen      String     @default("web")
+  premioAplicado Boolean @default(false)   // usó su premio de fidelidad (producto gratis o descuento)
+  descuentoFidelidad Float?                // $ descontados por fidelidad, si el premio fue un descuento
+  conductorId Int?
+  conductor   Conductor? @relation(fields: [conductorId], references: [id], onDelete: SetNull)
+
+  items      PedidoItem[]
+  planItems  PlanRutaItem[]
+}
+
+enum EstadoPedido {
+  pendiente
+  planificado
+  entregado
+  suspendido
+  no_entregado
+}
+
+// ─────────────────────────────────────────
+// PEDIDO ITEM — línea de producto por pedido
+// ─────────────────────────────────────────
+model PedidoItem {
+  id              Int      @id @default(autoincrement())
+  cantidad        Int
+  precioUnitario  Float    // precio al momento de la compra
+
+  pedidoId   Int
+  pedido     Pedido   @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+
+  productoId Int
+  producto   Producto @relation(fields: [productoId], references: [id])
+
+  // Sin único (pedidoId, productoId): el bidón gratis de fidelidad va en su propia línea a $0,
+  // así cantidad × precioUnitario siempre coincide con lo cobrado y los reportes cuadran.
+  @@index([pedidoId])
+}
+
+// ─────────────────────────────────────────
+// CAMION — flota de vehículos
+// ─────────────────────────────────────────
+model Camion {
+  id        Int        @id @default(autoincrement())
+  placa     String     @unique
+  marca     String
+  modelo    String?
+  color     String?
+  anio      Int?       // año del vehículo
+  activo    Boolean    @default(true)
+  rutaLibre Boolean    @default(false)  // camión comodín: recibe los pedidos que no caen en ninguna zona
+  poligono  Json?      // OBSOLETO: reemplazado por localidades[]. Se conserva durante la transición.
+  creadoEn  DateTime   @default(now())
+
+  conductor  Conductor?                  // relación inversa
+  historial  HistorialConductorCamion[]  // historial de conductores asignados
+  localidades Localidad[]                // zonas de entrega (múltiples) del camión
+}
+
+// ─────────────────────────────────────────
+// LOCALIDAD — zona de entrega (un camión puede tener muchas)
+// ─────────────────────────────────────────
+model Localidad {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  poligono  Json                  // [[lat,lng], ...] área dibujada por puntos
+  color     String?               // color para pintarla en el mapa
+  activo    Boolean  @default(true)
+  camionId  Int?                  // null = pool sin asignar
+  camion    Camion?  @relation(fields: [camionId], references: [id], onDelete: SetNull)
+  creadoEn  DateTime @default(now())
+
+  @@index([camionId])
+}
+
+// ─────────────────────────────────────────
+// HISTORIAL DE CONDUCTORES POR CAMIÓN
+// ─────────────────────────────────────────
+model HistorialConductorCamion {
+  id               Int        @id @default(autoincrement())
+  camionId         Int
+  camion           Camion     @relation(fields: [camionId], references: [id], onDelete: Cascade)
+  conductorId      Int?
+  conductor        Conductor? @relation(fields: [conductorId], references: [id], onDelete: SetNull)
+  conductorNombre  String     // snapshot del nombre en el momento de la asignación
+  asignadoEn       DateTime   @default(now())
+  removidoEn       DateTime?
+}
+
+// ─────────────────────────────────────────
+// PLAN DE RUTA — planificación anticipada
+// ─────────────────────────────────────────
+model Conductor {
+  id           Int        @id @default(autoincrement())
+  nombre       String
+  username     String     @unique
+  passwordHash String
+  activo       Boolean    @default(false)
+  creadoEn     DateTime   @default(now())
+
+  ubicacionLat Float?
+  ubicacionLng Float?
+  ubicacionAt  DateTime?
+
+  pushToken    String?
+  telefono     String?    // celular de contacto del chofer
+
+  camionId     Int?       @unique   // 1-a-1: un conductor → un camión
+  camion       Camion?    @relation(fields: [camionId], references: [id], onDelete: SetNull)
+
+  rutas        PlanRuta[]
+  historial    HistorialConductorCamion[]
+  visitasFijas VisitaClienteFijo[]
+  ventasExpress Pedido[]
+}
+
+model PlanRuta {
+  id          Int          @id @default(autoincrement())
+  nombre      String
+  fecha       DateTime     @db.Date
+  color       String       @default("#0d6efd")
+  creadoEn    DateTime     @default(now())
+  items       PlanRutaItem[]
+  conductorId Int?
+  conductor   Conductor?   @relation(fields: [conductorId], references: [id])
+}
+
+model PlanRutaItem {
+  id       Int      @id @default(autoincrement())
+  orden    Int      @default(0)
+  rutaId   Int
+  ruta     PlanRuta @relation(fields: [rutaId], references: [id], onDelete: Cascade)
+  pedidoId Int
+  pedido   Pedido   @relation(fields: [pedidoId], references: [id])
+  @@unique([rutaId, pedidoId])
+}
+
+// ─────────────────────────────────────────
+// VISITA A CLIENTE FIJO — registro diario
+// ─────────────────────────────────────────
+model VisitaClienteFijo {
+  id          Int       @id @default(autoincrement())
+  clienteId   Int
+  cliente     Cliente   @relation(fields: [clienteId], references: [id])
+  conductorId Int
+  conductor   Conductor @relation(fields: [conductorId], references: [id])
+  fecha       DateTime  @db.Date
+  resultado   String    // 'compro' | 'no_necesita' | 'no_estaba'
+  cantidades  Json?     // [{ nombre: string, cantidad: number }] cuando resultado = 'compro'
+  pedidoId    Int?
+  notas       String?
+  creadoEn    DateTime  @default(now())
+
+  @@unique([clienteId, conductorId, fecha])
+}
+
+// ─────────────────────────────────────────
+// CONTACTO — mensajes del formulario web
+// ─────────────────────────────────────────
+model Contacto {
+  id       Int      @id @default(autoincrement())
+  nombre   String
+  telefono String?
+  email    String
+  mensaje  String
+  leido    Boolean  @default(false)
+  creadoEn DateTime @default(now())
+}
+
+// ─────────────────────────────────────────
+// FIDELIDAD — tarjeta de sellos del cliente
+// ─────────────────────────────────────────
+model ConfigFidelidad {
+  id                Int      @id @default(1)
+  activo            Boolean  @default(false)  // el programa corre o no
+  sellosParaPremio  Int      @default(10)     // cuántos bidones para ganar uno gratis
+  tipoPremio        String   @default("producto") // "producto" (uno gratis) | "descuento" (% del pedido)
+  productoPremioId  Int?                      // qué producto se regala (recarga o envase)
+  descuentoPct      Int?                      // % de descuento si tipoPremio = "descuento"
+  productosQueSuman Json?                     // [idProducto, ...]; null = solo el producto premio
+  sumaApp           Boolean  @default(true)   // pedidos por app/web
+  sumaExpress       Boolean  @default(true)   // ventas exprés del chofer
+  sumaVisitaFija    Boolean  @default(true)   // visitas a clientes fijos
+  caducidadMeses    Int?                      // null = los sellos no caducan
+  maxPremiosPorMes  Int?                      // null = sin tope por cliente
+  actualizadoEn     DateTime @updatedAt
+}
+
+model MovimientoFidelidad {
+  id        Int      @id @default(autoincrement())
+  clienteId Int
+  cliente   Cliente  @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+  tipo      String   // 'gana' | 'premio' | 'canje' | 'caduca' | 'ajuste'
+  sellos    Int      @default(0)   // + suma, - resta (0 en canje: consume un premio)
+  pedidoId  Int?
+  origen    String?  // 'app' | 'express' | 'visita' | 'admin'
+  nota      String?
+  creadoEn  DateTime @default(now())
+
+  @@unique([pedidoId, tipo])   // un pedido solo puede dar sellos (o canjear) una vez
+  @@index([clienteId])
+}

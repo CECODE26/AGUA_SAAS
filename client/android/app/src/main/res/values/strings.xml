@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Agua Manú</string>
+    <string name="title_activity_main">Agua Manú</string>
+    <string name="package_name">com.aguamanu.app</string>
+    <string name="custom_url_scheme">com.aguamanu.app</string>
+</resources>

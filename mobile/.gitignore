@@ -1,0 +1,8 @@
+
+# Credenciales de firma (NUNCA subir a git)
+credentials.json
+
+# Firebase (NUNCA subir a git)
+google-services.json
+android/app/google-services.json
+*firebase-adminsdk*.json

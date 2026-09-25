@@ -1,0 +1,761 @@
+:root {
+  --verde: #0066CC;
+  --verde-dark: #004fa3;
+  --verde-light: #e8f0fd;
+  --azul-light: #e8f4ff;
+  --agua: #00b4d8;          /* Acento agua — azul amazónico */
+  --dorado: #c9a227;        /* Toque premium */
+  --oscuro: #091630;        /* Azul muy oscuro para fondos */
+}
+
+/* ===== SCROLLBAR PERSONALIZADO ===== */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: var(--verde); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--verde-dark); }
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+  color: #1a1a1a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== BARRA ACENTO MARCA (top of page) ===== */
+.brand-accent-bar {
+  height: 3px;
+  background: linear-gradient(90deg, var(--agua), var(--verde), var(--agua));
+  background-size: 200% 100%;
+  animation: accentShift 5s ease infinite;
+}
+@keyframes accentShift {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+
+/* ===== NAVBAR ===== */
+.navbar .nav-link {
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin-right: 0.4rem;
+  letter-spacing: 0.6px;
+  position: relative;
+  transition: color 0.2s;
+}
+
+.navbar .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--agua);
+  border-radius: 1px;
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+.navbar .nav-link:hover::after,
+.navbar .nav-link.fw-bold::after {
+  width: 60%;
+  left: 20%;
+}
+
+.navbar .nav-link:hover {
+  color: #b8d0f0 !important;
+}
+
+.navbar .navbar-brand {
+  letter-spacing: 3px;
+  font-size: 1.35rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Navbar scroll effect */
+.navbar-scrolled {
+  background-color: var(--verde) !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  transition: background-color 0.3s ease;
+}
+
+/* ===== HERO ===== */
+.main-header {
+  min-height: 100vh;
+  position: relative;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(0, 10, 50, 0.88) 0%,
+    rgba(0, 30, 90, 0.55) 45%,
+    rgba(0, 20, 40, 0.72) 100%
+  );
+}
+
+/* Tarjeta de vidrio sobre el hero */
+.hero-glass {
+  background: rgba(5, 15, 50, 0.38);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 3rem 3.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+@media (max-width: 576px) {
+  .hero-glass {
+    padding: 2rem 1.5rem;
+    border-radius: 18px;
+  }
+}
+
+/* ===== SECCIÓN CERTIFICACIONES ===== */
+.cert-badge {
+  width: 130px;
+  height: 130px;
+  object-fit: contain;
+  filter: grayscale(20%);
+  transition: filter 0.3s, transform 0.3s;
+}
+
+.cert-badge:hover {
+  filter: grayscale(0%);
+  transform: scale(1.05);
+}
+
+/* ===== ESTADÍSTICAS ===== */
+.stats-section {
+  background: linear-gradient(135deg, var(--oscuro) 0%, #0f2050 100%);
+  position: relative;
+  overflow: hidden;
+  clip-path: polygon(0 40px, 100% 0, 100% calc(100% - 40px), 0 100%);
+  margin-top: -40px;
+  margin-bottom: -40px;
+  padding-top: calc(2rem + 40px) !important;
+  padding-bottom: calc(2rem + 40px) !important;
+  z-index: 1;
+}
+
+/* patrón de puntos sutil sobre el fondo oscuro */
+.stats-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(0, 180, 216, 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+
+.stat-number {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+  margin-top: 6px;
+}
+
+/* ===== CLOUD DIVIDER ===== */
+.cloud-divider {
+  line-height: 0;
+  margin-top: -2px;
+  margin-bottom: -2px;
+  overflow: hidden;
+}
+
+.cloud-divider svg {
+  display: block;
+  width: 100%;
+  height: 80px;
+}
+
+.cloud-divider-flip {
+  transform: scaleY(-1);
+}
+
+/* ===== WAVE ===== */
+.wave-container {
+  position: relative;
+  margin-top: 0;
+  line-height: 0;
+}
+
+.wave-container svg {
+  display: block;
+  width: 100%;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: var(--verde);
+  color: #fff;
+  position: relative;
+  padding-top: 2rem;
+}
+
+footer h5 {
+  border-left: 3px solid rgba(255,255,255,0.7);
+  padding-left: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+footer ul li {
+  margin-bottom: 8px;
+  opacity: 0.9;
+}
+
+footer a {
+  text-decoration: none;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+
+footer a:hover {
+  opacity: 1;
+}
+
+/* ===== BOTONES ===== */
+.btn-verde {
+  background-color: var(--verde);
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.25s, transform 0.15s, box-shadow 0.25s;
+}
+
+.btn-verde:hover {
+  background-color: var(--verde-dark);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 118, 62, 0.4);
+}
+
+/* Ripple en click */
+.btn-verde::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255,255,255,0.28) 0%, transparent 65%);
+  transform: scale(0);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.btn-verde:active::after {
+  transform: scale(3);
+  opacity: 1;
+  transition: 0s;
+}
+
+.btn-outline-verde {
+  border: 2px solid var(--verde);
+  color: var(--verde);
+  font-weight: 700;
+  background: transparent;
+  transition: all 0.2s;
+}
+
+.btn-outline-verde:hover {
+  background-color: var(--verde);
+  color: #fff;
+}
+
+/* ===== SECCIÓN VALORES ===== */
+.valores-check {
+  color: var(--verde);
+}
+
+/* ===== CARDS ===== */
+.card-hover {
+  transition: box-shadow 0.25s, transform 0.25s;
+  border-top: 3px solid transparent;
+}
+
+.card-hover:hover {
+  box-shadow: 0 12px 40px rgba(0,102,204,0.15) !important;
+  transform: translateY(-4px);
+  border-top-color: var(--agua);
+}
+
+/* ===== COLOR UTILITARIO ===== */
+.text-agua {
+  color: var(--agua) !important;
+}
+.bg-oscuro {
+  background-color: var(--oscuro) !important;
+}
+
+/* ══════════════════════════════════════════════════════
+   LOGÍSTICA — scroll de lista de paradas
+══════════════════════════════════════════════════════ */
+.logistica-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #c8d8f5 #f5f5f5;
+}
+.logistica-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+.logistica-scroll::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+.logistica-scroll::-webkit-scrollbar-thumb {
+  background: #a8c0e8;
+  border-radius: 4px;
+}
+.logistica-scroll::-webkit-scrollbar-thumb:hover {
+  background: #0066CC;
+}
+
+/* ══════════════════════════════════════════════════════
+   PRODUCT CARDS — Fusión AQUA Premium × Agua Manú
+══════════════════════════════════════════════════════ */
+.producto-card {
+  background: #fff;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 4px 28px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.35s cubic-bezier(.25,.8,.25,1),
+              box-shadow 0.35s ease;
+  position: relative;
+  border: 1.5px solid transparent;
+}
+
+.producto-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(0,102,204,0.18);
+}
+
+/* Tarjeta resaltada (badge tag activo) */
+.producto-card.producto-destacado {
+  border-color: var(--agua);
+  box-shadow: 0 8px 36px rgba(0,180,216,0.2);
+}
+
+.producto-card.producto-destacado:hover {
+  box-shadow: 0 20px 56px rgba(0,180,216,0.3);
+}
+
+/* Stripe superior por formato (sin imagen real diferenciada) */
+.producto-card::before {
+  content: '';
+  display: block;
+  height: 4px;
+  background: linear-gradient(90deg, var(--verde), var(--agua));
+  width: 100%;
+  flex-shrink: 0;
+}
+
+/* Badge etiqueta (Más popular, Mejor valor…) */
+.producto-badge {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: var(--agua);
+  color: #fff;
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  z-index: 3;
+  box-shadow: 0 3px 10px rgba(0,180,216,0.35);
+}
+
+/* Zona imagen */
+.producto-img-wrap {
+  background: linear-gradient(180deg, #edf4ff 0%, #d9eaff 100%);
+  height: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.producto-img {
+  width: 100%;
+  height: 160px;
+  object-fit: contain;
+  transition: transform 0.4s cubic-bezier(.25,.8,.25,1);
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.12));
+}
+
+.producto-card:hover .producto-img {
+  transform: scale(1.1) translateY(-4px);
+}
+
+/* Body */
+.producto-body {
+  padding: 1.4rem 1.6rem 1.6rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.producto-nombre {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--oscuro);
+  margin-bottom: 0.15rem;
+}
+
+.producto-descripcion {
+  font-size: 0.8rem;
+  color: #888;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+/* Precio prominente — estilo AQUA Premium */
+.producto-precio {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--verde);
+  line-height: 1;
+  margin-bottom: 0.2rem;
+}
+
+.producto-precio-label {
+  font-size: 0.72rem;
+  color: #aaa;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  letter-spacing: 0.3px;
+}
+
+/* Feature bullets — inspirado en AQUA Premium */
+.producto-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.2rem;
+  flex: 1;
+}
+
+.producto-features li {
+  font-size: 0.8rem;
+  color: #555;
+  padding: 5px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.producto-features li:last-child {
+  border-bottom: none;
+}
+
+.producto-features li::before {
+  content: '';
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  background: var(--agua);
+  border-radius: 50%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'%3E%3Cpath d='M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z'/%3E%3C/svg%3E");
+  background-size: 11px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Stock badge */
+.producto-stock {
+  font-size: 0.7rem;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  display: inline-block;
+}
+
+/* CTA Button */
+.producto-btn {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 0.88rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.25s, transform 0.15s, box-shadow 0.25s;
+  letter-spacing: 0.3px;
+}
+
+.producto-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,102,204,0.35);
+}
+
+.producto-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* ══════════════════════════════════════════════════════
+   PROCESO "DEL RÍO A TU MESA" — inspirado AQUA Premium
+══════════════════════════════════════════════════════ */
+.proceso-section {
+  background: var(--oscuro);
+  position: relative;
+  overflow: hidden;
+}
+
+.proceso-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(0,180,216,0.06) 1px, transparent 1px);
+  background-size: 30px 30px;
+  pointer-events: none;
+}
+
+.proceso-grid {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0;
+  position: relative;
+}
+
+/* Línea conectora horizontal */
+.proceso-grid::before {
+  content: '';
+  position: absolute;
+  top: 32px;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--agua), var(--verde), var(--agua), transparent);
+  opacity: 0.4;
+}
+
+.proceso-step {
+  flex: 1;
+  text-align: center;
+  padding: 0 1rem;
+  position: relative;
+}
+
+.proceso-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(0,180,216,0.2), rgba(0,102,204,0.2));
+  border: 2px solid rgba(0,180,216,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  margin: 0 auto 0.75rem;
+  position: relative;
+  z-index: 1;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.proceso-step:hover .proceso-icon-wrap {
+  border-color: var(--agua);
+  background: linear-gradient(135deg, rgba(0,180,216,0.3), rgba(0,102,204,0.25));
+}
+
+.proceso-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--agua);
+  letter-spacing: 2px;
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
+}
+
+.proceso-titulo {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #fff;
+  margin-bottom: 0.4rem;
+}
+
+.proceso-texto {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.5;
+}
+
+@media (max-width: 767px) {
+  .proceso-grid {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .proceso-grid::before {
+    display: none;
+  }
+  .proceso-step {
+    width: 100%;
+    max-width: 280px;
+    display: flex;
+    align-items: flex-start;
+    text-align: left;
+    gap: 1rem;
+  }
+  .proceso-icon-wrap {
+    flex-shrink: 0;
+    margin: 0;
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   BANNER PRODUCTOS — fondo oscuro estilo AQUA Premium
+══════════════════════════════════════════════════════ */
+.productos-banner {
+  background: linear-gradient(135deg, var(--oscuro) 0%, #0f2050 60%, #00348f 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.productos-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(0,180,216,0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+
+.productos-banner-drop {
+  position: absolute;
+  right: 8%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 8rem;
+  opacity: 0.07;
+  filter: blur(1px);
+  user-select: none;
+}
+
+@media (max-width: 767px) {
+  .productos-banner-drop { display: none; }
+}
+
+/* ===== HEADINGS ===== */
+h1, h2, h3 {
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.section-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Línea decorativa bajo los section-heading */
+.section-heading::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--agua), var(--verde));
+  border-radius: 2px;
+  margin-top: 14px;
+}
+
+.text-center .section-heading::after {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-white .section-heading::after,
+.section-heading.text-white::after {
+  background: linear-gradient(90deg, var(--agua), rgba(255,255,255,0.7));
+}
+
+.text-verde {
+  color: var(--verde) !important;
+}
+
+.bg-verde-light {
+  background-color: var(--verde-light);
+}
+
+/* ===== ADMIN RESPONSIVE ===== */
+
+/* Tablas: en móvil convertir a tarjetas apiladas */
+@media (max-width: 767px) {
+  /* Ocultar thead en móvil */
+  .admin-table-responsive thead {
+    display: none;
+  }
+
+  /* Cada fila como tarjeta */
+  .admin-table-responsive tbody tr {
+    display: block;
+    background: #fff;
+    border-radius: 12px;
+    margin-bottom: 10px;
+    padding: 12px 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    border: none !important;
+  }
+
+  /* Cada celda como fila con label a la izquierda */
+  .admin-table-responsive tbody td {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 4px 0 !important;
+    border: none !important;
+    font-size: 0.83rem;
+  }
+
+  .admin-table-responsive tbody td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: #6c757d;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-width: 90px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  /* Separador entre filas expandidas */
+  .admin-table-responsive tbody tr.fila-detalle {
+    background: #f4f8ff;
+    border-radius: 0 0 12px 12px;
+    margin-top: -10px;
+  }
+}

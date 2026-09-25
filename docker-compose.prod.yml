@@ -1,0 +1,43 @@
+services:
+
+  # ── Base de datos PostgreSQL ──────────────────────────────
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       agua_piatua
+      POSTGRES_USER:     postgres
+      POSTGRES_PASSWORD: 12345
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ── Servidor Express + Prisma ─────────────────────────────
+  server:
+    build: ./server
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: ./server/.env
+    environment:
+      DATABASE_URL: postgresql://postgres:12345@db:5432/agua_piatua
+    volumes:
+      - uploads:/app/uploads
+
+  # ── Cliente React (nginx) ─────────────────────────────────
+  client:
+    build: ./client
+    restart: unless-stopped
+    depends_on:
+      - server
+    ports:
+      - "8080:80"
+
+volumes:
+  pgdata:
+  uploads:

@@ -1,0 +1,1 @@
+ALTER TABLE "Conductor" ADD COLUMN IF NOT EXISTS "pushToken" TEXT;

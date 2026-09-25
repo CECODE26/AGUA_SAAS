@@ -1,0 +1,3 @@
+ALTER TABLE "Cliente"
+  ADD COLUMN IF NOT EXISTS "visitasHorario" JSONB,
+  ADD COLUMN IF NOT EXISTS "esFijo"         BOOLEAN NOT NULL DEFAULT false;

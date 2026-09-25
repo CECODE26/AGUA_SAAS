@@ -1,0 +1,33 @@
+node_modules/
+.env
+.env.local
+.env.mobile
+dist/
+.claude/
+*.log
+
+.DS_Store
+**/.DS_Store
+propuesta_comercial.html
+
+# App Expo móvil
+mobile/node_modules/
+mobile/.expo/
+mobile/dist/
+
+# Secretos y configuración sensible
+docker-compose.yml
+docker-compose.override.yml
+server/.env
+server/.env.production
+
+# Keystores privados de Android (NUNCA en git)
+*.keystore
+mobile/android/app/*.keystore
+mobile/android/key.properties
+
+# IDE y configuración local
+.idea/
+.vscode/
+*.swp
+*.swo
