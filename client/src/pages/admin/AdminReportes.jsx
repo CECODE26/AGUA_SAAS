@@ -5,6 +5,7 @@ import * as XLSX from 'xlsx'
 import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import html2canvas from 'html2canvas'
+import { useDistribuidora } from '../../context/DistribuidoraContext'
 
 const hoy = () => new Date().toISOString().split('T')[0]
 const primerDiaMes = () => {
@@ -26,6 +27,7 @@ const BADGE = {
 }
 
 export default function AdminReportes() {
+  const { nombre: nombreMarca } = useDistribuidora()
   const [desde,    setDesde]    = useState(primerDiaMes())
   const [hasta,    setHasta]    = useState(hoy())
   const [datos,    setDatos]    = useState(null)
@@ -53,7 +55,7 @@ export default function AdminReportes() {
     if (!datos) return
     const doc = new jsPDF()
     doc.setFontSize(16)
-    doc.text('Reporte de Ventas — Agua Manú', 14, 18)
+    doc.text(`Reporte de Ventas — ${nombreMarca}`, 14, 18)
     doc.setFontSize(10)
     doc.text(`Período: ${formatFecha(datos.periodo.desde)} — ${formatFecha(datos.periodo.hasta)}`, 14, 26)
 

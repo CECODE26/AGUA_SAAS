@@ -6,14 +6,14 @@ import {
 } from 'react-native'
 import { Swipeable } from 'react-native-gesture-handler'
 import { useClienteAuth } from '../context/ClienteAuthContext'
-import { apiUrl, fetchT } from '../api'
+import { apiUrl, fetchT, NOMBRE_MARCA } from '../api'
 import Icono, { NombreIcono } from '../components/Icono'
 
 type EstadoKey = 'pendiente' | 'entregado' | 'suspendido'
 
 const ESTADO: Record<EstadoKey, { bg: string; border: string; color: string; icon: NombreIcono; label: string; msg: string }> = {
   pendiente:  { bg: '#eef4fc', border: '#cfe0f5', color: '#1d4f91', icon: 'reloj', label: 'En preparación', msg: 'Tu pedido está siendo preparado. Te contactaremos pronto para coordinar la entrega.' },
-  entregado:  { bg: '#effaf4', border: '#c6ead6', color: '#166534', icon: 'check', label: 'Entregado',      msg: 'Tu pedido fue entregado correctamente. Gracias por confiar en Agua Manú.' },
+  entregado:  { bg: '#effaf4', border: '#c6ead6', color: '#166534', icon: 'check', label: 'Entregado',      msg: 'Tu pedido fue entregado correctamente. Gracias por confiar en ' + NOMBRE_MARCA + '.' },
   suspendido: { bg: '#fdf2f3', border: '#f3cfd4', color: '#9f1239', icon: 'cruz',  label: 'Cancelado',      msg: 'Pedido cancelado. Si tienes dudas contáctanos al (03) 2936000.' },
 }
 

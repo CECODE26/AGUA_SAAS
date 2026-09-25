@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { apiUrl } from '../lib/api'
+import { useDistribuidora } from '../context/DistribuidoraContext'
 
 const BADGE = {
   pendiente:  { bg: '#fff3cd', color: '#856404', label: 'Pendiente',  icon: 'bi-clock' },
@@ -15,6 +16,7 @@ function formatFecha(iso) {
 }
 
 export default function MisPedidos() {
+  const { distribuidora } = useDistribuidora()
   const [email, setEmail]       = useState('')
   const [resultado, setResultado] = useState(null)  // null | { cliente, pedidos }
   const [cargando, setCargando] = useState(false)
@@ -165,7 +167,7 @@ export default function MisPedidos() {
                         <div className="d-flex align-items-center gap-2 small"
                           style={{ color: '#58151c' }}>
                           <i className="bi bi-telephone-fill"></i>
-                          Pedido suspendido. Por favor contáctanos al (03) 2936000.
+                          Pedido suspendido. Por favor contáctanos{distribuidora?.telefono ? ` al ${distribuidora.telefono}` : ''}.
                         </div>
                       )}
                     </div>

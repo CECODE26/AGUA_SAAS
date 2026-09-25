@@ -1,3 +1,7 @@
+# DB_PASSWORD (y opcionales VITE_*) vienen del archivo .env junto a este compose.
+# Cada distribuidora entra por su dominio propio o por <slug>.PLATAFORMA_DOMINIO:
+# apunta esos dominios (o un comodín *.PLATAFORMA_DOMINIO) a este servidor.
+
 services:
 
   # ── Base de datos PostgreSQL ──────────────────────────────
@@ -7,7 +11,7 @@ services:
     environment:
       POSTGRES_DB:       agua_piatua
       POSTGRES_USER:     postgres
-      POSTGRES_PASSWORD: 12345
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Define DB_PASSWORD en .env}
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -25,13 +29,17 @@ services:
         condition: service_healthy
     env_file: ./server/.env
     environment:
-      DATABASE_URL: postgresql://postgres:12345@db:5432/agua_piatua
+      DATABASE_URL: postgresql://postgres:${DB_PASSWORD}@db:5432/agua_piatua
     volumes:
       - uploads:/app/uploads
 
   # ── Cliente React (nginx) ─────────────────────────────────
   client:
-    build: ./client
+    build:
+      context: ./client
+      args:
+        VITE_MAPBOX_TOKEN: ${VITE_MAPBOX_TOKEN:-}
+        VITE_PLAY_STORE_URL: ${VITE_PLAY_STORE_URL:-}
     restart: unless-stopped
     depends_on:
       - server

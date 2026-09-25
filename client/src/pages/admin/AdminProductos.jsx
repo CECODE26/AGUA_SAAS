@@ -479,7 +479,7 @@ export default function AdminProductos() {
               <div className="mb-3">
                 <label className="form-label small fw-bold">Nombre *</label>
                 <input name="nombre" className="form-control" value={form.nombre}
-                  onChange={handleChange} required placeholder="Agua Manú 1L" />
+                  onChange={handleChange} required placeholder="Bidón 20L" />
               </div>
               <div className="mb-3">
                 <label className="form-label small fw-bold">Descripción</label>

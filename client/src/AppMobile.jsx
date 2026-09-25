@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './context/AuthContextMobile'
+import { DistribuidoraProvider, useDistribuidora } from './context/DistribuidoraContext'
 import WelcomeMobile from './components/WelcomeMobile'
 import SplashMobile from './components/SplashMobile'
 import TabBarMobile from './components/TabBarMobile'
@@ -74,6 +75,7 @@ function AdminTabBar() {
 
 // NavBar de admin
 function AdminNavBar() {
+  const { nombre: nombreMarca } = useDistribuidora()
   return (
     <nav style={{
       position: 'sticky', top: 0, zIndex: 100,
@@ -86,7 +88,7 @@ function AdminNavBar() {
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
         <span style={{ fontSize: '1.2rem' }}>🔒</span>
         <span style={{ color: '#fff', fontWeight: 800, fontSize: '1rem', letterSpacing: '-0.3px' }}>
-          Admin · Agua Manú
+          Admin · {nombreMarca}
         </span>
       </div>
     </nav>
@@ -94,6 +96,7 @@ function AdminNavBar() {
 }
 
 function NavbarMobile() {
+  const { nombre: nombreMarca } = useDistribuidora()
   const { pathname } = useLocation()
   const navigate = useNavigate()
 
@@ -113,7 +116,7 @@ function NavbarMobile() {
           <path d="M8 17C7.5 14.5 9 11.5 11 9" stroke="rgba(0,102,204,0.5)" strokeWidth="1.5" strokeLinecap="round" />
         </svg>
         <span style={{ color: '#fff', fontWeight: 800, fontSize: '1.1rem', letterSpacing: '-0.3px' }}>
-          Agua Manú
+          {nombreMarca}
         </span>
       </div>
 
@@ -197,8 +200,10 @@ function AppMobileInner() {
 
 export default function AppMobile() {
   return (
+    <DistribuidoraProvider>
     <AuthProvider>
       <AppMobileInner />
     </AuthProvider>
+    </DistribuidoraProvider>
   )
 }

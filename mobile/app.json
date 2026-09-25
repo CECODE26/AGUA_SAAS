@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Agua Manú",
-    "slug": "agua-manu",
-    "scheme": "aguamanu",
+    "name": "Agua Elite",
+    "slug": "agua-elite",
+    "scheme": "aguaelite",
     "version": "1.4.8",
     "orientation": "portrait",
     "icon": "./src/assets/logoooo.png",
@@ -15,10 +15,10 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.aguamanu.app",
+      "bundleIdentifier": "com.aguaelite.app",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Agua Manú necesita tu ubicación para asignarte entregas cercanas.",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "Agua Manú necesita tu ubicación para asignarte entregas cercanas."
+        "NSLocationWhenInUseUsageDescription": "La app necesita tu ubicación para asignarte entregas cercanas.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "La app necesita tu ubicación para asignarte entregas cercanas."
       }
     },
     "android": {
@@ -26,11 +26,11 @@
         "foregroundImage": "./src/assets/logoooo.png",
         "backgroundColor": "#0C1F3F"
       },
-      "package": "com.aguamanu.conductores",
+      "package": "com.aguaelite.app",
       "googleServicesFile": "./google-services.json",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyCDd3h4UaPFQJhF_aiy6TwhJ3g-nLx54xI"
+          "apiKey": ""
         }
       },
       "permissions": [
@@ -47,7 +47,7 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "Agua Manú necesita tu ubicación para asignarte entregas cercanas."
+          "locationWhenInUsePermission": "La app necesita tu ubicación para asignarte entregas cercanas."
         }
       ],
       [

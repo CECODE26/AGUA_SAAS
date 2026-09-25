@@ -6,7 +6,7 @@ import {
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { apiUrl } from '../../api'
+import { apiUrl, NOMBRE_MARCA } from '../../api'
 
 export default function ConductorLoginScreen() {
   const navigation = useNavigation<any>()
@@ -49,7 +49,7 @@ export default function ConductorLoginScreen() {
           <View style={s.logoCircle}>
             <Text style={{ fontSize: 32 }}>🚚</Text>
           </View>
-          <Text style={s.logoTitle}>Agua Manú</Text>
+          <Text style={s.logoTitle}>{NOMBRE_MARCA}</Text>
           <Text style={s.logoSub}>Acceso para repartidores</Text>
         </View>
 

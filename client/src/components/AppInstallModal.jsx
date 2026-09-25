@@ -1,11 +1,15 @@
+import { useDistribuidora } from '../context/DistribuidoraContext'
+// Enlace de la app de la distribuidora en Google Play (VITE_PLAY_STORE_URL)
+const PLAY_STORE_URL = import.meta.env.VITE_PLAY_STORE_URL || '#'
 const PASOS = [
-  { num: '1', icon: '📲', titulo: 'Descarga la app', desc: 'Búscala en App Store o Google Play como "Agua Manú"' },
-  { num: '2', icon: '📍', titulo: 'Ingresa tu dirección', desc: 'Registra dónde quieres recibir tu pedido en Puyo' },
+  { num: '1', icon: '📲', titulo: 'Descarga la app', desc: 'Búscala en App Store o Google Play con el nombre de tu distribuidora' },
+  { num: '2', icon: '📍', titulo: 'Ingresa tu dirección', desc: 'Registra dónde quieres recibir tu pedido' },
   { num: '3', icon: '💧', titulo: 'Elige tu producto', desc: 'Selecciona presentación y cantidad con un toque' },
   { num: '4', icon: '🚚', titulo: '¡Listo! Te lo llevamos', desc: 'El repartidor llega a tu puerta el mismo día' },
 ]
 
 export default function AppInstallModal({ onClose }) {
+  const { nombre: nombreMarca, distribuidora } = useDistribuidora()
   return (
     <div
       onClick={onClose}
@@ -47,10 +51,10 @@ export default function AppInstallModal({ onClose }) {
             boxShadow: '0 8px 24px rgba(0,102,204,0.28)',
           }}>💧</div>
           <h2 style={{ fontWeight: 900, fontSize: '1.2rem', color: '#0f1d3e', margin: '0 0 6px' }}>
-            Descarga Agua Manú
+            Descarga {nombreMarca}
           </h2>
           <p style={{ color: '#64748b', fontSize: '0.82rem', margin: 0, lineHeight: 1.5 }}>
-            Pide en segundos desde tu celular — entrega el mismo día en Puyo
+            Pide en segundos desde tu celular — entrega el mismo día{distribuidora?.ciudad ? ` en ${distribuidora.ciudad}` : ''}
           </p>
         </div>
 
@@ -69,7 +73,7 @@ export default function AppInstallModal({ onClose }) {
             </div>
           </a>
           <a
-            href="https://play.google.com/store/apps/details?id=com.aguamanu.conductores"
+            href={PLAY_STORE_URL}
             target="_blank"
             rel="noopener noreferrer"
             style={{

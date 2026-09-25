@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom'
+import { useDistribuidora } from '../context/DistribuidoraContext'
 
 export default function AccesoMobile() {
+  const { nombre: nombreMarca } = useDistribuidora()
   const navigate = useNavigate()
 
   return (
@@ -23,7 +25,7 @@ export default function AccesoMobile() {
           </svg>
         </div>
         <h2 style={{ color: '#fff', fontWeight: 800, fontSize: '1.5rem', margin: '0 0 6px' }}>
-          Agua Manú
+          {nombreMarca}
         </h2>
         <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.82rem', margin: 0 }}>
           ¿Cómo deseas ingresar?

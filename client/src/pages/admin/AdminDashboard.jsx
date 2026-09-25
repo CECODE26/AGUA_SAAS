@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { useDistribuidora } from '../../context/DistribuidoraContext'
 
 function StatCard({ titulo, valor, icon, bgColor, textColor }) {
   return (
@@ -19,6 +20,7 @@ function StatCard({ titulo, valor, icon, bgColor, textColor }) {
 }
 
 export default function AdminDashboard() {
+  const { nombre: nombreMarca } = useDistribuidora()
   const { authFetch } = useAuth()
   const STOCK_MINIMO = 20
 
@@ -77,7 +79,7 @@ export default function AdminDashboard() {
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h5 className="fw-bold mb-0">Dashboard</h5>
-          <p className="text-muted small mb-0">Resumen general de Agua Manú</p>
+          <p className="text-muted small mb-0">Resumen general de {nombreMarca}</p>
         </div>
         <span className="text-muted small">
           {new Date().toLocaleDateString('es-EC', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}

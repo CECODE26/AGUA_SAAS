@@ -93,7 +93,7 @@ async function geocodificar(cliente) {
       const qs  = new URLSearchParams({ ...params, format: 'json', limit: '1', countrycodes: 'ec' })
       const res = await fetch(
         `https://nominatim.openstreetmap.org/search?${qs}`,
-        { headers: { 'Accept-Language': 'es', 'User-Agent': 'AguaPiatua/1.0' } }
+        { headers: { 'Accept-Language': 'es', 'User-Agent': 'AguaElite/1.0' } }
       )
       const data = await res.json()
       if (data.length > 0) return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) }

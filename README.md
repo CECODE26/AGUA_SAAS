@@ -17,6 +17,23 @@ El sistema parte de **AGUAPAG** (Agua Manu), el software que ya funciona en prod
 
 Los comandos y la arquitectura están en `CLAUDE.md`.
 
+## SaaS multi-distribuidora
+
+Una sola instalación atiende a varias distribuidoras, cada una con sus datos separados
+(clientes, pedidos, choferes, camiones, rutas, fidelidad) y su propia marca.
+
+- **Panel de la plataforma:** `/plataforma` en cualquier dominio del sistema. Ahí se da de
+  alta cada distribuidora con su primer superadmin, se edita, se suspende o se le
+  restablece el acceso. El primer usuario sale de `PLATAFORMA_USUARIO` y
+  `PLATAFORMA_PASSWORD` (ver `server/.env.example`).
+- **Cómo entra cada distribuidora:** por su dominio propio (`aguanorte.com`) o por
+  `<slug>.PLATAFORMA_DOMINIO`. Las apps móviles mandan su slug en cada llamada.
+- **Marca:** cada superadmin edita nombre, color, logo y contacto en *Mi distribuidora*.
+- **Apps móviles (marca blanca):** un build por distribuidora con las variables de
+  `mobile/.env.example`.
+- **Datos que ya existían** (una base de AGUAPAG): la migración los deja en la
+  distribuidora 1 con slug `principal`; cámbiale nombre, slug y dominio desde el panel.
+
 ## Plantillas de landing
 
 Hay cuatro propuestas de portada, cada una en versión de escritorio (1440 × 900) y de celular (390 × 844). Abre `index.html` para verlas todas juntas.

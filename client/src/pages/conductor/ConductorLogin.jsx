@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDistribuidora } from '../../context/DistribuidoraContext'
 
 export default function ConductorLogin() {
+  const { nombre: nombreMarca } = useDistribuidora()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error,    setError]    = useState('')
@@ -39,7 +41,7 @@ export default function ConductorLogin() {
             style={{ width: 60, height: 60, background: '#0066CC' }}>
             <i className="bi bi-truck text-white fs-4"></i>
           </div>
-          <h5 className="fw-bold mb-0">Agua Manú</h5>
+          <h5 className="fw-bold mb-0">{nombreMarca}</h5>
           <p className="text-muted small">Acceso para conductores</p>
         </div>
 

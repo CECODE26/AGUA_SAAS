@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useDistribuidora } from '../context/DistribuidoraContext'
+
+// Enlace de la app de la distribuidora en Google Play (VITE_PLAY_STORE_URL)
+const PLAY_STORE_URL = import.meta.env.VITE_PLAY_STORE_URL || '#'
 
 function DropIcon() {
   return (
@@ -17,6 +21,7 @@ function DropIcon() {
 }
 
 export default function WelcomeModal() {
+  const { nombre: nombreMarca, distribuidora } = useDistribuidora()
   const [visible, setVisible] = useState(false)
   const [closing, setClosing] = useState(false)
   const navigate = useNavigate()
@@ -97,7 +102,7 @@ export default function WelcomeModal() {
             Amazonía Ecuatoriana
           </p>
           <h2 style={{ color: '#fff', fontWeight: 800, fontSize: '2.1rem', margin: '0', letterSpacing: '-0.5px', lineHeight: 1.1 }}>
-            Agua Manú
+            {nombreMarca}
           </h2>
           <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem', margin: '0.6rem 0 0', letterSpacing: '0.5px' }}>
             ¡El equilibrio de la naturaleza!
@@ -108,7 +113,7 @@ export default function WelcomeModal() {
 
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.88rem', lineHeight: 1.7, margin: '0' }}>
             Bienvenido a nuestra tienda en línea.<br />
-            Agua purificada de manantial, directo a tu puerta<br />en Puyo, Pastaza.
+            Agua purificada, directo a tu puerta{distribuidora?.ciudad ? <><br />en {[distribuidora.ciudad, distribuidora.provincia].filter(Boolean).join(', ')}.</> : '.'}
           </p>
         </div>
 
@@ -141,7 +146,7 @@ export default function WelcomeModal() {
               <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.7rem', fontWeight: 600 }}>App Store</span>
             </span>
             <a
-              href="https://play.google.com/store/apps/details?id=com.aguamanu.conductores"
+              href={PLAY_STORE_URL}
               target="_blank"
               rel="noopener noreferrer"
               onClick={e => e.stopPropagation()}

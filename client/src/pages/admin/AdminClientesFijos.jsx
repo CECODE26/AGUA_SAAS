@@ -41,6 +41,8 @@ function ModalConfirmar({ cliente, onCancelar, onConfirmar, eliminando }) {
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 import * as XLSX from 'xlsx'
+import { esCorreoInterno } from '../../lib/distribuidora'
+import { useDistribuidora } from '../../context/DistribuidoraContext'
 
 // De dónde salió el cliente: se registró en la app, lo creó el Maestro, o compró en la web
 const ORIGEN = {
@@ -124,6 +126,7 @@ function ResumenDias({ clientes }) {
 }
 
 export default function AdminClientesFijos() {
+  const { nombre: nombreMarca } = useDistribuidora()
   const { authFetch } = useAuth()
 
   const [clientes,   setClientes]   = useState([])
@@ -186,7 +189,7 @@ export default function AdminClientesFijos() {
       c.nombre,
       c.cedula || '—',
       c.telefono,
-      c.email && !c.email.includes('@aguamanu.local') ? c.email : '—',
+      c.email && !esCorreoInterno(c.email) ? c.email : '—',
       [c.callePrincipal, c.calleSecundaria].filter(Boolean).join(' y ') || '—',
       c.referencia || '—',
       c.sector || '—',
@@ -202,7 +205,7 @@ export default function AdminClientesFijos() {
     const fecha = new Date().toLocaleDateString('es-EC', { day: '2-digit', month: '2-digit', year: 'numeric' })
 
     doc.setFontSize(16)
-    doc.text('Clientes Fijos — Agua Manú', 14, 18)
+    doc.text(`Clientes Fijos — ${nombreMarca}`, 14, 18)
     doc.setFontSize(9)
     doc.setTextColor(100)
     doc.text(`Generado: ${fecha}  ·  Total: ${clientes.length} cliente${clientes.length !== 1 ? 's' : ''}`, 14, 25)
@@ -232,7 +235,7 @@ export default function AdminClientesFijos() {
       'Nombre':      c.nombre,
       'Cédula/RUC':  c.cedula || '',
       'Teléfono':    c.telefono,
-      'Email':       c.email && !c.email.includes('@aguamanu.local') ? c.email : '',
+      'Email':       c.email && !esCorreoInterno(c.email) ? c.email : '',
       'Calle principal': c.callePrincipal || '',
       'Calle secundaria': c.calleSecundaria || '',
       'Referencia':  c.referencia || '',
@@ -369,7 +372,7 @@ export default function AdminClientesFijos() {
                         onClick={() => setExpandido(expandido === c.id ? null : c.id)}>
                         <td>
                           <div className="fw-semibold" style={{ color: '#1e1b4b' }}>{c.nombre}{c.nuevo && <NuevoTag />}</div>
-                          {c.email && !c.email.includes('@aguamanu.local') && (
+                          {c.email && !esCorreoInterno(c.email) && (
                             <div className="text-muted" style={{ fontSize: '0.72rem' }}>{c.email}</div>
                           )}
                         </td>
@@ -489,7 +492,7 @@ export default function AdminClientesFijos() {
                                 <p className="text-muted small mb-1 fw-bold text-uppercase" style={{ letterSpacing: 0.5 }}>Información adicional</p>
                                 <p className="mb-1 small">
                                   <span className="text-muted">Email: </span>
-                                  {c.email && !c.email.includes('@aguamanu.local') ? c.email : '—'}
+                                  {c.email && !esCorreoInterno(c.email) ? c.email : '—'}
                                 </p>
                                 <p className="mb-1 small">
                                   <span className="text-muted">Registrado: </span>

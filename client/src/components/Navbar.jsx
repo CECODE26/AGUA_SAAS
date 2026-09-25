@@ -1,7 +1,11 @@
 import { NavLink, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import { useDistribuidora, numeroWhatsapp } from '../context/DistribuidoraContext'
 
 export default function Navbar() {
+  const { nombre: nombreMarca, distribuidora } = useDistribuidora()
+  const lugar = [distribuidora?.ciudad, distribuidora?.provincia].filter(Boolean).join(', ')
+  const whatsapp = numeroWhatsapp(distribuidora?.whatsapp)
   const [scrolled, setScrolled] = useState(false)
   const { pathname } = useLocation()
   const isHome = pathname === '/'
@@ -21,19 +25,20 @@ export default function Navbar() {
       <div style={{ backgroundColor: '#0066CC', color: '#fff', fontSize: '0.82rem' }}>
         <div className="container-fluid px-4 py-1 d-flex justify-content-between align-items-center flex-wrap gap-2">
           <span>
-            <i className="bi bi-geo-alt-fill me-1"></i>
-            Puyo, Pastaza, Ecuador
+            {lugar && <><i className="bi bi-geo-alt-fill me-1"></i>{lugar}</>}
           </span>
           <span className="d-flex gap-3">
-            <span><i className="bi bi-telephone-fill me-1"></i>(03) 2936000</span>
-            <a
-              href="https://wa.me/593995827758"
-              target="_blank"
-              rel="noreferrer"
-              className="text-white text-decoration-none"
-            >
-              <i className="bi bi-whatsapp me-1"></i>Pedir a domicilio
-            </a>
+            {distribuidora?.telefono && <span><i className="bi bi-telephone-fill me-1"></i>{distribuidora.telefono}</span>}
+            {whatsapp && (
+              <a
+                href={`https://wa.me/${whatsapp}`}
+                target="_blank"
+                rel="noreferrer"
+                className="text-white text-decoration-none"
+              >
+                <i className="bi bi-whatsapp me-1"></i>Pedir a domicilio
+              </a>
+            )}
           </span>
         </div>
       </div>
@@ -50,7 +55,7 @@ export default function Navbar() {
               <path d="M10 1C10 1 2 11 2 16a8 8 0 0016 0C18 11 10 1 10 1z" fill="rgba(255,255,255,0.92)" />
               <ellipse cx="7.5" cy="15" rx="2" ry="3.5" fill="rgba(255,255,255,0.3)" transform="rotate(-25 7.5 15)" />
             </svg>
-            AGUA MANÚ
+            {nombreMarca.toUpperCase()}
           </NavLink>
           <button
             className="navbar-toggler border-0"

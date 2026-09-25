@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { useDistribuidora } from '../../context/DistribuidoraContext'
 
 export default function AdminLogin() {
+  const { nombre: nombreMarca } = useDistribuidora()
   const { login, isAuthenticated, loading } = useAuth()
   const navigate = useNavigate()
   const [form,        setForm]        = useState({ username: '', password: '', codigo: '' })
@@ -85,7 +87,7 @@ export default function AdminLogin() {
             <i className="bi bi-droplet-fill" style={{ fontSize: '2rem', color: '#fff' }} />
           </div>
           <h4 style={{ color: '#fff', fontWeight: 800, marginBottom: 4, fontSize: '1.4rem' }}>
-            Agua Manú
+            {nombreMarca}
           </h4>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', margin: 0 }}>
             Panel de Administración
@@ -229,7 +231,7 @@ export default function AdminLogin() {
                     }} />
                 </div>
                 <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: 6 }}>
-                  Abre Google Authenticator en tu celular y escribe el código de Agua Manú.
+                  Abre Google Authenticator en tu celular y escribe el código de {nombreMarca}.
                 </div>
               </div>
             )}

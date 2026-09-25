@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { useCart } from '../context/CartContext'
 import CheckoutModal from './CheckoutModal'
+import { useDistribuidora } from '../context/DistribuidoraContext'
 
 export default function CartSidebar() {
+  const { distribuidora } = useDistribuidora()
   const { items, total, totalItems, sidebarOpen, setSidebarOpen, removeItem, updateCantidad } = useCart()
   const [showCheckout, setShowCheckout] = useState(false)
 
@@ -115,7 +117,7 @@ export default function CartSidebar() {
             </div>
             <div className="d-flex align-items-center gap-2 mb-3">
               <i className="bi bi-truck text-verde"></i>
-              <small className="text-muted">Entrega sin costo adicional en Puyo</small>
+              <small className="text-muted">Entrega sin costo adicional{distribuidora?.ciudad ? ` en ${distribuidora.ciudad}` : ''}</small>
             </div>
             <button
               className="btn btn-verde w-100 py-2 fw-bold"

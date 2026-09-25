@@ -11,6 +11,7 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useAuth } from '../../context/AuthContext'
+import { useDistribuidora } from '../../context/DistribuidoraContext'
 
 // Fix iconos Leaflet + Vite
 delete L.Icon.Default.prototype._getIconUrl
@@ -203,7 +204,7 @@ async function geocodificar(cliente) {
       const qs = new URLSearchParams({ ...params, format: 'json', limit: '1', countrycodes: 'ec' })
       const res = await fetch(
         `https://nominatim.openstreetmap.org/search?${qs}`,
-        { headers: { 'Accept-Language': 'es', 'User-Agent': 'AguaPiatua/1.0' } }
+        { headers: { 'Accept-Language': 'es', 'User-Agent': 'AguaElite/1.0' } }
       )
       const data = await res.json()
       if (data.length > 0) return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon), ok: true }
@@ -429,6 +430,7 @@ function SortableRouteItem({ p, idx, onQuitar, conductorNombre }) {
 
 // ── Componente de Planificación ───────────────────────────────────────────────
 function PlanificacionTab({ authFetch }) {
+  const { nombre: nombreMarca } = useDistribuidora()
   const manana = () => { const d = new Date(); d.setDate(d.getDate() + 1); return d.toISOString().split('T')[0] }
 
   const [fecha,          setFecha]          = useState(manana())
@@ -1163,7 +1165,7 @@ function PlanificacionTab({ authFetch }) {
                 />
               ))}
               <Marker position={[DEPOSITO.lat, DEPOSITO.lng]} icon={depositoIcon}>
-                <Popup><b>🏭 Planta Agua Manú</b></Popup>
+                <Popup><b>🏭 Planta {nombreMarca}</b></Popup>
               </Marker>
               {rutaCalles.length > 1
                 ? <Polyline positions={rutaCalles} color="#0066CC" weight={4} opacity={0.9} />
@@ -1192,6 +1194,7 @@ function PlanificacionTab({ authFetch }) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 export default function AdminLogistica() {
+  const { nombre: nombreMarca } = useDistribuidora()
   const { authFetch } = useAuth()
   const [tab, setTab] = useState('planificacion')
   const [paradas, setParadas] = useState([])
@@ -1582,7 +1585,7 @@ export default function AdminLogistica() {
                 {/* Depósito */}
                 <Marker position={[DEPOSITO.lat, DEPOSITO.lng]} icon={depositoIcon}>
                   <Popup>
-                    <b>🏭 Depósito Agua Manú</b><br />
+                    <b>🏭 Depósito {nombreMarca}</b><br />
                     Puyo, Pastaza, Ecuador, Pastaza
                   </Popup>
                 </Marker>
@@ -1649,7 +1652,7 @@ export default function AdminLogistica() {
       <div id="hoja-ruta" style={{ display: 'none' }}>
         <style>{`#hoja-ruta { display: block !important; font-family: Arial, sans-serif; }`}</style>
         <div style={{ borderBottom: '3px solid #0d6efd', paddingBottom: '12px', marginBottom: '20px' }}>
-          <h2 style={{ color: '#0d6efd', margin: 0 }}>🚚 Hoja de Ruta — Agua Manú</h2>
+          <h2 style={{ color: '#0d6efd', margin: 0 }}>🚚 Hoja de Ruta — {nombreMarca}</h2>
           <p style={{ margin: '4px 0 0', color: '#666', fontSize: '13px' }}>
             {new Date(fecha + 'T12:00').toLocaleDateString('es-EC', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
             &nbsp;·&nbsp; {paradas.length} entrega(s)

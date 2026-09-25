@@ -8,6 +8,10 @@ import { CartProvider } from './src/context/CartContext'
 import { ClienteAuthProvider } from './src/context/ClienteAuthContext'
 import RootNavigator from './src/navigation'
 import { configurarNotificaciones, useNotificacionTap } from './src/lib/push'
+import { instalarEncabezadoDistribuidora } from './src/api'
+
+// Todas las llamadas al servidor dicen de qué distribuidora es esta app
+instalarEncabezadoDistribuidora()
 
 export const navigationRef = createNavigationContainerRef<any>()
 

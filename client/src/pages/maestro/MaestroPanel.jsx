@@ -4,6 +4,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-lea
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { apiUrl } from '../../lib/api'
+import { esCorreoInterno } from '../../lib/distribuidora'
 
 /* ── Leaflet default icon fix (Vite bundler) ── */
 delete L.Icon.Default.prototype._getIconUrl
@@ -526,7 +527,7 @@ export default function MaestroPanel() {
     setForm({
       nombre:          c.nombre          || '',
       cedula:          c.cedula          || '',
-      email:           c.email?.includes('@aguamanu.local') ? '' : (c.email || ''),
+      email:           esCorreoInterno(c.email) ? '' : (c.email || ''),
       telefono:        c.telefono        || '',
       callePrincipal:  c.callePrincipal  || '',
       calleSecundaria: c.calleSecundaria || '',
@@ -715,7 +716,7 @@ export default function MaestroPanel() {
                               <span className="badge ms-2" style={{ background: '#fef3c7', color: '#b45309', fontSize: '0.62rem', fontWeight: 800, verticalAlign: 'middle' }}>NUEVO</span>
                             )}
                           </div>
-                          {c.email && !c.email.includes('@aguamanu.local') && (
+                          {c.email && !esCorreoInterno(c.email) && (
                             <div className="text-muted" style={{ fontSize: '0.72rem' }}>{c.email}</div>
                           )}
                         </td>

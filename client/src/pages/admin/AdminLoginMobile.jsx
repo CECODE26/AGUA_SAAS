@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContextMobile'
+import { useDistribuidora } from '../../context/DistribuidoraContext'
 
 export default function AdminLoginMobile() {
+  const { nombre: nombreMarca } = useDistribuidora()
   const { login, isAuthenticated, loading } = useAuth()
   const navigate = useNavigate()
   const [form, setForm]           = useState({ username: '', password: '' })
@@ -57,7 +59,7 @@ export default function AdminLoginMobile() {
             </svg>
           </div>
           <h2 style={{ fontWeight: 800, fontSize: '1.2rem', color: '#0066CC', margin: '0 0 4px' }}>
-            Agua Manú
+            {nombreMarca}
           </h2>
           <p style={{ fontSize: '0.78rem', color: '#888', margin: 0 }}>Panel de Administración</p>
         </div>

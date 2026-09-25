@@ -42,6 +42,7 @@ services:
       context: ./client
       args:
         VITE_MAPBOX_TOKEN: ${VITE_MAPBOX_TOKEN}
+        VITE_PLAY_STORE_URL: ${VITE_PLAY_STORE_URL:-}
     restart: unless-stopped
     depends_on:
       - server

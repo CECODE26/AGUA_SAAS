@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
+import { useDistribuidora } from '../context/DistribuidoraContext'
 
 export default function SplashMobile({ onDone }) {
+  const { nombre: nombreMarca } = useDistribuidora()
   const [phase, setPhase] = useState('in') // 'in' | 'show' | 'out'
 
   useEffect(() => {
@@ -56,7 +58,7 @@ export default function SplashMobile({ onDone }) {
           margin: '0 0 6px',
           fontFamily: 'Montserrat, sans-serif',
         }}>
-          Agua Manú
+          {nombreMarca}
         </h1>
 
         {/* Subtítulo */}

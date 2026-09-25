@@ -26,7 +26,11 @@ function limpiarAjustes(body = {}) {
       v = v === null ? null : String(v).trim()
       if (k === 'nombre' && !v) throw Object.assign(new Error('El nombre no puede quedar vacío'), { status: 400, codigo: 'DATOS_INVALIDOS' })
       if (k === 'colorPrimario' && !/^#[0-9a-f]{6}$/i.test(v)) throw Object.assign(new Error('Color inválido, usa el formato #RRGGBB'), { status: 400, codigo: 'DATOS_INVALIDOS' })
-      if (v === '') v = null
+      if (v === '' || v === null) {
+        // Ciudad y provincia tienen valor por defecto: vacías = no se tocan
+        if (k === 'ciudad' || k === 'provincia') continue
+        v = null
+      }
     }
     data[k] = v
   }

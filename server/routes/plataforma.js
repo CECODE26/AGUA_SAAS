@@ -56,8 +56,8 @@ function datosDistribuidora(body, { parcial }) {
   if (!parcial && !data.nombre) throw error400('El nombre es obligatorio')
   if (parcial && 'nombre' in data && !data.nombre) throw error400('El nombre no puede quedar vacío')
   if (data.colorPrimario && !/^#[0-9a-f]{6}$/i.test(data.colorPrimario)) throw error400('Color inválido, usa el formato #RRGGBB')
-  if ('plan' in data && !data.plan) delete data.plan
-  if ('colorPrimario' in data && !data.colorPrimario) delete data.colorPrimario
+  // Columnas con valor por defecto: vacías = no se tocan (null no es válido ahí)
+  for (const k of ['plan', 'colorPrimario', 'ciudad', 'provincia']) if (k in data && !data[k]) delete data[k]
   return data
 }
 

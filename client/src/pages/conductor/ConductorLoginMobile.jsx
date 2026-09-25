@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { apiUrl } from '../../lib/api'
+import { useDistribuidora } from '../../context/DistribuidoraContext'
 
 export default function ConductorLoginMobile() {
+  const { nombre: nombreMarca } = useDistribuidora()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error,    setError]    = useState('')
@@ -54,7 +56,7 @@ export default function ConductorLoginMobile() {
             🚚
           </div>
           <h2 style={{ fontWeight: 800, fontSize: '1.2rem', color: '#0f1d3e', margin: '0 0 4px' }}>
-            Agua Manú
+            {nombreMarca}
           </h2>
           <p style={{ fontSize: '0.78rem', color: '#888', margin: 0 }}>Acceso para conductores</p>
         </div>

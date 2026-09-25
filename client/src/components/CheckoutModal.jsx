@@ -4,6 +4,7 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useCart } from '../context/CartContext'
 import { apiUrl } from '../lib/api'
+import { useDistribuidora } from '../context/DistribuidoraContext'
 
 // Fix iconos Leaflet + Vite
 delete L.Icon.Default.prototype._getIconUrl
@@ -57,7 +58,7 @@ const PROVINCIAS = [
 const INIT = {
   nombre: '', telefono: '', email: '',
   callePrincipal: '', interseccion: '', numeracion: '',
-  referencia: '', sector: '', ciudad: 'Puyo', provincia: 'Pastaza',
+  referencia: '', sector: '', ciudad: '', provincia: '',
   nota: '',
   lat: null, lng: null,   // coordenadas GPS del cliente (si las otorgó)
 }
@@ -140,7 +141,7 @@ async function reverseGeocode(lat, lng) {
   const nominatim = async (zoom) => {
     const res = await fetch(
       `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&addressdetails=1&accept-language=es&zoom=${zoom}`,
-      { headers: { 'User-Agent': 'AguaManu/1.0' }, signal: AbortSignal.timeout(8000) }
+      { headers: { 'User-Agent': 'AguaElite/1.0' }, signal: AbortSignal.timeout(8000) }
     )
     return res.json()
   }
@@ -163,14 +164,15 @@ async function reverseGeocode(lat, lng) {
     interseccion,
     numeracion:     a.house_number || '',
     sector:         a.neighbourhood || a.suburb || a.quarter || a.residential || a.hamlet || '',
-    ciudad:         a.city || a.town || a.village || a.municipality || a.county || 'Puyo',
+    ciudad:         a.city || a.town || a.village || a.municipality || a.county || distribuidora?.ciudad || '',
     provincia:      a.state || a.region || 'Pastaza',
   }
 }
 
 export default function CheckoutModal({ onClose, autoGeo = false }) {
   const { items, total, clearCart } = useCart()
-  const [form, setForm]             = useState(INIT)
+  const { distribuidora } = useDistribuidora()
+  const [form, setForm]             = useState(() => ({ ...INIT, ciudad: distribuidora?.ciudad || '', provincia: distribuidora?.provincia || '' }))
   const [estado, setEstado]         = useState('idle')
   // idle | pre-prompt | requesting | geocoding | ok | error | denied | unsupported
   const [geoEstado, setGeoEstado]   = useState('idle')

@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { apiUrl } from '../../lib/api'
+import { useDistribuidora } from '../../context/DistribuidoraContext'
 
 export default function MaestroLogin() {
+  const { nombre: nombreMarca } = useDistribuidora()
   const navigate = useNavigate()
   const [form,       setForm]       = useState({ username: '', password: '' })
   const [error,      setError]      = useState('')
@@ -61,7 +63,7 @@ export default function MaestroLogin() {
             <i className="bi bi-people-fill" style={{ fontSize: '2rem', color: '#fff' }} />
           </div>
           <h4 style={{ color: '#fff', fontWeight: 800, marginBottom: 4, fontSize: '1.4rem' }}>
-            Agua Manú
+            {nombreMarca}
           </h4>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem', margin: 0 }}>
             Portal Maestro de Clientes

@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom'
+import { useDistribuidora } from '../context/DistribuidoraContext'
 
 export default function Footer() {
+  const { distribuidora, nombre } = useDistribuidora()
+  const lugar = [distribuidora?.ciudad, distribuidora?.provincia].filter(Boolean).join(', ')
 
   return (
     <footer style={{ background: '#0066CC', color: '#fff', position: 'relative' }}>
@@ -13,10 +16,10 @@ export default function Footer() {
                 <path d="M10 1C10 1 2 11 2 16a8 8 0 0016 0C18 11 10 1 10 1z" fill="rgba(255,255,255,0.85)" />
                 <ellipse cx="7.5" cy="15" rx="2" ry="3.2" fill="rgba(255,255,255,0.28)" transform="rotate(-25 7.5 15)" />
               </svg>
-              AGUA MANÚ
+              {nombre.toUpperCase()}
             </h4>
             <p className="small opacity-75">
-              Agua de manantial purificada Manú, embotellada en Puyo, Pastaza, Ecuador.
+              Agua purificada con entrega a domicilio{lugar ? ` en ${lugar}` : ''}.
             </p>
             <div className="d-flex gap-3 justify-content-center justify-content-md-start mt-3">
               <a href="#" style={{ color: '#fff', fontSize: '1.4rem' }}><i className="bi bi-facebook"></i></a>
@@ -42,16 +45,21 @@ export default function Footer() {
           {/* Contacto */}
           <div className="col-md-4 mb-4 mb-md-0">
             <h5 className="fw-bold mb-3">Contáctanos</h5>
-            <p className="mb-2 small opacity-90">
-              <i className="bi bi-geo-alt-fill me-2"></i>
-              Puyo, Pastaza, Ecuador
-            </p>
-            <p className="mb-2 small opacity-90">
-              <i className="bi bi-telephone-fill me-2"></i>Llámanos: (03) 2936000
-            </p>
-            <p className="small opacity-90">
-              <i className="bi bi-clock-fill me-2"></i>Lun–Vie: 8 AM – 4 PM · Sáb: 8 AM – 11:30 AM
-            </p>
+            {lugar && (
+              <p className="mb-2 small opacity-90">
+                <i className="bi bi-geo-alt-fill me-2"></i>{lugar}
+              </p>
+            )}
+            {distribuidora?.telefono && (
+              <p className="mb-2 small opacity-90">
+                <i className="bi bi-telephone-fill me-2"></i>Llámanos: {distribuidora.telefono}
+              </p>
+            )}
+            {distribuidora?.whatsapp && (
+              <p className="mb-2 small opacity-90">
+                <i className="bi bi-whatsapp me-2"></i>WhatsApp: {distribuidora.whatsapp}
+              </p>
+            )}
           </div>
         </div>
 
@@ -59,7 +67,7 @@ export default function Footer() {
           className="text-center mt-4 pt-3 small opacity-75 d-flex justify-content-center align-items-center gap-3 flex-wrap"
           style={{ borderTop: '1px solid rgba(255,255,255,0.2)' }}
         >
-          <span>© 2026 Agua Manú. Todos los derechos reservados.</span>
+          <span>© {new Date().getFullYear()} {nombre}. Todos los derechos reservados.</span>
           <span>·</span>
           <Link to="/lopdp" className="text-white text-decoration-none">Política de Privacidad</Link>
         </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { apiUrl } from '../lib/api'
+import { useDistribuidora } from '../context/DistribuidoraContext'
 
 const ESTADO = {
   pendiente:  { bg: '#fffbeb', border: '#fcd34d', color: '#92400e', dot: '#f59e0b', label: 'En preparación', icon: '⏳' },
@@ -15,6 +16,7 @@ function formatFecha(iso) {
 }
 
 export default function MisPedidosMobile() {
+  const { nombre: nombreMarca, distribuidora } = useDistribuidora()
   const [email,     setEmail]     = useState('')
   const [resultado, setResultado] = useState(null)
   const [cargando,  setCargando]  = useState(false)
@@ -253,8 +255,8 @@ export default function MisPedidosMobile() {
                           <span style={{ flexShrink: 0 }}>{b.icon}</span>
                           <span>
                             {p.estado === 'pendiente'  && 'Tu pedido está siendo preparado. Te contactaremos pronto para coordinar la entrega.'}
-                            {p.estado === 'entregado'  && '¡Tu pedido fue entregado correctamente! Gracias por confiar en Agua Manú.'}
-                            {p.estado === 'suspendido' && 'Pedido suspendido. Por favor contáctanos al (03) 2936000 para más información.'}
+                            {p.estado === 'entregado'  && `¡Tu pedido fue entregado correctamente! Gracias por confiar en ${nombreMarca}.`}
+                            {p.estado === 'suspendido' && `Pedido suspendido. Por favor contáctanos${distribuidora?.telefono ? ` al ${distribuidora.telefono}` : ''} para más información.`}
                           </span>
                         </div>
                       </div>

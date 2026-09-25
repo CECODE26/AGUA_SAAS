@@ -19,6 +19,7 @@ import ConductorRutaScreen    from '../screens/conductor/ConductorRutaScreen'
 import ClienteFijoScreen      from '../screens/ClienteFijoScreen'
 import OnboardingScreen       from '../screens/OnboardingScreen'
 import SplashScreen           from '../screens/SplashScreen'
+import { NOMBRE_MARCA } from '../api'
 
 function TabIcon({ icono, color }: { icono: NombreIcono; color: string }) {
   return <Icono nombre={icono} size={24} color={color} />
@@ -63,7 +64,7 @@ function ClienteTabs() {
       }}
     >
       <Tab.Screen name="Inicio"     component={InicioScreen}
-        options={{ title: 'Agua Manú', tabBarLabel: 'Inicio',      tabBarIcon: ({ color }) => <TabIcon icono="casa" color={color} /> }} />
+        options={{ title: NOMBRE_MARCA, tabBarLabel: 'Inicio',      tabBarIcon: ({ color }) => <TabIcon icono="casa" color={color} /> }} />
       <Tab.Screen name="Productos"  component={ProductosScreen}
         options={{ title: 'Productos', tabBarLabel: 'Productos',   tabBarIcon: ({ color }) => <TabIcon icono="gota" color={color} /> }} />
       <Tab.Screen name="MisPedidos" component={MisPedidosScreen}

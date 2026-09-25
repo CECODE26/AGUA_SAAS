@@ -5,6 +5,14 @@ Tu área de trabajo es exclusivamente `client/`. No toques nada en `server/`.
 
 ---
 
+## Regla multi-distribuidora
+
+El sistema es un SaaS: el nombre, color, logo, teléfono y ciudad de la empresa salen de
+`useDistribuidora()` (`src/context/DistribuidoraContext.jsx`). No escribas el nombre de
+ninguna empresa ni sus datos de contacto en el código. Las llamadas a `/api` no necesitan
+nada extra: la distribuidora sale del dominio (o de `VITE_DISTRIBUIDORA` en desarrollo y
+en la app de Capacitor, ver `src/lib/distribuidora.js`).
+
 ## Tu Stack
 
 - **Framework:** React 18 + React Router DOM v6

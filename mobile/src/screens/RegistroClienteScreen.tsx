@@ -5,6 +5,7 @@ import {
 } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useClienteAuth } from '../context/ClienteAuthContext'
+import { NOMBRE_MARCA } from '../api'
 
 /* ── Reglas de contraseña ─────────────────────────────────────────────────── */
 const PWD_RULES = [
@@ -108,7 +109,7 @@ export default function RegistroClienteScreen({ navigation }: any) {
         <View style={s.header}>
           <Text style={s.logo}>💧</Text>
           <Text style={s.brand}>Crear cuenta</Text>
-          <Text style={s.sub}>Agua Manú · Todos los campos son obligatorios</Text>
+          <Text style={s.sub}>{NOMBRE_MARCA} · Todos los campos son obligatorios</Text>
         </View>
 
         <View style={s.card}>

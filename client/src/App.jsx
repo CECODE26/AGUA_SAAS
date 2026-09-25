@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import { CartProvider } from './context/CartContext'
 import { AuthProvider } from './context/AuthContext'
+import { DistribuidoraProvider } from './context/DistribuidoraContext'
 import ProtectedRoute from './components/ProtectedRoute'
 
 // Layout público
@@ -35,6 +36,7 @@ import AdminSolicitudes    from './pages/admin/AdminSolicitudes'
 import SuperAdminSolicitudes from './pages/admin/SuperAdminSolicitudes'
 import SuperAdminAdmins    from './pages/admin/SuperAdminAdmins'
 import SuperAdminPaginas   from './pages/admin/SuperAdminPaginas'
+import SuperAdminDistribuidora from './pages/admin/SuperAdminDistribuidora'
 import AdminCuenta         from './pages/admin/AdminCuenta'
 import AdminFidelidad      from './pages/admin/AdminFidelidad'
 import ConductorLogin      from './pages/conductor/ConductorLogin'
@@ -42,11 +44,25 @@ import ConductorRuta       from './pages/conductor/ConductorRuta'
 import MaestroLogin        from './pages/maestro/MaestroLogin'
 import MaestroPanel        from './pages/maestro/MaestroPanel'
 import ErrorBoundary       from './components/ErrorBoundary'
+import PlataformaPanel     from './pages/plataforma/PlataformaPanel'
 
 export default function App() {
   return (
+    <ErrorBoundary>
+    <Routes>
+      {/* ── Panel de la plataforma (dueños del SaaS): no pertenece a ninguna distribuidora ── */}
+      <Route path="/plataforma/*" element={<PlataformaPanel />} />
+      <Route path="*" element={<SitioDistribuidora />} />
+    </Routes>
+    </ErrorBoundary>
+  )
+}
+
+// Sitio público y paneles de una distribuidora (la identifica el dominio)
+function SitioDistribuidora() {
+  return (
+    <DistribuidoraProvider>
     <AuthProvider>
-      <ErrorBoundary>
       <Routes>
         {/* ── Sitio público ──────────────────────────── */}
         <Route path="/*" element={
@@ -88,6 +104,7 @@ export default function App() {
           <Route path="sa/solicitudes"    element={<SuperAdminSolicitudes />} />
           <Route path="sa/admins"         element={<SuperAdminAdmins />} />
           <Route path="sa/paginas"        element={<SuperAdminPaginas />} />
+          <Route path="sa/distribuidora"  element={<SuperAdminDistribuidora />} />
           <Route path="cuenta"            element={<AdminCuenta />} />
           <Route path="fidelidad"         element={<AdminFidelidad />} />
         </Route>
@@ -100,7 +117,7 @@ export default function App() {
         <Route path="/maestro/login" element={<MaestroLogin />} />
         <Route path="/maestro"       element={<MaestroPanel />} />
       </Routes>
-      </ErrorBoundary>
     </AuthProvider>
+    </DistribuidoraProvider>
   )
 }

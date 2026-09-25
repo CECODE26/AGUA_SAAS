@@ -4,6 +4,7 @@ import {
   Dimensions, Image, Animated,
 } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { NOMBRE_MARCA } from '../api'
 
 const logo = require('../assets/logoooo.png')
 const { width, height } = Dimensions.get('window')
@@ -100,12 +101,12 @@ export default function OnboardingScreen({ onDone }: { onDone: () => void }) {
             </View>
           </View>
         </View>
-        <Text style={s.brand}>Agua Manú</Text>
+        <Text style={s.brand}>{NOMBRE_MARCA}</Text>
       </Animated.View>
 
       {/* Card blanca — sube tras el splash */}
       <Animated.View style={[s.card, { transform: [{ translateY: cardY }] }]}>
-        <Text style={s.titulo}>Bienvenido a{'\n'}<Text style={s.tituloAccent}>Agua Manú</Text></Text>
+        <Text style={s.titulo}>Bienvenido a{'\n'}<Text style={s.tituloAccent}>{NOMBRE_MARCA}</Text></Text>
         <Text style={s.desc}>Agua pura entregada directo a tu puerta en Puyo y alrededores.</Text>
 
         {splashDone && (

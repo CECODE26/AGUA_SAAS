@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { useNotificaciones } from '../../hooks/useNotificaciones'
 import { useAvisoPedidos } from '../../hooks/useAvisoPedidos'
+import { useDistribuidora } from '../../context/DistribuidoraContext'
 
 // `section` agrupa el menú de escritorio (Operación · Distribución · Administración)
 const navBase = [
@@ -31,6 +32,7 @@ const navSuperAdmin = [
   { to: '/admin/sa/solicitudes', label: 'Solicitudes', icon: 'bi-bell-fill',      badge: 'solicitudes', section: 'Administración' },
   { to: '/admin/sa/admins',      label: 'Admins',      icon: 'bi-shield-lock',    section: 'Administración' },
   { to: '/admin/sa/paginas',     label: 'Sitio Web',   icon: 'bi-layout-text-sidebar-reverse', section: 'Administración' },
+  { to: '/admin/sa/distribuidora', label: 'Mi distribuidora', icon: 'bi-buildings', section: 'Administración' },
 ]
 
 // Colores del menú de escritorio
@@ -67,6 +69,7 @@ function Badge({ count }) {
 }
 
 export default function AdminLayout() {
+  const { nombre: nombreMarca } = useDistribuidora()
   const { logout, rol }  = useAuth()
   const navigate         = useNavigate()
   const location         = useLocation()
@@ -156,7 +159,7 @@ export default function AdminLayout() {
             style={{ width: '32px', height: '32px', background: '#0066CC', flexShrink: 0 }}>
             <i className="bi bi-droplet-fill text-white" style={{ fontSize: '0.8rem' }}></i>
           </div>
-          <span className="text-white fw-bold" style={{ fontSize: '0.9rem' }}>Agua Manú</span>
+          <span className="text-white fw-bold" style={{ fontSize: '0.9rem' }}>{nombreMarca}</span>
         </div>
         <div className="d-flex gap-2 align-items-center">
           {/* Total badge en mobile top bar */}
@@ -195,7 +198,7 @@ export default function AdminLayout() {
               <i className="bi bi-droplet-fill text-white" style={{ fontSize: '1.1rem' }}></i>
             </div>
             <div style={{ lineHeight: 1.2 }}>
-              <div className="text-white fw-bold" style={{ fontSize: '1.05rem' }}>Agua Manú</div>
+              <div className="text-white fw-bold" style={{ fontSize: '1.05rem' }}>{nombreMarca}</div>
               <div style={{ fontSize: '0.65rem', letterSpacing: '.12em', textTransform: 'uppercase', color: esSuperAdmin ? SB.morado : SB.icono }}>
                 {esSuperAdmin ? <><i className="bi bi-shield-lock-fill me-1"></i>Superadmin</> : 'Operaciones'}
               </div>

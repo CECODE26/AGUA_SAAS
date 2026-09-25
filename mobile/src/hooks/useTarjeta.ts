@@ -15,7 +15,7 @@ export type Tarjeta = {
   activo: boolean
   tipoPremio: 'producto' | 'descuento'
   descuentoPct: number | null
-  textoPremio: string                 // "1 Agua Manú 20L gratis" | "15 % de descuento"
+  textoPremio: string                 // "1 Bidón 20L gratis" | "15 % de descuento"
   meta: number
   sellos: number
   premiosDisponibles: number

@@ -4,6 +4,7 @@ import {
   KeyboardAvoidingView, Platform, ScrollView, ActivityIndicator, Alert,
 } from 'react-native'
 import { useClienteAuth } from '../context/ClienteAuthContext'
+import { NOMBRE_MARCA } from '../api'
 
 export default function LoginClienteScreen({ navigation }: any) {
   const { login } = useClienteAuth()
@@ -34,7 +35,7 @@ export default function LoginClienteScreen({ navigation }: any) {
         {/* Logo / header */}
         <View style={s.header}>
           <Text style={s.logo}>💧</Text>
-          <Text style={s.brand}>Agua Manú</Text>
+          <Text style={s.brand}>{NOMBRE_MARCA}</Text>
           <Text style={s.sub}>Inicia sesión en tu cuenta</Text>
         </View>
 
