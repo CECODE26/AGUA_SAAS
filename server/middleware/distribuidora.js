@@ -1,6 +1,7 @@
 // Identifica la distribuidora de cada petición /api y la deja en el contexto
 // (lib/tenant.js) para que lib/prisma.js filtre todas las consultas.
-const { als } = require('../lib/tenant')
+const { als, comoPlataforma } = require('../lib/tenant')
+const prisma = require('../lib/prisma')
 const distribuidoras = require('../lib/distribuidoras')
 const { leerToken, tokenDe } = require('./auth')
 
@@ -35,6 +36,17 @@ async function resolverDistribuidora(req, res, next) {
   }
 
   req.distribuidora = distribuidora
+
+  // Superadmin de Agua Elite dentro de la empresa ("Ingresar"): se registra cada cambio
+  if (payload?.soporte?.plataformaId && payload.distribuidoraId === distribuidora.id && !['GET', 'HEAD', 'OPTIONS'].includes(req.method)) {
+    const ruta = req.originalUrl.split('?')[0].slice(0, 300)
+    res.on('finish', () => {
+      comoPlataforma(() => prisma.registroSoporte.create({
+        data: { distribuidoraId: distribuidora.id, plataformaAdminId: payload.soporte.plataformaId, metodo: req.method, ruta, estado: res.statusCode },
+      })).catch(e => console.error('[SOPORTE] registro:', e.message))
+    })
+  }
+
   als.run({ distribuidoraId: distribuidora.id, distribuidora }, next)
 }
 

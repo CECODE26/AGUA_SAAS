@@ -430,6 +430,11 @@ model Distribuidora {
   activo  Boolean @default(true) // false = suspendida: su sitio y apps dejan de responder
   plan    String  @default("basico")
 
+  // Venta de Agua Elite: quién activó la empresa y cuánto paga por mes
+  precioMensual Float?
+  activadaPorId Int?
+  activadaPor   PlataformaAdmin? @relation("ActivadaPor", fields: [activadaPorId], references: [id], onDelete: SetNull)
+
   // Marca y contacto
   colorPrimario String  @default("#0066CC")
   logo          String? // archivo en /uploads
@@ -464,6 +469,7 @@ model Distribuidora {
   contactos            Contacto[]
   configFidelidad      ConfigFidelidad?
   movimientosFidelidad MovimientoFidelidad[]
+  registrosSoporte     RegistroSoporte[]
 
   @@index([esDemo, demoVenceEn])
 }
@@ -476,6 +482,29 @@ model PlataformaAdmin {
   username     String   @unique
   nombre       String
   passwordHash String
+  // superadmin: el dueño de Agua Elite (ve y entra a todas las empresas)
+  // revendedor: activa empresas y ve solo las suyas
+  rol          String   @default("superadmin")
+  telefono     String?
+  email        String?
   activo       Boolean  @default(true)
   creadoEn     DateTime @default(now())
+
+  empresasActivadas Distribuidora[]   @relation("ActivadaPor")
+  registrosSoporte  RegistroSoporte[]
+}
+
+// Cada cambio que hace un superadmin cuando entra al panel de una empresa ("Ingresar")
+model RegistroSoporte {
+  id                Int             @id @default(autoincrement())
+  distribuidoraId   Int
+  distribuidora     Distribuidora   @relation(fields: [distribuidoraId], references: [id], onDelete: Cascade)
+  plataformaAdminId Int
+  plataformaAdmin   PlataformaAdmin @relation(fields: [plataformaAdminId], references: [id], onDelete: Cascade)
+  metodo            String
+  ruta              String
+  estado            Int?
+  creadoEn          DateTime        @default(now())
+
+  @@index([distribuidoraId, creadoEn])
 }

@@ -42,6 +42,8 @@ import PlataformaPanel     from './pages/plataforma/PlataformaPanel'
 import LandingAguaElite    from './landing/LandingAguaElite'
 import DemoEntrar          from './landing/DemoEntrar'
 import AvisoDemo           from './landing/AvisoDemo'
+import SoporteEntrar       from './soporte/SoporteEntrar'
+import AvisoSoporte        from './soporte/AvisoSoporte'
 
 export default function App() {
   return (
@@ -62,9 +64,12 @@ function SitioDistribuidora() {
     <DistribuidoraProvider sinDistribuidora={<LandingAguaElite />}>
     <AuthProvider>
       <AvisoDemo />
+      <AvisoSoporte />
       <Routes>
         {/* ── Entrada a una demo recién creada desde la landing ── */}
         <Route path="/demo/entrar" element={<DemoEntrar />} />
+        {/* ── Superadmin de Agua Elite entrando a una empresa ("Ingresar") ── */}
+        <Route path="/soporte/entrar" element={<SoporteEntrar />} />
 
         {/* ── Sitio público ──────────────────────────── */}
         <Route path="/*" element={

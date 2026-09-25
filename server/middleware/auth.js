@@ -32,7 +32,14 @@ const firmarMaestro = m =>
 const firmarCliente = c =>
   firmar({ tipo: 'cliente', id: c.id, email: c.email, distribuidoraId: c.distribuidoraId }, '30d')
 const firmarPlataforma = p =>
-  firmar({ tipo: 'plataforma', plataformaId: p.id, username: p.username }, '8h')
+  firmar({ tipo: 'plataforma', plataformaId: p.id, username: p.username, rol: p.rol || 'superadmin' }, '8h')
+// Superadmin de Agua Elite dentro del panel de una empresa ("Ingresar"): superadmin de esa
+// empresa por 2 horas, marcado como soporte para registrar lo que cambia
+const firmarSoporte = (d, plataforma) =>
+  firmar({
+    tipo: 'admin', username: `soporte:${plataforma.username}`, rol: 'superadmin', distribuidoraId: d.id,
+    soporte: { plataformaId: plataforma.plataformaId, username: plataforma.username },
+  }, '2h')
 
 // ── Verificar ────────────────────────────────────────────────────────────────
 // Devuelve el payload si el token es de ese tipo y de la distribuidora de la petición
@@ -91,6 +98,6 @@ function conductorDeToken(token) {
 module.exports = {
   JWT_SECRET,
   verifyToken, verifySuperAdmin, verifyTokenConductor, verifyTokenMaestro, verifyTokenPlataforma,
-  firmarAdmin, firmarConductor, firmarMaestro, firmarCliente, firmarPlataforma,
+  firmarAdmin, firmarConductor, firmarMaestro, firmarCliente, firmarPlataforma, firmarSoporte,
   clienteDeToken, conductorDeToken, leerToken, tokenDe,
 }

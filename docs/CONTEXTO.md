@@ -13,7 +13,8 @@ Una instalación atiende a muchas distribuidoras; cada una con sus datos, su mar
 |---|---|---|
 | API | `server/` (Express + Prisma + PostgreSQL) | filtro por distribuidora en `lib/prisma.js` + `lib/tenant.js` |
 | Identificar distribuidora | `server/middleware/distribuidora.js` | encabezado, dominio propio, subdominio o por defecto |
-| Panel plataforma (dueños del SaaS) | `server/routes/plataforma.js`, `client/src/pages/plataforma/` | alta, edición, suspensión |
+| Panel plataforma (dueños del SaaS) | `server/routes/plataforma.js`, `client/src/pages/plataforma/` | menú solo "Empresas": ventas (directo / por revendedor), alta, edición, suspensión, revendedores |
+| Ingresar a una empresa (soporte) | `firmarSoporte` en `middleware/auth.js`, `client/src/soporte/` | el superadmin entra al panel completo de la empresa 2 h; lo que cambia queda en `RegistroSoporte` |
 | Demo instantánea | `server/lib/demo.js`, `client/src/landing/` | una distribuidora de prueba por visitante, se borra a las 2 h |
 | Sitio público de cada distribuidora | `client/src/sitio/` + `client/src/pages/{Inicio,Productos,Contacto,MisPedidos,Nosotros,LOPDP}.jsx` | diseño D · Elite |
 | Landing de Agua Elite | `client/src/landing/LandingAguaElite.jsx` | dominio raíz |
@@ -31,6 +32,8 @@ Una instalación atiende a muchas distribuidoras; cada una con sus datos, su mar
 ## Estado (rama `claude/ecstatic-albattani-xo5h2o`)
 Hecho: multi-distribuidora, plataforma, marca por distribuidora, sitio Elite, landing, demo
 (el visitante entra como admin del negocio, nunca superadmin),
+roles de plataforma (superadmin = dueño de Agua Elite; revendedor = activa empresas y solo ve las suyas;
+ventas = `precioMensual` de cada empresa), "Ingresar" a una empresa con registro de cambios,
 protección de secretos. Pendiente: app Capacitor sin marca de Manú, despliegue (necesita
 DNS comodín `*.dominio` + SSL), contacto de ventas de la landing (`VITE_CONTACTO_*`),
 reescritura opcional del historial de git (esperando permiso del usuario).

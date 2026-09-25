@@ -11,8 +11,15 @@ async function req(method, path, { token, slug, body } = {}) {
   return { status: r.status, json }
 }
 const login = async slug => (await req('POST', '/auth/login', { slug, body: { username: 'jefe', password: 'clave-segura-1' } })).json.token
+// Sesión del superadmin de Agua Elite dentro de una empresa ("Ingresar")
+async function soporte(slug) {
+  const P = (await req('POST', '/plataforma/login', { body: { username: 'dueno', password: 'clave-plataforma-1' } })).json.token
+  const id = (await req('GET', '/plataforma/distribuidoras', { token: P })).json.distribuidoras.find(e => e.slug === slug).id
+  return (await req('POST', `/plataforma/distribuidoras/${id}/ingresar`, { token: P })).json.token
+}
 ;(async () => {
   const N = await login('norte'), S = await login('sur')
+  const NS = await soporte('norte'), SS = await soporte('sur')
   const zona = [[-1.5, -78.1], [-1.5, -77.9], [-1.4, -77.9], [-1.4, -78.1]]
   // Norte: camión con zona y chofer; Sur: camión con la MISMA zona
   const camN = (await req('GET', '/camiones', { token: N })).json.camiones[0]
@@ -51,16 +58,16 @@ const login = async slug => (await req('POST', '/auth/login', { slug, body: { us
   const res = await req('GET', '/fidelidad/resumen', { token: N })
   ok(res.status === 200 && res.json.conTarjeta === 1, 'resumen de fidelidad de norte')
 
-  // Solicitudes: un admin de norte pide un admin; el superadmin de sur no la ve ni la aprueba
+  // Solicitudes: el admin de norte pide un admin; el superadmin dentro de sur no la ve ni la aprueba
   const sol = await req('POST', '/solicitudes', { token: N, body: { tipo: 'admin', targetNombre: 'Caja', targetUsername: 'caja', targetPassword: 'clave1' } })
   ok(sol.status === 200, 'solicitud en norte')
-  const solS = await req('GET', '/superadmin/solicitudes', { token: S })
+  const solS = await req('GET', '/superadmin/solicitudes', { token: SS })
   ok(solS.json.solicitudes.length === 0, 'sur no ve solicitudes de norte')
-  ok((await req('POST', `/superadmin/solicitudes/${sol.json.solicitud.id}/aprobar`, { token: S })).status === 404, 'sur no puede aprobar la de norte')
-  ok((await req('POST', `/superadmin/solicitudes/${sol.json.solicitud.id}/aprobar`, { token: N })).status === 200, 'norte la aprueba')
+  ok((await req('POST', `/superadmin/solicitudes/${sol.json.solicitud.id}/aprobar`, { token: SS })).status === 404, 'sur no puede aprobar la de norte')
+  ok((await req('POST', `/superadmin/solicitudes/${sol.json.solicitud.id}/aprobar`, { token: NS })).status === 200, 'norte la aprueba')
   ok((await req('POST', '/auth/login', { slug: 'norte', body: { username: 'caja', password: 'clave1' } })).status === 200, 'el admin nuevo entra en norte')
   ok((await req('POST', '/auth/login', { slug: 'sur', body: { username: 'caja', password: 'clave1' } })).status === 401, 'y no en sur')
-  const admS = await req('GET', '/superadmin/admins', { token: S })
+  const admS = await req('GET', '/superadmin/admins', { token: SS })
   ok(admS.json.admins.length === 1, 'sur solo ve sus admins')
 
   // Notificaciones y reportes

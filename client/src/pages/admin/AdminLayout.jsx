@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthContext'
 import { useNotificaciones } from '../../hooks/useNotificaciones'
 import { useAvisoPedidos } from '../../hooks/useAvisoPedidos'
 import { useDistribuidora } from '../../context/DistribuidoraContext'
+import { datosSoporte, salirDeSoporte } from '../../soporte/sesionSoporte'
 
 // `section` agrupa el menú de escritorio (Operación · Distribución · Administración)
 const navBase = [
@@ -75,6 +76,7 @@ export default function AdminLayout() {
   const location         = useLocation()
   const mainRef          = useRef(null)
   const esSuperAdmin     = rol === 'superadmin'
+  const enSoporte        = !!datosSoporte()   // superadmin de Agua Elite dentro de esta empresa
 
   useEffect(() => {
     if (mainRef.current) mainRef.current.scrollTop = 0
@@ -114,6 +116,7 @@ export default function AdminLayout() {
   }
 
   function handleLogout() {
+    if (enSoporte) return salirDeSoporte()
     logout()
     navigate('/admin/login')
   }
@@ -200,7 +203,7 @@ export default function AdminLayout() {
             <div style={{ lineHeight: 1.2 }}>
               <div className="text-white fw-bold" style={{ fontSize: '1.05rem' }}>{nombreMarca}</div>
               <div style={{ fontSize: '0.65rem', letterSpacing: '.12em', textTransform: 'uppercase', color: esSuperAdmin ? SB.morado : SB.icono }}>
-                {esSuperAdmin ? <><i className="bi bi-shield-lock-fill me-1"></i>Superadmin</> : 'Operaciones'}
+                {enSoporte ? <><i className="bi bi-shield-lock-fill me-1"></i>Soporte Agua Elite</> : esSuperAdmin ? <><i className="bi bi-shield-lock-fill me-1"></i>Superadmin</> : 'Operaciones'}
               </div>
             </div>
           </div>
