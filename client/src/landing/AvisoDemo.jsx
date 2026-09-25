@@ -35,7 +35,7 @@ export default function AvisoDemo() {
               {chofer && <><dt style={{ color: '#A8E4F0', fontWeight: 500 }}>Chofer</dt><dd style={{ margin: 0 }}>usuario <b>{chofer.usuario}</b> · clave <b>{chofer.clave}</b></dd></>}
             </dl>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              {[['/admin', 'Panel del dueño'], ['/', 'Sitio del cliente'], ['/conductor/login', 'App del chofer']].map(([href, texto]) => (
+              {[['/admin', 'Panel del negocio'], ['/', 'Sitio del cliente'], ['/conductor/login', 'App del chofer']].map(([href, texto]) => (
                 <a key={href} href={href} style={{ minHeight: 40, display: 'inline-flex', alignItems: 'center', padding: '0 14px', borderRadius: 999, border: '1px solid rgba(214,232,255,.3)', color: '#EAF4FF', textDecoration: 'none' }}>{texto}</a>
               ))}
             </div>

@@ -79,11 +79,12 @@ router.post('/login', async (req, res) => {
 // dueño. La landing lo manda a <slug>.PLATAFORMA_DOMINIO/demo/entrar con esa sesión.
 router.post('/demo', async (req, res) => {
   const { distribuidora, accesos } = await demo.crearDemo()
-  const dueno = await prisma.admin.findFirst({ where: { distribuidoraId: distribuidora.id, rol: 'superadmin' } })
+  // Sesión del administrador del negocio de la demo (nunca superadmin)
+  const negocio = await prisma.admin.findFirst({ where: { distribuidoraId: distribuidora.id, username: accesos.panel.usuario, rol: 'admin' } })
   console.log(`🧪 Demo creada: ${distribuidora.slug} (vence ${distribuidora.demoVenceEn.toISOString()})`)
   res.status(201).json({
     slug: distribuidora.slug,
-    token: firmarAdmin(dueno),
+    token: firmarAdmin(negocio),
     venceEn: distribuidora.demoVenceEn,
     accesos,
   })

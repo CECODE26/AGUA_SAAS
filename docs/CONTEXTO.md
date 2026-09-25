@@ -29,7 +29,8 @@ Una instalación atiende a muchas distribuidoras; cada una con sus datos, su mar
 - Web: `cd client && npx vite`. `localhost:5173` = landing; `<slug>.localhost:5173` = una distribuidora.
 
 ## Estado (rama `claude/ecstatic-albattani-xo5h2o`)
-Hecho: multi-distribuidora, plataforma, marca por distribuidora, sitio Elite, landing, demo,
+Hecho: multi-distribuidora, plataforma, marca por distribuidora, sitio Elite, landing, demo
+(el visitante entra como admin del negocio, nunca superadmin),
 protección de secretos. Pendiente: app Capacitor sin marca de Manú, despliegue (necesita
 DNS comodín `*.dominio` + SSL), contacto de ventas de la landing (`VITE_CONTACTO_*`),
 reescritura opcional del historial de git (esperando permiso del usuario).

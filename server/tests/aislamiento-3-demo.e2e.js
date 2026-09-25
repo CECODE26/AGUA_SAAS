@@ -19,6 +19,9 @@ async function req(method, path, { token, slug, body } = {}) {
   const A = a.json.token, S = a.json.slug
 
   // Entra directo como dueño, con datos de ejemplo
+  const yo = await req('GET', '/auth/verify', { token: A })
+  ok(yo.json?.rol === 'admin', `el visitante entra como administrador del negocio, no superadmin (${yo.json?.rol})`)
+  ok((await req('GET', '/superadmin/admins', { token: A })).status === 403, 'la demo no abre las funciones de superadmin')
   const ped = await req('GET', '/pedidos', { token: A })
   ok(ped.status === 200 && ped.json.pedidos.length > 20, `la demo trae pedidos de ejemplo (${ped.json?.pedidos?.length})`)
   const pub = await req('GET', '/distribuidora', { slug: S })

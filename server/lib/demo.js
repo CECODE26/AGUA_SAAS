@@ -49,7 +49,9 @@ async function crearDemo() {
   if (activas >= DEMO_MAX_ACTIVAS) throw new ErrorDemo('Hay muchas demos abiertas en este momento. Intenta de nuevo en unos minutos.')
 
   const clave = `demo${crypto.randomInt(1000, 9999)}`
-  const accesos = { panel: { usuario: 'dueno', clave }, chofer: { usuario: 'kevin', clave } }
+  // El visitante entra como administrador del negocio (rol admin): ve solo el espacio de su
+  // distribuidora. El nivel superadmin es del dueño de Agua Elite y no existe en las demos.
+  const accesos = { panel: { usuario: 'negocio', clave }, chofer: { usuario: 'kevin', clave } }
   const d = await comoPlataforma(() => prisma.distribuidora.create({
     data: {
       slug: `demo-${aleatorio(8).slice(0, 8)}`,
@@ -85,8 +87,7 @@ async function cargarDatos(d, clave) {
   const hash = await bcrypt.hash(clave, 10)
 
   // Equipo
-  const dueno = await prisma.admin.create({ data: { username: 'dueno', passwordHash: hash, rol: 'superadmin', telefono: null } })
-  await prisma.admin.create({ data: { username: 'secretaria', passwordHash: hash, rol: 'admin' } })
+  const negocio = await prisma.admin.create({ data: { username: 'negocio', passwordHash: hash, rol: 'admin' } })
   await prisma.maestroClientes.create({ data: { nombre: 'Maestro de clientes', username: 'maestro', passwordHash: hash } })
 
   // Catálogo
@@ -186,10 +187,10 @@ async function cargarDatos(d, clave) {
     { nombre: 'Andrea Salazar', email: 'andrea@example.com', mensaje: 'Gracias por la entrega de ayer, muy puntuales.', leido: true, creadoEn: aLas(-2, 17) },
   ] })
   await prisma.solicitudActivacion.create({
-    data: { tipo: 'admin', targetNombre: 'Ana Cajas', targetUsername: 'ana', targetPasswordHash: hash, solicitadoPor: 'secretaria' },
+    data: { tipo: 'admin', targetNombre: 'Ana Cajas', targetUsername: 'ana', targetPasswordHash: hash, solicitadoPor: 'negocio' },
   })
 
-  return { dueno }
+  return { negocio }
 }
 
 // ── Borrar (en orden: algunas relaciones no se borran en cascada) ────────────
