@@ -25,6 +25,8 @@ Una instalación atiende a muchas distribuidoras; cada una con sus datos, su mar
 | Pruebas | `server/tests/` (`npm run test:e2e`) | 3 suites de aislamiento, ver su README |
 
 ## Cómo probar sin leer todo
+- Con Docker, todo de una: `bash scripts/levantar-local.sh` (elige un puerto libre desde 8090,
+  crea `.env.local-docker` con claves al azar, siembra la distribuidora `demo`). `... parar` lo apaga.
 - Postgres local + `DATABASE_URL`, `JWT_SECRET`, `PLATAFORMA_USUARIO/PASSWORD`, `PLATAFORMA_DOMINIO=localhost`.
 - `npx prisma migrate deploy && node prisma/seed.js && node index.js`, luego `npm run test:e2e`.
 - Web: `cd client && npx vite`. `localhost:5173` = landing; `<slug>.localhost:5173` = una distribuidora.
