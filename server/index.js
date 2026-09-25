@@ -38,6 +38,14 @@ app.use('/api/auth/recuperar',    loginLimiter)   // "olvidé mi contraseña": m
 app.use('/api/conductores/login', loginLimiter)
 app.use('/api/maestro/login',     loginLimiter)
 app.use('/api/plataforma/login',  loginLimiter)
+// Demo instantánea: cada visitante crea una distribuidora de prueba; se limita por IP
+app.use('/api/plataforma/demo', rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: Number(process.env.DEMO_POR_HORA_IP) || 6,
+  message: { message: 'Ya abriste varias demos. Vuelve a intentarlo en un rato.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+}))
 
 // Rate limiting — contacto y recuperación: 10 envíos por hora por IP
 const emailLimiter = rateLimit({
@@ -90,4 +98,6 @@ app.listen(PORT, () => {
   // Traspaso nocturno: mover pedidos no entregados a la ruta del día siguiente
   // Se dispara a las 20:00 hora Ecuador (01:00 UTC) usando setTimeout recursivo
   require('./lib/traspasoNocturno')
+  // Borra las demos de la landing que ya vencieron (cada 10 minutos)
+  require('./lib/demo').programarLimpieza()
 })

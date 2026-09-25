@@ -7,6 +7,7 @@ const prisma  = require('../lib/prisma')
 const { comoPlataforma } = require('../lib/tenant')
 const distribuidoras = require('../lib/distribuidoras')
 const { verifyToken, verifySuperAdmin } = require('../middleware/auth')
+const { sinArchivosEnDemo } = require('../middleware/distribuidora')
 
 const router = express.Router()
 
@@ -69,7 +70,7 @@ const upload = multer({
   },
 })
 
-router.post('/logo', verifyToken, verifySuperAdmin, upload.single('logo'), async (req, res) => {
+router.post('/logo', verifyToken, verifySuperAdmin, sinArchivosEnDemo, upload.single('logo'), async (req, res) => {
   if (!req.file) return res.status(400).json({ message: 'No se recibió ninguna imagen' })
   const ext = path.extname(req.file.originalname).toLowerCase()
   const filename = `logo-${req.distribuidora.slug}-${Date.now()}${ext}`

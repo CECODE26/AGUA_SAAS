@@ -39,6 +39,9 @@ import MaestroLogin        from './pages/maestro/MaestroLogin'
 import MaestroPanel        from './pages/maestro/MaestroPanel'
 import ErrorBoundary       from './components/ErrorBoundary'
 import PlataformaPanel     from './pages/plataforma/PlataformaPanel'
+import LandingAguaElite    from './landing/LandingAguaElite'
+import DemoEntrar          from './landing/DemoEntrar'
+import AvisoDemo           from './landing/AvisoDemo'
 
 export default function App() {
   return (
@@ -52,12 +55,17 @@ export default function App() {
   )
 }
 
-// Sitio público y paneles de una distribuidora (la identifica el dominio)
+// Sitio público y paneles de una distribuidora (la identifica el dominio). En el dominio
+// de la plataforma no hay distribuidora: ahí va la landing de Agua Elite.
 function SitioDistribuidora() {
   return (
-    <DistribuidoraProvider>
+    <DistribuidoraProvider sinDistribuidora={<LandingAguaElite />}>
     <AuthProvider>
+      <AvisoDemo />
       <Routes>
+        {/* ── Entrada a una demo recién creada desde la landing ── */}
+        <Route path="/demo/entrar" element={<DemoEntrar />} />
+
         {/* ── Sitio público ──────────────────────────── */}
         <Route path="/*" element={
           <CartProvider>

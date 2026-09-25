@@ -27,6 +27,9 @@ async function resolverDistribuidora(req, res, next) {
   if (!distribuidora) {
     return res.status(400).json({ message: 'No se sabe a qué distribuidora va esta petición', codigo: 'SIN_DISTRIBUIDORA' })
   }
+  if (distribuidora.esDemo && distribuidora.demoVenceEn && new Date(distribuidora.demoVenceEn) < new Date()) {
+    return res.status(410).json({ message: 'Esta demo ya terminó. Abre una nueva desde la página de Agua Elite.', codigo: 'DEMO_VENCIDA' })
+  }
   if (!distribuidora.activo) {
     return res.status(403).json({ message: 'Esta distribuidora está suspendida', codigo: 'DISTRIBUIDORA_SUSPENDIDA' })
   }
@@ -35,4 +38,12 @@ async function resolverDistribuidora(req, res, next) {
   als.run({ distribuidoraId: distribuidora.id, distribuidora }, next)
 }
 
-module.exports = { resolverDistribuidora }
+// En las demos de la landing no se suben archivos: se borran solas y nadie limpiaría los archivos
+function sinArchivosEnDemo(req, res, next) {
+  if (req.distribuidora?.esDemo) {
+    return res.status(403).json({ message: 'En la demo no se pueden subir imágenes.', codigo: 'DEMO_SIN_ARCHIVOS' })
+  }
+  next()
+}
+
+module.exports = { resolverDistribuidora, sinArchivosEnDemo }

@@ -35,6 +35,13 @@ Una sola instalación atiende a varias distribuidoras, cada una con sus datos se
   política de privacidad. Los textos se editan en el panel, en *Sitio Web*.
 - **Apps móviles (marca blanca):** un build por distribuidora con las variables de
   `mobile/.env.example`.
+- **Landing de Agua Elite:** en el dominio de la plataforma (`PLATAFORMA_DOMINIO`, sin
+  subdominio) se muestra la landing para vender el sistema (`client/src/landing/`).
+- **Demo instantánea:** "Probar la demo" crea al momento una distribuidora de prueba solo
+  para ese visitante, con datos de ejemplo, y lo deja dentro del panel sin registrarse.
+  Lo que haga no lo ve nadie más, no manda correos ni avisos, no permite subir archivos y
+  se borra sola a las 2 horas (`server/lib/demo.js`). Necesita que los subdominios
+  `*.PLATAFORMA_DOMINIO` apunten al servidor, igual que las distribuidoras sin dominio propio.
 - **Datos que ya existían** (una base de AGUAPAG): la migración los deja en la
   distribuidora 1 con slug `principal`; cámbiale nombre, slug y dominio desde el panel.
 

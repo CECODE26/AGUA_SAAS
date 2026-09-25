@@ -17,6 +17,7 @@ const MENSAJES = {
   SIN_DISTRIBUIDORA: 'Esta dirección no corresponde a ninguna distribuidora.',
   DISTRIBUIDORA_NO_EXISTE: 'No encontramos esta distribuidora.',
   DISTRIBUIDORA_SUSPENDIDA: 'Esta distribuidora no está disponible por ahora.',
+  DEMO_VENCIDA: 'Esta demo ya terminó.',
 }
 
 // "0987 665 550" → "593987665550" para wa.me (Ecuador por defecto)
@@ -32,7 +33,8 @@ export function urlLogo(logo) {
   return /^https?:\/\//.test(logo) ? logo : apiUrl(`/uploads/${logo}`)
 }
 
-export function DistribuidoraProvider({ children, exigir = true }) {
+// sinDistribuidora: qué mostrar cuando el dominio no es de ninguna distribuidora (la landing)
+export function DistribuidoraProvider({ children, exigir = true, sinDistribuidora = null }) {
   const [estado, setEstado] = useState({ distribuidora: null, cargando: true, error: null })
 
   useEffect(() => {
@@ -57,13 +59,21 @@ export function DistribuidoraProvider({ children, exigir = true }) {
     if (meta && distribuidora.colorPrimario) meta.setAttribute('content', distribuidora.colorPrimario)
   }, [distribuidora])
 
+  if (sinDistribuidora && error === 'SIN_DISTRIBUIDORA') return sinDistribuidora
+  // Mientras no se sabe si es una distribuidora o la landing, no se muestra ninguna de las dos
+  if (sinDistribuidora && estado.cargando) return <div className="min-vh-100" style={{ background: '#06122B' }} />
+
   if (exigir && MENSAJES[error]) {
     return (
       <div className="min-vh-100 d-flex align-items-center justify-content-center p-4" style={{ background: '#f2f6fa' }}>
         <div className="text-center" style={{ maxWidth: 420 }}>
           <i className="bi bi-droplet-half" style={{ fontSize: '2.5rem', color: '#0066CC' }}></i>
           <h1 className="h4 fw-bold mt-3">{MENSAJES[error]}</h1>
-          <p className="text-muted mb-0">Revisa la dirección o comunícate con tu distribuidora.</p>
+          <p className="text-muted mb-0">
+            {error === 'DEMO_VENCIDA'
+              ? 'Las demos se borran solas a las dos horas. Puedes abrir otra desde la página de Agua Elite.'
+              : 'Revisa la dirección o comunícate con tu distribuidora.'}
+          </p>
         </div>
       </div>
     )

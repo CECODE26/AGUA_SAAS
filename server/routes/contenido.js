@@ -1,5 +1,6 @@
 const express = require('express')
 const { verifyToken, verifySuperAdmin } = require('../middleware/auth')
+const { sinArchivosEnDemo } = require('../middleware/distribuidora')
 const fs = require('fs')
 const path = require('path')
 const multer = require('multer')
@@ -39,7 +40,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage, limits: { fileSize: 15 * 1024 * 1024 } })
 
 // POST /api/contenido/imagen — solo superadmin
-router.post('/imagen', verifyToken, verifySuperAdmin, upload.single('imagen'), (req, res) => {
+router.post('/imagen', verifyToken, verifySuperAdmin, sinArchivosEnDemo, upload.single('imagen'), (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No se recibió imagen' })
   res.json({ url: `/uploads/contenido/${req.file.filename}` })
 })

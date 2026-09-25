@@ -180,7 +180,7 @@ async function traspasoDeDistribuidora() {
 async function ejecutarTraspaso() {
   console.log('🌙 Traspaso nocturno: iniciando...')
   try {
-    const activas = await comoPlataforma(() => prisma.distribuidora.findMany({ where: { activo: true } }))
+    const activas = await comoPlataforma(() => prisma.distribuidora.findMany({ where: { activo: true, esDemo: false } }))
     for (const d of activas) {
       try {
         console.log(`🌙 Traspaso: ${d.nombre} (${d.slug})`)

@@ -3,6 +3,7 @@ const multer   = require('multer')
 const path     = require('path')
 const fs       = require('fs')
 const { verifyToken } = require('../middleware/auth')
+const { sinArchivosEnDemo } = require('../middleware/distribuidora')
 const prisma   = require('../lib/prisma')
 const validarId = require('../lib/validarId')
 const { normalizarImagen } = require('../lib/normalizarImagen')
@@ -23,7 +24,7 @@ const upload = multer({
 })
 
 // POST /api/uploads/producto/:id — sube imagen, la normaliza y actualiza el producto
-router.post('/producto/:id', verifyToken, upload.single('imagen'), async (req, res) => {
+router.post('/producto/:id', verifyToken, sinArchivosEnDemo, upload.single('imagen'), async (req, res) => {
   const id = validarId(req.params.id)
   if (!id) return res.status(400).json({ message: 'ID inválido' })
   if (!req.file) return res.status(400).json({ success: false, message: 'No se recibió ningún archivo' })

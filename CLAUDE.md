@@ -87,6 +87,7 @@ Una sola instalación atiende a muchas distribuidoras. Cada tabla de negocio tie
 - **Cómo se identifica la distribuidora** (`server/middleware/distribuidora.js`): encabezado `X-Distribuidora: <slug>` → dominio propio (`Distribuidora.dominio`) → subdominio `<slug>.PLATAFORMA_DOMINIO` → `DISTRIBUIDORA_POR_DEFECTO`. El token también la lleva; si no coincide, 403.
 - **Únicos por distribuidora:** usuario (admin, chofer, maestro), email del cliente, placa, nombre de producto. Para `findUnique`/`upsert` por esos campos usa la clave compuesta (`distribuidoraId_email`) o `findFirst`.
 - **Plataforma:** `/api/plataforma/*` (tabla `PlataformaAdmin`) da de alta, edita y suspende distribuidoras. `/api/distribuidora` devuelve la marca pública; `/api/distribuidora/ajustes` la edita el superadmin.
+- **Landing y demo:** el dominio raíz de la plataforma (sin distribuidora) muestra la landing (`client/src/landing/`). `POST /api/plataforma/demo` crea una distribuidora de prueba por visitante (`Distribuidora.esDemo`, `server/lib/demo.js`): sin correos, sin push, sin archivos, se borra sola. Si agregas algo que manda mensajes o guarda archivos, respeta `esDemo`.
 - Pruebas de aislamiento: `server/tests/` (`npm run test:e2e`, ver su README).
 
 ### Services

@@ -22,6 +22,7 @@ async function limpiarToken(token) {
 
 // mensajes: [{ to, title, body, data? }]
 async function enviar(mensajes) {
+  if (require('./tenant').distribuidoraActual()?.esDemo) return   // las demos no mandan avisos
   const validos = (mensajes || []).filter(m => esTokenExpo(m.to))
   if (validos.length === 0) return
 

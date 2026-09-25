@@ -14,4 +14,5 @@ npx prisma migrate deploy && node prisma/seed.js
 node index.js &
 node tests/aislamiento-1-basico.e2e.js   # primero: crea las distribuidoras
 node tests/aislamiento-2-flujos.e2e.js   # después: usa lo que dejó la primera
+node tests/aislamiento-3-demo.e2e.js     # demo de la landing (tarda ~1 min: espera la caché)
 ```

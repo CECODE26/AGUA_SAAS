@@ -9,7 +9,7 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "node prisma/seed.js",
     "db:studio": "prisma studio",
-    "test:e2e": "node tests/aislamiento-1-basico.e2e.js && node tests/aislamiento-2-flujos.e2e.js"
+    "test:e2e": "node tests/aislamiento-1-basico.e2e.js && node tests/aislamiento-2-flujos.e2e.js && node tests/aislamiento-3-demo.e2e.js"
   },
   "prisma": {
     "seed": "node prisma/seed.js"

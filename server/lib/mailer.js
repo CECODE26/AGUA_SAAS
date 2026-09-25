@@ -5,6 +5,11 @@ const { urlSitio } = require('./distribuidoras')
 
 // Un solo buzón de envío (el de la plataforma); cada correo sale con el nombre de la
 // distribuidora y los avisos internos van a su correo de avisos.
+// Las demos de la landing nunca mandan correos (los clientes de ejemplo no existen y un
+// visitante podría escribir el correo de otra persona)
+const esDemo = () => !!distribuidoraActual()?.esDemo
+const sinCorreo = () => !process.env.MAIL_USER || esDemo()
+
 const remitente = () => `"${nombreMarca().replace(/"/g, '')}" <${process.env.MAIL_USER}>`
 const destinoAvisos = () => distribuidoraActual()?.emailAvisos || process.env.MAIL_ADMIN
 function pieDePagina() {
@@ -22,7 +27,7 @@ const transporter = nodemailer.createTransport({
 
 // ── Email al ADMIN: nuevo pedido ──────────────────────────────────────────
 async function emailNuevoPedido(pedido, cliente) {
-  if (!process.env.MAIL_USER || !destinoAvisos()) return
+  if (sinCorreo() || !destinoAvisos()) return
 
   const itemsHtml = pedido.items.map(i =>
     `<tr>
@@ -80,7 +85,7 @@ async function emailNuevoPedido(pedido, cliente) {
 
 // ── Email al CLIENTE: confirmación de pedido ─────────────────────────────
 async function emailConfirmacionCliente(pedido, cliente) {
-  if (!process.env.MAIL_USER) return
+  if (sinCorreo()) return
 
   const itemsHtml = pedido.items.map(i =>
     `<tr>
@@ -138,7 +143,7 @@ async function emailConfirmacionCliente(pedido, cliente) {
 
 // ── Email al CLIENTE: código de recuperación de contraseña ───────────────
 async function emailRecuperarPassword(email, nombre, codigo) {
-  if (!process.env.MAIL_USER) return
+  if (sinCorreo()) return
   await transporter.sendMail({
     from:    remitente(),
     to:      email,
@@ -168,7 +173,7 @@ async function emailRecuperarPassword(email, nombre, codigo) {
 const DIAS_LABEL = { lunes: 'Lunes', martes: 'Martes', miercoles: 'Miércoles', jueves: 'Jueves', viernes: 'Viernes', sabado: 'Sábado', domingo: 'Domingo' }
 
 async function emailNuevoClienteFijo(cliente) {
-  if (!process.env.MAIL_USER || !destinoAvisos()) return
+  if (sinCorreo() || !destinoAvisos()) return
 
   const visitas = Array.isArray(cliente.visitasHorario) ? cliente.visitasHorario : []
   const visitasHtml = visitas.length

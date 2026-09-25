@@ -7,7 +7,8 @@ const { als } = require('../lib/tenant')
 const distribuidoras = require('../lib/distribuidoras')
 const validarId = require('../lib/validarId')
 const { normalizarUsername, limpiarPassword } = require('../lib/usuarios')
-const { verifyTokenPlataforma, firmarPlataforma } = require('../middleware/auth')
+const { verifyTokenPlataforma, firmarPlataforma, firmarAdmin } = require('../middleware/auth')
+const demo = require('../lib/demo')
 
 const router = express.Router()
 
@@ -25,7 +26,7 @@ function validarSlug(slug) {
   if (!/^[a-z0-9](?:[a-z0-9-]{1,38}[a-z0-9])$/.test(s)) {
     throw error400('El identificador debe tener de 3 a 40 letras minúsculas, números o guiones (sin guion al inicio ni al final)')
   }
-  if (SLUGS_RESERVADOS.has(s)) throw error400('Ese identificador está reservado')
+  if (SLUGS_RESERVADOS.has(s) || s === 'demo' || s.startsWith('demo-')) throw error400('Ese identificador está reservado')
   return s
 }
 
@@ -73,12 +74,28 @@ router.post('/login', async (req, res) => {
   res.json({ token: firmarPlataforma(admin), admin: { username: admin.username, nombre: admin.nombre } })
 })
 
+// ── POST /api/plataforma/demo — demo instantánea para la landing (público) ──
+// Crea una distribuidora de prueba solo para este visitante y le da la sesión de su
+// dueño. La landing lo manda a <slug>.PLATAFORMA_DOMINIO/demo/entrar con esa sesión.
+router.post('/demo', async (req, res) => {
+  const { distribuidora, accesos } = await demo.crearDemo()
+  const dueno = await prisma.admin.findFirst({ where: { distribuidoraId: distribuidora.id, rol: 'superadmin' } })
+  console.log(`🧪 Demo creada: ${distribuidora.slug} (vence ${distribuidora.demoVenceEn.toISOString()})`)
+  res.status(201).json({
+    slug: distribuidora.slug,
+    token: firmarAdmin(dueno),
+    venceEn: distribuidora.demoVenceEn,
+    accesos,
+  })
+})
+
 router.use(verifyTokenPlataforma)
 
 // ── GET /api/plataforma/distribuidoras ──────────────────────────────────────
 router.get('/distribuidoras', async (req, res) => {
-  const lista = await prisma.distribuidora.findMany({ orderBy: { id: 'asc' }, include: conteos })
-  res.json({ distribuidoras: lista.map(({ contenido, ...d }) => d) })
+  const lista = await prisma.distribuidora.findMany({ where: { esDemo: false }, orderBy: { id: 'asc' }, include: conteos })
+  const demosActivas = await prisma.distribuidora.count({ where: { esDemo: true, demoVenceEn: { gt: new Date() } } })
+  res.json({ distribuidoras: lista.map(({ contenido, demoAccesos, ...d }) => d), demosActivas })
 })
 
 // ── GET /api/plataforma/distribuidoras/:id ──────────────────────────────────

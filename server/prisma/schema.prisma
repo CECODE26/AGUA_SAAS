@@ -442,6 +442,11 @@ model Distribuidora {
   depositoLng   Float?
   contenido     Json? // textos editables del sitio público
 
+  // Demo instantánea de la landing: cada visitante recibe su propia distribuidora de prueba
+  esDemo      Boolean   @default(false)
+  demoVenceEn DateTime? // se borra sola después de esta hora
+  demoAccesos Json? // usuarios de prueba que se muestran en el aviso de la demo
+
   creadoEn      DateTime @default(now())
   actualizadoEn DateTime @updatedAt
 
@@ -459,6 +464,8 @@ model Distribuidora {
   contactos            Contacto[]
   configFidelidad      ConfigFidelidad?
   movimientosFidelidad MovimientoFidelidad[]
+
+  @@index([esDemo, demoVenceEn])
 }
 
 // ─────────────────────────────────────────

@@ -6,9 +6,11 @@ export default defineConfig({
   server: {
     port: 5173,
     allowedHosts: true,
+    // changeOrigin: false deja pasar el Host original (como nginx en producción):
+    // el servidor reconoce la distribuidora por el subdominio, p. ej. norte.localhost:5173
     proxy: {
-      '/api':     'http://localhost:3001',
-      '/uploads': 'http://localhost:3001'
+      '/api':     { target: 'http://localhost:3001', changeOrigin: false },
+      '/uploads': { target: 'http://localhost:3001', changeOrigin: false },
     }
   }
 })

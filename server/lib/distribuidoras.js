@@ -94,6 +94,8 @@ function publica(d) {
     provincia: d.provincia,
     depositoLat: d.depositoLat,
     depositoLng: d.depositoLng,
+    // Demo de la landing: el aviso muestra cuándo vence y los usuarios de prueba
+    ...(d.esDemo ? { esDemo: true, demoVenceEn: d.demoVenceEn, demoAccesos: d.demoAccesos } : {}),
   }
 }
 

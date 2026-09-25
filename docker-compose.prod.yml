@@ -40,6 +40,8 @@ services:
       args:
         VITE_MAPBOX_TOKEN: ${VITE_MAPBOX_TOKEN:-}
         VITE_PLAY_STORE_URL: ${VITE_PLAY_STORE_URL:-}
+        VITE_CONTACTO_WHATSAPP: ${VITE_CONTACTO_WHATSAPP:-}
+        VITE_CONTACTO_EMAIL: ${VITE_CONTACTO_EMAIL:-}
     restart: unless-stopped
     depends_on:
       - server

@@ -1,0 +1,37 @@
+/* Piezas propias de la landing de Agua Elite (el resto viene de sitio/elite.css) */
+.elite .l-nota { font-size: 14px; color: var(--e-apagado); margin-top: -12px; }
+
+.elite .l-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.elite .l-lista li { position: relative; padding-left: 22px; color: var(--e-suave); font-size: 15.5px; line-height: 1.5; }
+.elite .l-lista li::before { content: ''; position: absolute; left: 0; top: .6em; width: 8px; height: 8px; border-radius: 50%; background: var(--e-cian); opacity: .8; }
+.elite .l-lista--check li::before { content: '✓'; width: auto; height: auto; background: none; top: 0; color: var(--e-cian); opacity: 1; }
+.elite .e-vidrio .l-lista { margin-top: 6px; }
+
+.elite .l-funciones {
+  list-style: none; margin: 0; padding: 0; display: grid; gap: 1px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  background: var(--e-borde-suave); border: 1px solid var(--e-borde-suave); border-radius: 22px; overflow: hidden;
+}
+.elite .l-funciones li { background: rgba(6,18,43,.92); padding: 28px 24px; display: flex; flex-direction: column; gap: 12px; }
+.elite .l-funciones i { font-size: 22px; color: var(--e-cian); }
+.elite .l-funciones h3 { font-size: 23px; line-height: 1.15; }
+.elite .l-funciones p { color: var(--e-suave); font-size: 15.5px; }
+
+.elite .l-clientes { display: grid; gap: 40px; align-items: center; }
+@media (min-width: 960px) { .elite .l-clientes { grid-template-columns: 1.1fr .9fr; gap: 72px; } }
+.elite .l-cliente { padding: 32px; display: flex; flex-direction: column; gap: 12px; max-width: 460px; }
+.elite .l-cliente-nombre { font-family: var(--f-titulo); font-size: 44px; line-height: 1; color: var(--e-titulo); letter-spacing: .02em; }
+
+.elite .l-ingresar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.elite .l-input {
+  min-height: 48px; min-width: 0; flex: 1 1 220px; padding: 0 20px; border-radius: 999px;
+  border: 1px solid var(--e-borde); background: rgba(255,255,255,.06); color: var(--e-tinta); font: inherit; font-size: 16px;
+}
+.elite .l-input::placeholder { color: var(--e-apagado); }
+.elite .l-input:focus { outline: 2px solid var(--e-cian); outline-offset: 2px; }
+
+.elite .l-toast {
+  position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 60; width: min(520px, calc(100% - 32px));
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 20px; border-radius: 16px;
+  background: #3A1F10; border: 1px solid var(--e-oro); color: #FCE7CF; font-size: 15px;
+}
