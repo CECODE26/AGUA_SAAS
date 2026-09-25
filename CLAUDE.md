@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+**Antes de empezar, lee solo `docs/CONTEXTO.md` (mapa y estado) y `docs/LECCIONES.md` (errores que no se repiten). No recorras todo el código: abre únicamente los archivos que la tarea necesita. Al terminar una tarea, actualiza el estado en `docs/CONTEXTO.md`.**
+
 ## Reglas globales obligatorias
 
 ### 1. Delegación automática de agentes
